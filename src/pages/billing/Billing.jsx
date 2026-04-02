@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Billing() {
   const [rows, setRows] = useState([]);
@@ -60,6 +61,11 @@ export default function Billing() {
     : 0;
 
   const total = subtotal + gstTotal;
+
+  const navigate = useNavigate();
+  const handleGenerateInvoice = () => {
+    navigate('/invoice');
+  }
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -217,7 +223,7 @@ export default function Billing() {
             GST Enabled
           </label>
 
-          <button className="w-full mt-4 bg-indigo-600 text-white py-2 rounded">
+          <button className="w-full mt-4 bg-indigo-600 text-white py-2 rounded" onClick={handleGenerateInvoice}>
             Generate Invoice
           </button>
         </div>
