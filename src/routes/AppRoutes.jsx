@@ -1,0 +1,39 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "../pages/auth/Login";
+import Dashboard from "../pages/dashboard/Dashboard";
+import ProductList from "../pages/products/ProductList";
+import ProductForm from "../pages/products/ProductForm";
+import Billing from "../pages/billing/Billing";
+import SalesReport from "../pages/reports/SalesReport";
+import Settings from "../pages/settings/Settings";
+import MainLayout from "../layouts/MainLayout";
+import CompanyList from "../pages/company/CompanyList";
+import CompanyForm from "../pages/company/CompanyForm";
+import TaxList from "../pages/tax/TaxList";
+import TaxForm from "../pages/tax/TaxForm";
+import Invoice from "../pages/billing/Invoice";
+
+export default function AppRoutes() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/products/add" element={<ProductForm />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/reports" element={<SalesReport />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/company" element={<CompanyList />} />
+<Route path="/company/add" element={<CompanyForm />} />
+          <Route path="/invoice" element={<Invoice />} />
+
+<Route path="/tax" element={<TaxList />} />
+<Route path="/tax/add" element={<TaxForm />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
