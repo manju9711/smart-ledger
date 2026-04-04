@@ -16,17 +16,43 @@ import TaxForm from "../pages/tax/TaxForm";
 import Invoice from "../pages/billing/Invoice";
 import EditProduct from "../pages/products/EditProduct";
 import Reports from "../pages/reports/SalesReport";
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
+
+          {/* 🔓 Public */}
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        <Route path="/register" element={<Register />} />
+
+        {/* 🔐 Protected */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+        </Route>
+        {/* <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/Register" element={<Register />} /> */}
         
 
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/products" element={<ProductList />} />
           <Route path="/products/add" element={<ProductForm />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
