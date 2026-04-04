@@ -105,6 +105,10 @@ export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
 
+  // 🔥 PAGINATION STATES
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   // 🔥 FETCH PRODUCTS
   const fetchProducts = async () => {
     try {
@@ -121,27 +125,38 @@ export default function ProductList() {
     fetchProducts();
   }, []);
 
+  // 🔍 FILTER
   const filtered = products.filter((p) =>
     p.product_name.toLowerCase().includes(search.toLowerCase())
   );
-const handleDelete = async (id) => {
-  if (!window.confirm("Delete this product?")) return;
 
-  try {
-    const res = await api.post("/product/delete.php", { id });
+  // 🔥 PAGINATION LOGIC
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
-    if (res.data.status) {
-      fetchProducts();
-    } else {
-      alert(res.data.message);
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+
+  const currentData = filtered.slice(indexOfFirst, indexOfLast);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this product?")) return;
+
+    try {
+      const res = await api.post("/product/delete.php", { id });
+
+      if (res.data.status) {
+        fetchProducts();
+      } else {
+        alert(res.data.message);
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
+
   return (
     <div className="p-6">
-      
+
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-700">
@@ -162,7 +177,10 @@ const handleDelete = async (id) => {
         placeholder="Search product..."
         className="w-full p-3 border rounded mb-4"
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCurrentPage(1); // 🔥 reset page
+        }}
       />
 
       {/* TABLE */}
@@ -181,7 +199,7 @@ const handleDelete = async (id) => {
           </thead>
 
           <tbody className="divide-y">
-            {filtered.map((p) => (
+            {currentData.map((p) => (
               <tr key={p.id} className="hover:bg-gray-50 transition">
 
                 <td className="px-6 py-4 font-medium text-gray-800">
@@ -191,7 +209,6 @@ const handleDelete = async (id) => {
                 <td className="px-6 py-4">₹{p.price}</td>
 
                 <td className="px-6 py-4">{p.stock}</td>
-                
 
                 <td className="px-6 py-4">
                   <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
@@ -210,40 +227,74 @@ const handleDelete = async (id) => {
                     <span className="text-xs">{p.barcode}</span>
                   </div>
                 </td>
+
                 <td className="px-6 py-4 flex justify-center gap-3">
+                  <button
+                    onClick={() => navigate(`/products/edit/${p.id}`)}
+                    className="p-2 bg-blue-50 text-blue-600 rounded"
+                  >
+                    <Pencil size={18} />
+                  </button>
 
-  {/* EDIT */}
-  <button
-    onClick={() => navigate(`/products/edit/${p.id}`)}
-    className="p-2 bg-blue-50 text-blue-600 rounded"
-  >
-    <Pencil size={18} />
-  </button>
-
-  {/* DELETE */}
-  <button
-    onClick={() => handleDelete(p.id)}
-    className="p-2 bg-red-50 text-red-600 rounded"
-  >
-    <Trash2 size={18} />
-  </button>
-
-</td>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="p-2 bg-red-50 text-red-600 rounded"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </td>
 
               </tr>
             ))}
 
-            {filtered.length === 0 && (
+            {currentData.length === 0 && (
               <tr>
-                <td colSpan="5" className="p-4 text-center text-gray-500">
+                <td colSpan="6" className="p-4 text-center text-gray-500">
                   No products found
                 </td>
               </tr>
             )}
-
           </tbody>
         </table>
       </div>
+
+      {/* 🔥 PAGINATION UI */}
+      <div className="flex justify-between items-center mt-4">
+
+        <button
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        <div className="flex gap-2">
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+
+      </div>
+
     </div>
   );
 }
