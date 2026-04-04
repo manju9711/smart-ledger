@@ -65,7 +65,7 @@ export default function Register() {
               <input
                 type="password"
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-transparent focus:border-blue-500 rounded-xl outline-none text-sm transition-all"
-                placeholder="Min. 6 chars"
+                placeholder="Password"
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
               />
             </div>

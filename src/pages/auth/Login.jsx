@@ -53,7 +53,7 @@ export default function Login() {
           <div>
             <div className="flex justify-between ml-2 mb-1 text-[10px] font-bold text-gray-400 uppercase">
               <span>Password</span>
-              <span className="text-blue-600 cursor-pointer">Forgot?</span>
+              {/* <span className="text-blue-600 cursor-pointer">Forgot?</span> */}
             </div>
             <div className="relative group">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500" size={18} />
