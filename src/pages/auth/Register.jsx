@@ -1,310 +1,89 @@
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { registerUser } from "../../services/api";
-
-// export default function Register() {
-//   const navigate = useNavigate();
-
-//   const [username, setUsername] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//  const handleRegister = async () => {
-//     try {
-//       const res = await registerUser({
-//         username,
-//         email,
-//         password,
-//       });
-
-//       const data = res.data; // 👈 axios la .data
-
-//       if (data.status === "success") {
-//         alert("Registered successfully ✅");
-//         navigate("/");
-//       } else {
-//         alert(data.message);
-//       }
-
-//     } catch (err) {
-//       console.error(err);
-//       alert("Server error");
-//     }
-//   };
-
-//   return (
-//     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500">
-//       <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
-//         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           placeholder="Username"
-//           value={username}
-//           onChange={(e) => setUsername(e.target.value)}
-//         />
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           placeholder="Email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           type="password"
-//           placeholder="Password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-
-//         <button
-//           onClick={handleRegister}
-//           className="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700"
-//         >
-//           Register
-//         </button>
-
-//         <p
-//           className="text-center mt-4 text-sm text-blue-600 cursor-pointer"
-//           onClick={() => navigate("/")}
-//         >
-//           Already have account? Login
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import api from "../../services/api"; // 👈 common axios
-
-// export default function Register() {
-//   const navigate = useNavigate();
-
-//   const [username, setUsername] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   // 👇 register API here itself
-//   const registerUser = (data) => {
-//     return api.post("/auth/register.php", data);
-//   };
-
-//   const handleRegister = async () => {
-//     try {
-//       const res = await registerUser({
-//         username,
-//         email,
-//         password,
-//       });
-
-//       const data = res.data;
-
-//       if (data.status === "success") {
-//         alert("Registered successfully ✅");
-//         navigate("/");
-//       } else {
-//         alert(data.message);
-//       }
-
-//     } catch (err) {
-//       console.error(err);
-//       alert("Server error");
-//     }
-//   };
-
-//   return (
-//     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500">
-//       <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
-//         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           placeholder="Username"
-//           value={username}
-//           onChange={(e) => setUsername(e.target.value)}
-//         />
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           placeholder="Email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-
-//         <input
-//           className="w-full p-3 border rounded mb-4"
-//           type="password"
-//           placeholder="Password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-
-//         <button
-//           onClick={handleRegister}
-//           className="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700"
-//         >
-//           Register
-//         </button>
-
-//         <p
-//           className="text-center mt-4 text-sm text-blue-600 cursor-pointer"
-//           onClick={() => navigate("/")}
-//         >
-//           Already have account? Login
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
-//validation
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { User, Mail, Lock, UserPlus, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
 
 export default function Register() {
   const navigate = useNavigate();
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [errors, setErrors] = useState({});
-
-  // 🔹 Validation functions
-  const validateUsername = () => {
-    if (!username) {
-      setErrors((prev) => ({ ...prev, username: "Username is required" }));
-    } else {
-      setErrors((prev) => ({ ...prev, username: "" }));
-    }
-  };
-
-  const validateEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email) {
-      setErrors((prev) => ({ ...prev, email: "Email is required" }));
-    } else if (!emailRegex.test(email)) {
-      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
-    } else {
-      setErrors((prev) => ({ ...prev, email: "" }));
-    }
-  };
-
-  const validatePassword = () => {
-    if (!password) {
-      setErrors((prev) => ({ ...prev, password: "Password is required" }));
-    } else if (password.length < 6) {
-      setErrors((prev) => ({
-        ...prev,
-        password: "Password must be at least 6 characters",
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, password: "" }));
-    }
-  };
-
-  // 🔹 API
-  const registerUser = (data) => {
-    return api.post("/auth/register.php", data);
-  };
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
-    // final validation before submit
-    validateUsername();
-    validateEmail();
-    validatePassword();
-
-    if (errors.username || errors.email || errors.password) {
-      alert("Please fill all fields");
-      return;
-    }
-
+    setIsLoading(true);
     try {
-      const res = await registerUser({
-        username,
-        email,
-        password,
-      });
-
-      const data = res.data;
-
-      if (data.status === "success") {
-        alert("Registered successfully ✅");
-        navigate("/");
-      } else {
-        alert(data.message);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
-    }
+      const res = await api.post("/auth/register.php", formData);
+      if (res.data.status === "success") navigate("/");
+      else alert(res.data.message);
+    } catch (err) { alert("Server error"); } finally { setIsLoading(false); }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#f0f4f9] p-4 overflow-y-auto font-sans">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-sm bg-white/90 backdrop-blur-md p-6 rounded-[2rem] shadow-xl border border-white my-auto"
+      >
+        <div className="flex flex-col items-center mb-5">
+          <div className="w-12 h-12 bg-gradient-to-tr from-[#1f8cff] to-[#4338ca] rounded-xl flex items-center justify-center shadow-md mb-2">
+            <UserPlus size={24} color="white" />
+          </div>
+          <h2 className="text-2xl font-black text-gray-800">Register</h2>
+          <p className="text-[11px] text-gray-400 font-medium">Create your SmartLedger account</p>
+        </div>
 
-        {/* Username */}
-        <input
-          className="w-full p-3 border rounded mb-1"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          onBlur={validateUsername}
-        />
-        {errors.username && (
-          <p className="text-red-500 text-sm mb-3">{errors.username}</p>
-        )}
+        <div className="space-y-3">
+          <div>
+            <label className="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Name</label>
+            <div className="relative group">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500" size={18} />
+              <input
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-transparent focus:border-blue-500 rounded-xl outline-none text-sm transition-all"
+                placeholder="Full Name"
+                onChange={(e) => setFormData({...formData, username: e.target.value})}
+              />
+            </div>
+          </div>
 
-        {/* Email */}
-        <input
-          className="w-full p-3 border rounded mb-1"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={validateEmail}
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm mb-3">{errors.email}</p>
-        )}
+          <div>
+            <label className="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Email</label>
+            <div className="relative group">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500" size={18} />
+              <input
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-transparent focus:border-blue-500 rounded-xl outline-none text-sm transition-all"
+                placeholder="Email Address"
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
+              />
+            </div>
+          </div>
 
-        {/* Password */}
-        <input
-          className="w-full p-3 border rounded mb-1"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onBlur={validatePassword}
-        />
-        {errors.password && (
-          <p className="text-red-500 text-sm mb-3">{errors.password}</p>
-        )}
+          <div>
+            <label className="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Password</label>
+            <div className="relative group">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500" size={18} />
+              <input
+                type="password"
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-transparent focus:border-blue-500 rounded-xl outline-none text-sm transition-all"
+                placeholder="Min. 6 chars"
+                onChange={(e) => setFormData({...formData, password: e.target.value})}
+              />
+            </div>
+          </div>
 
-        <button
-          onClick={handleRegister}
-          className="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700"
-        >
-          Register
-        </button>
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={handleRegister}
+            className="w-full bg-gradient-to-r from-[#1f8cff] to-[#4338ca] text-white font-bold py-3 rounded-xl shadow-lg mt-2 transition-all"
+          >
+            {isLoading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Create Account"}
+          </motion.button>
 
-        <p
-          className="text-center mt-4 text-sm text-blue-600 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          Already have account? Login
-        </p>
-      </div>
+          <button onClick={() => navigate("/")} className="w-full flex items-center justify-center gap-2 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors pt-2">
+            <ArrowLeft size={14} /> Back to Login
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 }
-
-
-
-
