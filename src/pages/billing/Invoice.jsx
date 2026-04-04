@@ -498,7 +498,7 @@ Amount: ₹${invoice.total_amount}`;
   };
 
   return (
-    <div className="bg-gray-200 min-h-screen p-6 flex flex-col items-center">
+    <div className="min-h-screen p-6 flex flex-col items-center">
 
       {/* 🔥 ACTION BUTTONS */}
       <div className="flex gap-2 mb-4">
