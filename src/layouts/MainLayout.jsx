@@ -44,7 +44,8 @@ import {
   ReceiptText, 
   BarChart3, 
   Building2, 
-  Settings 
+  Settings, 
+  ShieldCheck
 } from "lucide-react";
 
 export default function MainLayout() {
@@ -75,8 +76,10 @@ export default function MainLayout() {
         {/* Logo Section */}
         <div className="flex items-center gap-3 mb-12 px-2">
           <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg transform rotate-12 group-hover:rotate-0 transition-transform">
-            <div className="w-6 h-6 bg-[#1f8cff] rounded-md" />
+            <div className="w-6 h-6 bg-[#1f8cff] rounded-md" >                      <ShieldCheck size={24} color="white" />
+</div>
           </div>
+
           <h2 className="text-2xl font-black tracking-tight">Smart<span className="opacity-80">Ledger</span></h2>
         </div>
 
