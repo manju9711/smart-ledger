@@ -9,15 +9,43 @@ export default function Register() {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async () => {
-    setIsLoading(true);
-    try {
-      const res = await api.post("/auth/register.php", formData);
-      if (res.data.status === "success") navigate("/");
-      else alert(res.data.message);
-    } catch (err) { alert("Server error"); } finally { setIsLoading(false); }
-  };
+  // const handleRegister = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await api.post("/auth/register.php", formData);
+  //     if (res.data.status === "success") navigate("/");
+  //     else alert(res.data.message);
+  //   } catch (err) { alert("Server error"); } finally { setIsLoading(false); }
+  // };
 
+
+  const handleRegister = async () => {
+  setIsLoading(true);
+  try {
+    const payload = {
+      name: formData.username, // 🔥 map correct field
+      email: formData.email,
+      password: formData.password,
+      role: "cashier", // 🔥 default role (you can change)
+      company_id: 1    // 🔥 required for cashier/admin
+    };
+
+    const res = await api.post("/auth/register.php", payload);
+
+    if (res.data.status === true) {
+      alert("Registered Successfully ✅");
+      navigate("/");
+    } else {
+      alert(res.data.message);
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f0f4f9] p-4 overflow-y-auto font-sans">
       <motion.div 
