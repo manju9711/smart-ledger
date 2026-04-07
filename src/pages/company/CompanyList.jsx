@@ -72,22 +72,43 @@ export default function CompanyList() {
     fetchCompanies();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this company?")) return;
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm("Delete this company?")) return;
 
-    try {
-      const res = await api.post("/company/delete_company.php", { id });
+  //   try {
+  //     const res = await api.post("/company/delete_company.php", { id });
 
-      if (res.data.status) {
-        fetchCompanies();
-      } else {
-        alert(res.data.message);
-      }
-    } catch (err) {
-      console.error(err);
+  //     if (res.data.status) {
+  //       fetchCompanies();
+  //     } else {
+  //       alert(res.data.message);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+
+ const handleDelete = async (id) => {
+  if (!window.confirm("Delete this company permanently?")) return;
+
+  try {
+    const res = await api.post("/company/delete_company.php", { id });
+
+    if (res.data.status === true) {
+      alert("Deleted Permanently ✅");
+
+      // 🔥 remove from UI instantly (no reload feel)
+      setCompanies(prev => prev.filter(c => c.id !== id));
+
+    } else {
+      alert(res.data.message);
     }
-  };
-
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
+};
   return (
     <div className="p-6">
       
@@ -180,3 +201,4 @@ export default function CompanyList() {
     </div>
   );
 }
+
