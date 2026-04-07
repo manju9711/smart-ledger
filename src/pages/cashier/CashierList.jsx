@@ -1,131 +1,112 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api, { API_BASE_URL } from "../../services/api";
+import api from "../../services/api";
 import { Pencil, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function CashierList() {
+  const [cashiers, setCashiers] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const [companies, setCompanies] = useState([]);
 
-  const fetchCompanies = async () => {
-    try {
-      const res = await api.get("/company/get_companies.php");
-      if (res.data.status) {
-        setCompanies(res.data.data);
-      }
-    } catch (err) {
-      console.error(err);
+  const fetchCashiers = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const res = await api.post("/cashier/get_cashiers.php", {
+      company_id: user.company_id
+    });
+
+    if (res.data.status) {
+      setCashiers(res.data.data);
     }
   };
 
   useEffect(() => {
-    fetchCompanies();
+    fetchCashiers();
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this company?")) return;
+    if (!window.confirm("Delete this cashier?")) return;
 
-    try {
-      const res = await api.post("/company/delete_company.php", { id });
+    const res = await api.post("/cashier/delete_cashier.php", { id });
 
-      if (res.data.status) {
-        fetchCompanies();
-      } else {
-        alert(res.data.message);
-      }
-    } catch (err) {
-      console.error(err);
+    if (res.data.status) {
+      setCashiers(prev => prev.filter(c => c.id !== id));
     }
   };
 
+  // 🔍 FILTER
+  const filtered = cashiers.filter(c =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    c.email.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="p-6">
-      
-      {/* Header */}
+
+      {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-700">
-          Company List
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-700">Cashiers</h1>
 
         <button
-          onClick={() => navigate("/company/add")}
-          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow"
+          onClick={() => navigate("/cashier/add")}
+          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl shadow"
         >
-          + Add Company
+          + Add Cashier
         </button>
       </div>
 
-      {/* Table Card */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      {/* SEARCH */}
+      <input
+        type="text"
+        placeholder="Search cashier..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full mb-6 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none"
+      />
 
-        <table className="w-full text-sm text-left">
-          
-         <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
-  <tr>
-    <th className="px-6 py-3">Logo</th>
-    <th className="px-6 py-3">Company</th>
-    <th className="px-6 py-3">Code</th>
-    <th className="px-6 py-3">GSTIN</th>
-    <th className="px-6 py-3">Phone</th>
-    <th className="px-6 py-3">Address</th>
-    <th className="px-6 py-3 text-center">Actions</th>
-  </tr>
-</thead>
+      {/* TABLE CARD */}
+      <div className="bg-white rounded-2xl shadow overflow-hidden">
 
-          <tbody className="divide-y">
-  {companies.map((c) => (
-    <tr key={c.id} className="hover:bg-gray-50 transition">
+        {/* TABLE HEADER */}
+        <div className="grid grid-cols-3 bg-gray-100 px-6 py-3 font-semibold text-gray-600">
+          <span>Name</span>
+          <span>Email</span>
+          <span className="text-center">Actions</span>
+        </div>
 
-      {/* Logo */}
-      <td className="px-6 py-4">
-        {c.logo && (
-          <img
-             src={`${API_BASE_URL}${c.logo}`}
-            className="h-10 w-10 object-cover rounded"
-          />
+        {/* TABLE BODY */}
+        {filtered.map((c) => (
+          <div
+            key={c.id}
+            className="grid grid-cols-3 px-6 py-4 border-t items-center"
+          >
+            <span className="font-medium text-gray-700">{c.name}</span>
+            <span className="text-gray-600">{c.email}</span>
+
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => navigate(`/cashier/edit/${c.id}`)}
+                className="bg-blue-100 text-blue-600 p-2 rounded-lg"
+              >
+                <Pencil size={16} />
+              </button>
+
+              <button
+                onClick={() => handleDelete(c.id)}
+                className="bg-red-100 text-red-600 p-2 rounded-lg"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {/* EMPTY STATE */}
+        {filtered.length === 0 && (
+          <p className="text-center py-6 text-gray-400">
+            No cashiers found
+          </p>
         )}
-      </td>
-
-      {/* Name */}
-      <td className="px-6 py-4 font-medium text-gray-800">
-        {c.company_name}
-      </td>
-
-      {/* Code */}
-      <td className="px-6 py-4">{c.company_code}</td>
-
-      {/* GSTIN */}
-      <td className="px-6 py-4">{c.gstin}</td>
-
-      {/* Phone */}
-      <td className="px-6 py-4">{c.phone}</td>
-
-      {/* Address */}
-      <td className="px-6 py-4">{c.company_address}</td>
-
-      {/* Actions */}
-      <td className="px-6 py-4 flex justify-center gap-3">
-
-        <button
-          onClick={() => navigate(`/company/edit/${c.id}`)}
-          className="p-2 bg-blue-50 text-blue-600 rounded"
-        >
-          <Pencil size={18} />
-        </button>
-
-        <button
-          onClick={() => handleDelete(c.id)}
-          className="p-2 bg-red-50 text-red-600 rounded"
-        >
-          <Trash2 size={18} />
-        </button>
-
-      </td>
-    </tr>
-  ))}
-</tbody>
-
-        </table>
       </div>
     </div>
   );

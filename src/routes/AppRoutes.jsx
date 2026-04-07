@@ -18,6 +18,9 @@ import EditProduct from "../pages/products/EditProduct";
 import Reports from "../pages/reports/SalesReport";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
+import CashierForm from "../pages/cashier/CashierForm";
+import CashierList from "../pages/cashier/CashierList";
+import EditCashier from "../pages/cashier/EditCashier";
 
 export default function AppRoutes() {
   return (
@@ -64,6 +67,10 @@ export default function AppRoutes() {
           <Route path="/company/edit/:id" element={<EditCompany />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/cashier/add" element={<CashierForm />} />
+          <Route path="/cashier" element={<CashierList />} />
+          <Route path="/cashier/edit/:id" element={<EditCashier/>} />
+
 
 <Route path="/tax" element={<TaxList />} />
 <Route path="/tax/add" element={<TaxForm />} />
