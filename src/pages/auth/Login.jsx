@@ -11,17 +11,49 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
-    setIsLoading(true);
-    try {
-      const res = await api.post("/auth/login.php", { email, password });
-      if (res.data.status === "success") {
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/dashboard");
-      } else { alert(res.data.message); }
-    } catch (err) { alert("Server error"); } finally { setIsLoading(false); }
-  };
+  // const handleLogin = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await api.post("/auth/login.php", { email, password });
+  //     if (res.data.status === "success") {
+  //       localStorage.setItem("user", JSON.stringify(res.data.user));
+  //       navigate("/dashboard");
+  //     } else { alert(res.data.message); }
+  //   } catch (err) { alert("Server error"); } finally { setIsLoading(false); }
+  // };
 
+
+  const handleLogin = async () => {
+  setIsLoading(true);
+  try {
+    const res = await api.post("/auth/login.php", { email, password });
+
+    if (res.data.status === true) {
+      // 🔥 store full response
+      localStorage.setItem("user", JSON.stringify(res.data));
+
+      alert("Login Success ✅");
+
+      // 🔥 role based redirect (optional)
+      if (res.data.role === "superadmin") {
+        navigate("/superadmin-dashboard");
+      } else if (res.data.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/dashboard"); // cashier
+      }
+
+    } else {
+      alert(res.data.message);
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f0f4f9] p-4 overflow-y-auto">
       <motion.div 
