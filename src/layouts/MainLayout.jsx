@@ -197,10 +197,11 @@ export default function MainLayout() {
     // ADMIN ONLY
     ...(role === "admin"
       ? [
+          { name: "Category", path: "/category", icon: <Package size={20} /> },
           { name: "Products", path: "/products", icon: <Package size={20} /> },
           { name: "Billing", path: "/billing", icon: <ReceiptText size={20} /> },
           { name: "Reports", path: "/reports", icon: <BarChart3 size={20} /> },
-          { name: "Cashiers", path: "/Register", icon: <Building2 size={20} /> },
+          { name: "Cashiers", path: "/cashier", icon: <Building2 size={20} /> },
           { name: "Profile", path: "/profile", icon: <Settings size={20} /> }
         ]
       : []),

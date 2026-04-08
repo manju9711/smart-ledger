@@ -1,29 +1,76 @@
+//api integration
+// import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
-// import { useState } from "react";
+// import api from "../../services/api";
 // import Barcode from "react-barcode";
+// import { Pencil, Trash2 } from "lucide-react";
 
 // export default function ProductList() {
 //   const navigate = useNavigate();
+//   const [products, setProducts] = useState([]);
 //   const [search, setSearch] = useState("");
 
-//   const products = [
-//     { name: "Soap", price: 50, stock: 100, gst: 18, barcode: "PRD123456" },
-//     { name: "Rice", price: 80, stock: 200, gst: 5, barcode: "PRD654321" },
-//   ];
+//   // 🔥 PAGINATION STATES
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 5;
 
+//   // 🔥 FETCH PRODUCTS
+//   const fetchProducts = async () => {
+//     try {
+//       const res = await api.get("/product/get.php");
+//       if (res.data.status) {
+//         setProducts(res.data.data);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchProducts();
+//   }, []);
+
+//   // 🔍 FILTER
 //   const filtered = products.filter((p) =>
-//     p.name.toLowerCase().includes(search.toLowerCase())
+//     p.product_name.toLowerCase().includes(search.toLowerCase())
 //   );
 
+//   // 🔥 PAGINATION LOGIC
+//   const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+//   const indexOfLast = currentPage * itemsPerPage;
+//   const indexOfFirst = indexOfLast - itemsPerPage;
+
+//   const currentData = filtered.slice(indexOfFirst, indexOfLast);
+
+//   const handleDelete = async (id) => {
+//     if (!window.confirm("Delete this product?")) return;
+
+//     try {
+//       const res = await api.post("/product/delete.php", { id });
+
+//       if (res.data.status) {
+//         fetchProducts();
+//       } else {
+//         alert(res.data.message);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
+
 //   return (
-//     <div>
+//     <div className="p-6">
+
 //       {/* HEADER */}
-//       <div className="flex justify-between items-center mb-4">
-//         <h1 className="text-xl font-bold">Products</h1>
+//       <div className="flex justify-between items-center mb-6">
+//         <h1 className="text-2xl font-semibold text-gray-700">
+//           Products
+//         </h1>
 
 //         <button
 //           onClick={() => navigate("/products/add")}
-//           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+//           className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow"
 //         >
 //           + Add Product
 //         </button>
@@ -35,40 +82,49 @@
 //         placeholder="Search product..."
 //         className="w-full p-3 border rounded mb-4"
 //         value={search}
-//         onChange={(e) => setSearch(e.target.value)}
+//         onChange={(e) => {
+//           setSearch(e.target.value);
+//           setCurrentPage(1); // 🔥 reset page
+//         }}
 //       />
 
 //       {/* TABLE */}
-//       <div className="bg-white rounded shadow overflow-auto">
-//         <table className="w-full">
-//           <thead className="bg-gray-200">
+//       <div className="bg-white rounded-xl shadow overflow-hidden">
+//         <table className="w-full text-sm text-left">
+
+//           <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
 //             <tr>
-//               <th className="p-3">Name</th>
-//               <th>Price</th>
-//               <th>Stock</th>
-//               <th>GST</th>
-//               <th>Barcode</th>
+//               <th className="px-6 py-3">Name</th>
+//               <th className="px-6 py-3">Price</th>
+//               <th className="px-6 py-3">Stock</th>
+//               <th className="px-6 py-3">GST</th>
+//               <th className="px-6 py-3 text-center">Barcode</th>
+//               <th className="px-6 py-3 text-center">Actions</th>
 //             </tr>
 //           </thead>
 
-//           <tbody>
-//             {filtered.map((p, i) => (
-//               <tr key={i} className="text-center border-t">
-//                 <td className="p-3">{p.name}</td>
-//                 <td>₹{p.price}</td>
-//                 <td>{p.stock}</td>
+//           <tbody className="divide-y">
+//             {currentData.map((p) => (
+//               <tr key={p.id} className="hover:bg-gray-50 transition">
 
-//                 {/* GST COLUMN */}
-//                 <td>
+//                 <td className="px-6 py-4 font-medium text-gray-800">
+//                   {p.product_name}
+//                 </td>
+
+//                 <td className="px-6 py-4">₹{p.price}</td>
+
+//                 <td className="px-6 py-4">{p.stock}</td>
+
+//                 <td className="px-6 py-4">
 //                   <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
-//                     {p.gst}%
+//                     {p.gst_percentage}%
 //                   </span>
 //                 </td>
 
-//                 <td>
+//                 <td className="px-6 py-4 text-center">
 //                   <div className="flex flex-col items-center">
 //                     <Barcode
-//                       value={p.barcode}
+//                       value={p.barcode || "NA"}
 //                       width={1}
 //                       height={40}
 //                       fontSize={10}
@@ -76,12 +132,29 @@
 //                     <span className="text-xs">{p.barcode}</span>
 //                   </div>
 //                 </td>
+
+//                 <td className="px-6 py-4 flex justify-center gap-3">
+//                   <button
+//                     onClick={() => navigate(`/products/edit/${p.id}`)}
+//                     className="p-2 bg-blue-50 text-blue-600 rounded"
+//                   >
+//                     <Pencil size={18} />
+//                   </button>
+
+//                   <button
+//                     onClick={() => handleDelete(p.id)}
+//                     className="p-2 bg-red-50 text-red-600 rounded"
+//                   >
+//                     <Trash2 size={18} />
+//                   </button>
+//                 </td>
+
 //               </tr>
 //             ))}
 
-//             {filtered.length === 0 && (
+//             {currentData.length === 0 && (
 //               <tr>
-//                 <td colSpan="5" className="p-4 text-center text-gray-500">
+//                 <td colSpan="6" className="p-4 text-center text-gray-500">
 //                   No products found
 //                 </td>
 //               </tr>
@@ -89,11 +162,48 @@
 //           </tbody>
 //         </table>
 //       </div>
+
+//       {/* 🔥 PAGINATION UI */}
+//       <div className="flex justify-between items-center mt-4">
+
+//         <button
+//           onClick={() => setCurrentPage((prev) => prev - 1)}
+//           disabled={currentPage === 1}
+//           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+//         >
+//           Prev
+//         </button>
+
+//         <div className="flex gap-2">
+//           {[...Array(totalPages)].map((_, i) => (
+//             <button
+//               key={i}
+//               onClick={() => setCurrentPage(i + 1)}
+//               className={`px-3 py-1 rounded ${
+//                 currentPage === i + 1
+//                   ? "bg-blue-600 text-white"
+//                   : "bg-gray-200"
+//               }`}
+//             >
+//               {i + 1}
+//             </button>
+//           ))}
+//         </div>
+
+//         <button
+//           onClick={() => setCurrentPage((prev) => prev + 1)}
+//           disabled={currentPage === totalPages}
+//           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+//         >
+//           Next
+//         </button>
+
+//       </div>
+
 //     </div>
 //   );
 // }
 
-//api integration
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -102,17 +212,19 @@ import { Pencil, Trash2 } from "lucide-react";
 
 export default function ProductList() {
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
 
-  // 🔥 PAGINATION STATES
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  const company_id = localStorage.getItem("company_id"); // 🔥 IMPORTANT
 
   // 🔥 FETCH PRODUCTS
   const fetchProducts = async () => {
     try {
-      const res = await api.get("/product/get.php");
+      const res = await api.get(`/product/get.php?company_id=${company_id}`);
       if (res.data.status) {
         setProducts(res.data.data);
       }
@@ -125,19 +237,18 @@ export default function ProductList() {
     fetchProducts();
   }, []);
 
-  // 🔍 FILTER
+  // 🔍 SEARCH
   const filtered = products.filter((p) =>
     p.product_name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🔥 PAGINATION LOGIC
+  // 🔥 PAGINATION
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
-
   const currentData = filtered.slice(indexOfFirst, indexOfLast);
 
+  // 🔥 DELETE
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this product?")) return;
 
@@ -165,7 +276,7 @@ export default function ProductList() {
 
         <button
           onClick={() => navigate("/products/add")}
-          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow"
+          className="bg-green-600 text-white px-5 py-2 rounded-lg"
         >
           + Add Product
         </button>
@@ -179,68 +290,61 @@ export default function ProductList() {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setCurrentPage(1); // 🔥 reset page
+          setCurrentPage(1);
         }}
       />
 
       {/* TABLE */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        <table className="w-full text-sm text-left">
+      <div className="bg-white rounded shadow">
+        <table className="w-full text-sm">
 
-          <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
+          <thead className="bg-gray-100 text-xs uppercase">
             <tr>
-              <th className="px-6 py-3">Name</th>
-              <th className="px-6 py-3">Price</th>
-              <th className="px-6 py-3">Stock</th>
-              <th className="px-6 py-3">GST</th>
-              <th className="px-6 py-3 text-center">Barcode</th>
-              <th className="px-6 py-3 text-center">Actions</th>
+              <th className="p-3">Name</th>
+              <th className="p-3">Category</th> {/* 🔥 NEW */}
+              <th className="p-3">Price</th>
+              <th className="p-3">Stock</th>
+              <th className="p-3">GST</th>
+              <th className="p-3 text-center">Barcode</th>
+              <th className="p-3 text-center">Actions</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y">
+          <tbody>
             {currentData.map((p) => (
-              <tr key={p.id} className="hover:bg-gray-50 transition">
+              <tr key={p.id} className="border-t">
 
-                <td className="px-6 py-4 font-medium text-gray-800">
-                  {p.product_name}
-                </td>
+                <td className="p-3">{p.product_name}</td>
 
-                <td className="px-6 py-4">₹{p.price}</td>
+                {/* 🔥 CATEGORY NAME */}
+                <td className="p-3">{p.category_name}</td>
 
-                <td className="px-6 py-4">{p.stock}</td>
+                <td className="p-3">₹{p.price}</td>
+                <td className="p-3">{p.stock}</td>
 
-                <td className="px-6 py-4">
-                  <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
+                <td className="p-3">
+                  <span className="bg-blue-100 px-2 rounded">
                     {p.gst_percentage}%
                   </span>
                 </td>
 
-                <td className="px-6 py-4 text-center">
-                  <div className="flex flex-col items-center">
-                    <Barcode
-                      value={p.barcode || "NA"}
-                      width={1}
-                      height={40}
-                      fontSize={10}
-                    />
-                    <span className="text-xs">{p.barcode}</span>
-                  </div>
+                <td className="p-3 text-center">
+                  <Barcode value={p.barcode || "NA"} width={1} height={40} />
                 </td>
 
-                <td className="px-6 py-4 flex justify-center gap-3">
+                <td className="p-3 flex justify-center gap-2">
                   <button
                     onClick={() => navigate(`/products/edit/${p.id}`)}
-                    className="p-2 bg-blue-50 text-blue-600 rounded"
+                    className="bg-blue-100 p-2 rounded"
                   >
-                    <Pencil size={18} />
+                    <Pencil size={16} />
                   </button>
 
                   <button
                     onClick={() => handleDelete(p.id)}
-                    className="p-2 bg-red-50 text-red-600 rounded"
+                    className="bg-red-100 p-2 rounded"
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={16} />
                   </button>
                 </td>
 
@@ -249,22 +353,23 @@ export default function ProductList() {
 
             {currentData.length === 0 && (
               <tr>
-                <td colSpan="6" className="p-4 text-center text-gray-500">
+                <td colSpan="7" className="text-center p-4">
                   No products found
                 </td>
               </tr>
             )}
           </tbody>
+
         </table>
       </div>
 
-      {/* 🔥 PAGINATION UI */}
-      <div className="flex justify-between items-center mt-4">
+      {/* PAGINATION */}
+      <div className="flex justify-between mt-4">
 
         <button
-          onClick={() => setCurrentPage((prev) => prev - 1)}
+          onClick={() => setCurrentPage((p) => p - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200"
         >
           Prev
         </button>
@@ -274,10 +379,8 @@ export default function ProductList() {
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === i + 1
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200"
+              className={`px-3 ${
+                currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200"
               }`}
             >
               {i + 1}
@@ -286,9 +389,9 @@ export default function ProductList() {
         </div>
 
         <button
-          onClick={() => setCurrentPage((prev) => prev + 1)}
+          onClick={() => setCurrentPage((p) => p + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200"
         >
           Next
         </button>
