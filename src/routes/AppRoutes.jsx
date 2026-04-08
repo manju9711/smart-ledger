@@ -21,6 +21,9 @@ import PublicRoute from "./PublicRoute";
 import CashierForm from "../pages/cashier/CashierForm";
 import CashierList from "../pages/cashier/CashierList";
 import EditCashier from "../pages/cashier/EditCashier";
+import CategoryForm from "../pages/category/CategoryForm";
+import CategoryList from "../pages/category/categoryList";
+import EditCategory from "../pages/category/EditCategory";
 
 export default function AppRoutes() {
   return (
@@ -70,6 +73,9 @@ export default function AppRoutes() {
           <Route path="/cashier/add" element={<CashierForm />} />
           <Route path="/cashier" element={<CashierList />} />
           <Route path="/cashier/edit/:id" element={<EditCashier/>} />
+            <Route path="/category/add" element={<CategoryForm />} />
+          <Route path="/category" element={<CategoryList/>} />
+          <Route path="/category/edit/:id" element={<EditCategory/>} />
 
 
 <Route path="/tax" element={<TaxList />} />
