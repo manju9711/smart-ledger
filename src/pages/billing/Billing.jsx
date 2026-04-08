@@ -18,16 +18,27 @@ export default function Billing() {
   const navigate = useNavigate();
 
   // 🔥 Fetch products
-  const fetchProducts = async () => {
-    const res = await api.post("/product/get.php");
-    if (res.data.status) {
-      setProducts(res.data.data);
-    }
-  };
+const fetchProducts = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  if (!user?.company_id) {
+    alert("Company ID missing");
+    return;
+  }
+
+  const res = await api.get("/product/get.php", {
+    params: { company_id: user.company_id }
+  });
+
+  console.log("PRODUCT LIST 👉", res.data);
+
+  if (res.data.status) {
+    setProducts(res.data.data);
+  }
+};
   useEffect(() => {
     fetchProducts();
-    setRows([{ name: "", price: 0, qty: 1, gst: 0 }]); // first row
+setRows([{ name: "", price: 0, qty: 1, gst: 0, unit: "", unit_value: 100 }]);
   }, []);
 
   // 🔍 Search
@@ -49,9 +60,14 @@ const filtered = products.filter((p) =>
 
   // ✅ Select product
 const selectProduct = async (product, index) => {
-  const res = await api.post("/product/get_by_id.php", {
+ const user = JSON.parse(localStorage.getItem("user"));
+
+const res = await api.get("/product/get_by_id.php", {
+  params: {
     id: product.id,
-  });
+    company_id: user.company_id
+  }
+});
 
   if (res.data.status) {
     const p = res.data.data;
@@ -59,13 +75,15 @@ const selectProduct = async (product, index) => {
     const updated = [...rows];
 
     // ✅ update current row
-    updated[index] = {
-      id: p.id,
-      name: p.product_name,
-      price: Number(p.price),
-      gst: Number(p.gst_percentage),
-      qty: 1,
-    };
+updated[index] = {
+  product_id: p.id, // 🔥 IMPORTANT FIX
+  name: p.product_name,
+  price: Number(p.price),
+  gst: Number(p.gst_percentage),
+  qty: 1,
+  unit: p.unit,
+  unit_value: 1
+};
 
     // ✅ check last row filled or not
     const lastRow = updated[updated.length - 1];
@@ -89,7 +107,13 @@ const updateRow = (i, field, value) => {
   let updated = [...rows];
 
   // 🔥 find product stock
-  const product = products.find((p) => p.id === updated[i].id);
+const product = products.find((p) => p.id === updated[i].product_id);
+
+  if (field === "unit_value") {
+  updated[i][field] = Number(value);
+} else {
+  updated[i][field] = value;
+}
 
   if (field === "qty" && product) {
     if (value > product.stock) {
@@ -111,12 +135,24 @@ const updateRow = (i, field, value) => {
 };
 
   // 💰 Calculation
-  const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
-  const gstTotal = rows.reduce(
-    (s, r) => s + (r.price * r.qty * r.gst) / 100,
-    0
-  );
+const subtotal = rows.reduce(
+  (s, r) => s + r.price * r.qty,
+  0
+);
+
+const gstTotal = rows.reduce(
+  (s, r) =>
+    s + (r.price * r.qty * r.gst) / 100,
+  0
+);
+
   const total = subtotal + gstTotal;
+  useEffect(() => {
+  setPayment((prev) => ({
+    ...prev,
+    received: total
+  }));
+}, [total]);
   const balance = payment.received - total;
 const validProducts = rows.filter(
   (r) =>
@@ -126,34 +162,62 @@ const validProducts = rows.filter(
     r.qty > 0
 );
   // 🚀 Generate invoice
+// const handleGenerate = async () => {
+
+//   // ✅ VALIDATION FIRST
+//   if (!customer.name.trim()) {
+//     alert("Customer name required");
+//     return;
+//   }
+
+//   if (!/^[0-9]{10}$/.test(customer.phone)) {
+//     alert("Enter valid 10 digit phone number");
+//     return;
+//   }
+
+//   const validProducts = rows.filter(
+//     (r) =>
+//       r.name &&
+//       r.name.trim() !== "" &&
+//       r.price > 0 &&
+//       r.qty > 0
+//   );
+
+//   if (validProducts.length === 0) {
+//     alert("Add at least one product");
+//     return;
+//   }
+
+//   // 🚀 API CALL AFTER VALIDATION
+//   const res = await api.post("/invoice/create_invoice.php", {
+//     customer_name: customer.name,
+//     customer_phone: customer.phone,
+//     products: validProducts,
+//     sub_total: subtotal,
+//     gst_total: gstTotal,
+//     total_amount: total,
+//     paid_amount: payment.received,
+//     balance_amount: balance,
+//     payment_method: payment.method,
+//   });
+
+//   if (res.data.status) {
+//     navigate(`/invoice/${res.data.invoice_no}`);
+//   }
+// };
+
+
 const handleGenerate = async () => {
 
-  // ✅ VALIDATION FIRST
-  if (!customer.name.trim()) {
-    alert("Customer name required");
+  const user = JSON.parse(localStorage.getItem("user")); // 🔥 ADD THIS
+
+  if (!user?.company_id) {
+    alert("Company ID missing!");
     return;
   }
 
-  if (!/^[0-9]{10}$/.test(customer.phone)) {
-    alert("Enter valid 10 digit phone number");
-    return;
-  }
-
-  const validProducts = rows.filter(
-    (r) =>
-      r.name &&
-      r.name.trim() !== "" &&
-      r.price > 0 &&
-      r.qty > 0
-  );
-
-  if (validProducts.length === 0) {
-    alert("Add at least one product");
-    return;
-  }
-
-  // 🚀 API CALL AFTER VALIDATION
   const res = await api.post("/invoice/create_invoice.php", {
+    company_id: user.company_id, // 🔥 ADD THIS
     customer_name: customer.name,
     customer_phone: customer.phone,
     products: validProducts,
@@ -169,6 +233,7 @@ const handleGenerate = async () => {
     navigate(`/invoice/${res.data.invoice_no}`);
   }
 };
+
 
  return (
   <div className="p-6 bg-gray-100 min-h-screen">
@@ -219,54 +284,85 @@ const handleGenerate = async () => {
         <tbody>
           {rows.map((r, i) => (
             <tr key={i} className="border-t hover:bg-gray-50">
-              <td className="p-2 relative">
-                <input
-                  value={r.name}
-               onFocus={() => {
-  const availableProducts = products.filter((p) => p.stock > 0);
-  setSuggestions(availableProducts);
-  setActiveIndex(i);
-}}
-                  onChange={(e) =>
-                    handleSearch(e.target.value, i)
-                  }
-                  className="border p-2 w-full rounded focus:ring-2 focus:ring-indigo-400"
-                  placeholder="Search product..."
-                />
+<td className="p-2 relative">
 
-                {/* DROPDOWN */}
-                {activeIndex === i && suggestions.length > 0 && (
-                  <div className="absolute bg-white border w-full z-[9999] max-h-40 overflow-y-auto rounded shadow-lg">
-                  {suggestions.map((s) => (
-  <div
-    key={s.id}
-    onClick={() => {
-      if (s.stock > 0) selectProduct(s, i);
-    }}
-    className={`p-2 cursor-pointer ${
-      s.stock === 0
-        ? "text-gray-400 cursor-not-allowed"
-        : "hover:bg-indigo-100"
-    }`}
-  >
-    {s.product_name}
-    {s.stock === 0 && " (Out of Stock)"}
+  {/* PRODUCT INPUT */}
+  <div className="flex gap-2">
+
+    <input
+      value={r.name}
+      onFocus={() => {
+        const availableProducts = products.filter((p) => p.stock > 0);
+        setSuggestions(availableProducts);
+        setActiveIndex(i);
+      }}
+      onChange={(e) =>
+        handleSearch(e.target.value, i)
+      }
+      className="border p-2 w-full rounded"
+      placeholder="Search product..."
+    />
+
+    {/* 🔥 UNIT INPUT SIDE */}
+    {r.name && (
+      <>
+       <input
+  type="number"
+  value={r.unit_value || 100}
+  onChange={(e) =>
+    updateRow(i, "unit_value", e.target.value)
+  }
+  className="w-16 border rounded text-center"
+/>
+
+<input
+  type="text"
+  value={r.unit}
+  readOnly
+  className="w-12 border bg-gray-100"
+/>
+      </>
+    )}
+
   </div>
-))}
-                  </div>
-                )}
-              </td>
 
-              <td>
-                <input
-                  type="number"
-                  value={r.qty}
-                  onChange={(e) =>
-                    updateRow(i, "qty", Number(e.target.value))
-                  }
-                  className="w-16 border rounded text-center"
-                />
-              </td>
+  {/* DROPDOWN */}
+  {activeIndex === i && suggestions.length > 0 && (
+    <div className="absolute bg-white border w-full z-[9999] max-h-40 overflow-y-auto rounded shadow-lg">
+      {suggestions.map((s) => (
+        <div
+          key={s.id}
+          onClick={() => {
+            if (s.stock > 0) selectProduct(s, i);
+          }}
+          className="p-2 hover:bg-indigo-100 cursor-pointer"
+        >
+          {s.product_name}
+        </div>
+      ))}
+    </div>
+  )}
+
+</td>
+
+             <td>
+  <div className="flex items-center gap-1 justify-center">
+
+    {/* 🔥 UNIT VALUE INPUT */}
+<td>
+  <input
+    type="number"
+    value={r.qty}
+    onChange={(e) =>
+      updateRow(i, "qty", Number(e.target.value))
+    }
+    className="w-16 border rounded text-center"
+  />
+</td>
+
+
+  </div>
+</td>
 
               <td className="text-center font-medium text-green-600">
                 ₹{r.price}
@@ -275,8 +371,7 @@ const handleGenerate = async () => {
               <td className="text-center">{r.gst}%</td>
 
               <td className="text-center font-semibold">
-                ₹{r.price * r.qty}
-              </td>
+₹{(r.price * r.qty).toFixed(2)}           </td>
             </tr>
           ))}
         </tbody>
@@ -315,16 +410,16 @@ const handleGenerate = async () => {
         </select>
 
         <input
-          type="number"
-          placeholder="Received Amount"
-          className="w-full border p-2 rounded mt-2"
-          onChange={(e) =>
-            setPayment({
-              ...payment,
-              received: Number(e.target.value),
-            })
-          }
-        />
+  type="number"
+  value={payment.received}   // ✅ ADD THIS
+  className="w-full border p-2 rounded mt-2"
+  onChange={(e) =>
+    setPayment({
+      ...payment,
+      received: Number(e.target.value),
+    })
+  }
+/>
 
         {/* <div className="flex justify-between mt-2 font-semibold">
           <span>Balance</span>

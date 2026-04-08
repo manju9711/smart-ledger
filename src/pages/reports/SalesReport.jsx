@@ -10,21 +10,30 @@ export default function Reports() {
   const navigate = useNavigate();
 
   // 🔥 Fetch invoices
-  useEffect(() => {
-    const fetchInvoices = async () => {
-      try {
-        const res = await api.post("/invoice/get_all_invoice.php");
+ useEffect(() => {
+  const fetchInvoices = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
 
-        if (res.data.status) {
-          setInvoices(res.data.data);
-        }
-      } catch (err) {
-        console.error(err);
+      if (!user?.company_id) {
+        alert("Company missing");
+        return;
       }
-    };
 
-    fetchInvoices();
-  }, []);
+      const res = await api.post("/invoice/get_all_invoice.php", {
+        company_id: user.company_id, // 🔥 IMPORTANT
+      });
+
+      if (res.data.status) {
+        setInvoices(res.data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchInvoices();
+}, []);
 
   // 📄 Pagination Logic
   const indexOfLast = currentPage * recordsPerPage;
