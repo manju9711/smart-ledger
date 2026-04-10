@@ -110,6 +110,9 @@ export default function Register() {
           <button onClick={() => navigate("/")} className="w-full flex items-center justify-center gap-2 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors pt-2">
             <ArrowLeft size={14} /> Back to Login
           </button>
+
+          
+          
         </div>
       </motion.div>
     </div>

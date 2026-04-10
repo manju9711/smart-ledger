@@ -24,6 +24,8 @@ import EditCashier from "../pages/cashier/EditCashier";
 import CategoryForm from "../pages/category/CategoryForm";
 import CategoryList from "../pages/category/categoryList";
 import EditCategory from "../pages/category/EditCategory";
+import Profile from "../pages/profile/profile";
+import ForgotPassword from "../pages/auth/ForgotPassword";
 
 export default function AppRoutes() {
   return (
@@ -41,7 +43,7 @@ export default function AppRoutes() {
         />
 
         <Route path="/register" element={<Register />} />
-
+<Route path="/forgot-password" element={<ForgotPassword />} />
         {/* 🔐 Protected */}
         <Route
           path="/dashboard"
@@ -72,6 +74,8 @@ export default function AppRoutes() {
           <Route path="/reports" element={<Reports />} />
           <Route path="/cashier/add" element={<CashierForm />} />
           <Route path="/cashier" element={<CashierList />} />
+         <Route path="/profile" element={<Profile />} />
+
           <Route path="/cashier/edit/:id" element={<EditCashier/>} />
             <Route path="/category/add" element={<CategoryForm />} />
           <Route path="/category" element={<CategoryList/>} />

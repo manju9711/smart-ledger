@@ -140,8 +140,9 @@ Amount: ₹${invoice.total_amount}`;
               return (
                 <tr key={i}>
                   <td className="border p-2 text-center">{i + 1}</td>
-                  <td className="border p-2">{p.name}</td>
-                  <td className="border p-2 text-center">{p.qty}</td>
+<td className="border p-2">
+  {p.display_name || `${p.name} (${p.unit_value}${p.unit})`}
+</td>                  <td className="border p-2 text-center">{p.qty}</td>
                   <td className="border p-2 text-right">₹{p.price}</td>
                   <td className="border p-2 text-right">
                     ₹{gstAmount.toFixed(2)} <br />
