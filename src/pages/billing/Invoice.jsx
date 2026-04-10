@@ -20,20 +20,19 @@ export default function InvoicePreview() {
   ];
 
   // 🔥 Fetch Invoice
-  useEffect(() => {
-    api
-      .get(`/invoice/get_invoice_by_id.php?id=${invoiceNo}`)
-      .then((res) => {
-        if (res.data.status) setInvoice(res.data.data);
-      });
-  }, [invoiceNo]);
+useEffect(() => {
+  api
+    .get(`/invoice/get_invoice_by_id.php?id=${invoiceNo}`)
+    .then((res) => {
+      if (res.data.status) {
+        setInvoice(res.data.data);
+        setCompany(res.data.data); // 🔥 SAME RESPONSE
+      }
+    });
+}, [invoiceNo]);
 
   // 🔥 Fetch Company
-  useEffect(() => {
-    api.post("/company/get_companies.php").then((res) => {
-      if (res.data.status) setCompany(res.data.data[0]);
-    });
-  }, []);
+ 
 
   if (!invoice) return <div className="p-6">Loading...</div>;
 
