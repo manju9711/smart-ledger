@@ -131,15 +131,32 @@ export default function ProductForm() {
     category_id: "",
   });
 
-  const company_id = localStorage.getItem("company_id"); // 🔥
+  const getCompanyId = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return Number(user?.company_id);
+};
 
-  // 🔥 FETCH CATEGORY
-  const fetchCategories = async () => {
-    const res = await api.get(`/category/get.php?company_id=${company_id}`);
+ const fetchCategories = async () => {
+  try {
+    const company_id = getCompanyId(); // ✅ FIXED
+
+    if (!company_id) {
+      console.log("Company ID missing");
+      return;
+    }
+
+    const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+
     if (res.data.status) {
       setCategories(res.data.data);
+    } else {
+      console.log(res.data.message);
     }
-  };
+
+  } catch (err) {
+    console.error("Category fetch error:", err);
+  }
+};
 
   useEffect(() => {
     fetchCategories();
@@ -155,7 +172,7 @@ export default function ProductForm() {
       const res = await api.post("/product/add.php", {
         product_name: form.name,
         category_id: form.category_id,
-        company_id: company_id,
+        company_id: getCompanyId(),
         price: form.price,
         stock: form.stock,
         gst_percentage: form.gst,
@@ -185,14 +202,20 @@ export default function ProductForm() {
 
       {/* 🔥 CATEGORY */}
       <select
-        className="w-full p-3 border mb-3"
-        onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-      >
-        <option>Select Category</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>{c.name}</option>
-        ))}
-      </select>
+  className="w-full p-3 border mb-3"
+  value={form.category_id}
+  onChange={(e) =>
+    setForm({ ...form, category_id: e.target.value })
+  }
+>
+  <option value="">Select Category</option>
+
+  {categories.map((c) => (
+    <option key={c.id} value={c.id}>
+      {c.name}
+    </option>
+  ))}
+</select>
 
       <input type="number" placeholder="Price"
         className="w-full p-3 border mb-3"

@@ -7,31 +7,35 @@ export default function CategoryForm() {
 
   const [name, setName] = useState("");
 
-  const company_id = localStorage.getItem("company_id"); // 🔥
+  
+
 
   const handleSubmit = async () => {
-    if (!name) {
-      alert("Enter category name");
-      return;
-    }
+  const user = JSON.parse(localStorage.getItem("user"));
+  const company_id = Number(user?.company_id);
 
-    try {
-      const res = await api.post("/category/create.php", {
-        name,
-        company_id,
-      });
+  if (!name || !company_id) {
+    alert("Name & Company required");
+    return;
+  }
 
-      if (res.data.status) {
-        alert("Category Added ✅");
-        navigate("/categories");
-      } else {
-        alert(res.data.message);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
+  try {
+    const res = await api.post("/category/create.php", {
+      name,
+      company_id,
+    });
+
+    if (res.data.status) {
+      alert("Category Added ✅");
+      navigate("/category");
+    } else {
+      alert(res.data.message);
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
+};
 
   return (
     <div className="max-w-lg bg-white p-6 rounded shadow">
