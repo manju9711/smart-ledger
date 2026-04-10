@@ -35,7 +35,7 @@ export default function EditCategory() {
 
     if (res.data.status) {
       alert("Updated Successfully ✅");
-      navigate("/categories");
+      navigate("/category");
     } else {
       alert(res.data.message);
     }

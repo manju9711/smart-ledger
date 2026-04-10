@@ -135,15 +135,25 @@ export default function EditProduct() {
     category_id: "",
   });
 
-  const company_id = localStorage.getItem("company_id");
+  
 
-  // 🔥 FETCH CATEGORY
-  const fetchCategories = async () => {
-    const res = await api.get(`/category/get.php?company_id=${company_id}`);
+  const getCompanyId = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return Number(user?.company_id);
+};
+const fetchCategories = async () => {
+  try {
+    const company_id = getCompanyId();
+
+    const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+
     if (res.data.status) {
       setCategories(res.data.data);
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   // 🔥 FETCH PRODUCT
   const fetchProduct = async () => {
@@ -176,28 +186,30 @@ export default function EditProduct() {
 
   // 🔥 UPDATE
   const handleUpdate = async () => {
-    try {
-      const res = await api.post("/product/update.php", {
-        id,
-        product_name: form.name,
-        category_id: form.category_id,
-        company_id: company_id,
-        price: form.price,
-        stock: form.stock,
-        gst_percentage: form.gst,
-        barcode: form.barcode,
-      });
+  try {
+    const company_id = getCompanyId(); // ✅ FIXED
 
-      if (res.data.status) {
-        alert("Updated Successfully ✅");
-        navigate("/products");
-      } else {
-        alert(res.data.message);
-      }
-    } catch (err) {
-      console.error(err);
+    const res = await api.post("/product/update.php", {
+      id,
+      product_name: form.name,
+      category_id: form.category_id,
+      company_id: company_id,
+      price: form.price,
+      stock: form.stock,
+      gst_percentage: form.gst,
+      barcode: form.barcode,
+    });
+
+    if (res.data.status) {
+      alert("Updated Successfully ✅");
+      navigate("/products");
+    } else {
+      alert(res.data.message);
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div className="max-w-xl bg-white p-6 rounded shadow">
