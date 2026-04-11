@@ -1,5 +1,118 @@
-//api integration
-// import { useState } from "react";
+// //api integration
+// // import { useState } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import Barcode from "react-barcode";
+// // import api from "../../services/api";
+
+// // export default function ProductForm() {
+// //   const navigate = useNavigate();
+
+// //   const [form, setForm] = useState({
+// //     name: "",
+// //     price: "",
+// //     stock: "",
+// //     gst: "",
+// //     barcode: "",
+// //   });
+
+// //   const generateBarcode = () => {
+// //     const code = "PRD" + Math.floor(100000 + Math.random() * 900000);
+// //     setForm({ ...form, barcode: code });
+// //   };
+
+// //   // 🔥 SAVE PRODUCT
+// //   const handleSubmit = async () => {
+// //     try {
+// //       const res = await api.post("/product/add.php", {
+// //         product_name: form.name,
+// //         price: form.price,
+// //         stock: form.stock,
+// //         gst_percentage: form.gst,
+// //         barcode: form.barcode,
+// //       });
+
+// //       if (res.data.status) {
+// //         alert("Product Added ✅");
+// //         navigate("/products");
+// //       } else {
+// //         alert(res.data.message);
+// //       }
+// //     } catch (err) {
+// //       console.error(err);
+// //       alert("Server error");
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="max-w-xl bg-white p-6 rounded shadow">
+// //       <h2 className="text-xl font-bold mb-4">Add Product</h2>
+
+// //       <input
+// //         placeholder="Product Name"
+// //         className="w-full p-3 border mb-3 rounded"
+// //         onChange={(e) => setForm({ ...form, name: e.target.value })}
+// //       />
+
+// //       <input
+// //         type="number"
+// //         placeholder="Price"
+// //         className="w-full p-3 border mb-3 rounded"
+// //         onChange={(e) => setForm({ ...form, price: e.target.value })}
+// //       />
+
+// //       <input
+// //         type="number"
+// //         placeholder="Stock"
+// //         className="w-full p-3 border mb-3 rounded"
+// //         onChange={(e) => setForm({ ...form, stock: e.target.value })}
+// //       />
+
+// //       <select
+// //         className="w-full p-3 border mb-3 rounded"
+// //         value={form.gst}
+// //         onChange={(e) => setForm({ ...form, gst: e.target.value })}
+// //       >
+// //         <option value="">Select GST %</option>
+// //         <option value="0">0%</option>
+// //         <option value="5">5%</option>
+// //         <option value="12">12%</option>
+// //         <option value="18">18%</option>
+// //         <option value="28">28%</option>
+// //       </select>
+
+// //       <div className="flex gap-2 mb-3">
+// //         <input
+// //           placeholder="Barcode"
+// //           value={form.barcode}
+// //           className="w-full p-3 border rounded"
+// //           onChange={(e) => setForm({ ...form, barcode: e.target.value })}
+// //         />
+
+// //         <button
+// //           onClick={generateBarcode}
+// //           className="bg-indigo-600 text-white px-4 rounded"
+// //         >
+// //           Auto
+// //         </button>
+// //       </div>
+
+// //       {form.barcode && (
+// //         <div className="mb-4 text-center">
+// //           <Barcode value={form.barcode} />
+// //         </div>
+// //       )}
+
+// //       <button
+// //         onClick={handleSubmit}
+// //         className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+// //       >
+// //         Save Product
+// //       </button>
+// //     </div>
+// //   );
+// // }
+
+// import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import Barcode from "react-barcode";
 // import api from "../../services/api";
@@ -7,24 +120,59 @@
 // export default function ProductForm() {
 //   const navigate = useNavigate();
 
+//   const [categories, setCategories] = useState([]);
+
 //   const [form, setForm] = useState({
 //     name: "",
 //     price: "",
 //     stock: "",
 //     gst: "",
 //     barcode: "",
+//     category_id: "",
 //   });
+
+//   const getCompanyId = () => {
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   return Number(user?.company_id);
+// };
+
+//  const fetchCategories = async () => {
+//   try {
+//     const company_id = getCompanyId(); // ✅ FIXED
+
+//     if (!company_id) {
+//       console.log("Company ID missing");
+//       return;
+//     }
+
+//     const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+
+//     if (res.data.status) {
+//       setCategories(res.data.data);
+//     } else {
+//       console.log(res.data.message);
+//     }
+
+//   } catch (err) {
+//     console.error("Category fetch error:", err);
+//   }
+// };
+
+//   useEffect(() => {
+//     fetchCategories();
+//   }, []);
 
 //   const generateBarcode = () => {
 //     const code = "PRD" + Math.floor(100000 + Math.random() * 900000);
 //     setForm({ ...form, barcode: code });
 //   };
 
-//   // 🔥 SAVE PRODUCT
 //   const handleSubmit = async () => {
 //     try {
 //       const res = await api.post("/product/add.php", {
 //         product_name: form.name,
+//         category_id: form.category_id,
+//         company_id: getCompanyId(),
 //         price: form.price,
 //         stock: form.stock,
 //         gst_percentage: form.gst,
@@ -47,65 +195,63 @@
 //     <div className="max-w-xl bg-white p-6 rounded shadow">
 //       <h2 className="text-xl font-bold mb-4">Add Product</h2>
 
-//       <input
-//         placeholder="Product Name"
-//         className="w-full p-3 border mb-3 rounded"
+//       <input placeholder="Product Name"
+//         className="w-full p-3 border mb-3"
 //         onChange={(e) => setForm({ ...form, name: e.target.value })}
 //       />
 
-//       <input
-//         type="number"
-//         placeholder="Price"
-//         className="w-full p-3 border mb-3 rounded"
+//       {/* 🔥 CATEGORY */}
+//       <select
+//   className="w-full p-3 border mb-3"
+//   value={form.category_id}
+//   onChange={(e) =>
+//     setForm({ ...form, category_id: e.target.value })
+//   }
+// >
+//   <option value="">Select Category</option>
+
+//   {categories.map((c) => (
+//     <option key={c.id} value={c.id}>
+//       {c.name}
+//     </option>
+//   ))}
+// </select>
+
+//       <input type="number" placeholder="Price"
+//         className="w-full p-3 border mb-3"
 //         onChange={(e) => setForm({ ...form, price: e.target.value })}
 //       />
 
-//       <input
-//         type="number"
-//         placeholder="Stock"
-//         className="w-full p-3 border mb-3 rounded"
+//       <input type="number" placeholder="Stock"
+//         className="w-full p-3 border mb-3"
 //         onChange={(e) => setForm({ ...form, stock: e.target.value })}
 //       />
 
-//       <select
-//         className="w-full p-3 border mb-3 rounded"
-//         value={form.gst}
+//       <select className="w-full p-3 border mb-3"
 //         onChange={(e) => setForm({ ...form, gst: e.target.value })}
 //       >
-//         <option value="">Select GST %</option>
-//         <option value="0">0%</option>
+//         <option value="">GST %</option>
 //         <option value="5">5%</option>
 //         <option value="12">12%</option>
 //         <option value="18">18%</option>
-//         <option value="28">28%</option>
 //       </select>
 
 //       <div className="flex gap-2 mb-3">
-//         <input
-//           placeholder="Barcode"
-//           value={form.barcode}
-//           className="w-full p-3 border rounded"
+//         <input value={form.barcode}
+//           className="w-full p-3 border"
 //           onChange={(e) => setForm({ ...form, barcode: e.target.value })}
 //         />
 
-//         <button
-//           onClick={generateBarcode}
-//           className="bg-indigo-600 text-white px-4 rounded"
-//         >
+//         <button onClick={generateBarcode}
+//           className="bg-indigo-600 text-white px-4">
 //           Auto
 //         </button>
 //       </div>
 
-//       {form.barcode && (
-//         <div className="mb-4 text-center">
-//           <Barcode value={form.barcode} />
-//         </div>
-//       )}
+//       {form.barcode && <Barcode value={form.barcode} />}
 
-//       <button
-//         onClick={handleSubmit}
-//         className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-//       >
+//       <button onClick={handleSubmit}
+//         className="bg-blue-600 text-white w-full p-3 mt-3">
 //         Save Product
 //       </button>
 //     </div>
@@ -117,57 +263,81 @@ import { useNavigate } from "react-router-dom";
 import Barcode from "react-barcode";
 import api from "../../services/api";
 
+/* ─── Toast Hook ─────────────────────────────────────────── */
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const show = (type, title, msg) => {
+    const id = Date.now();
+    setToasts(p => [...p, { id, type, title, msg }]);
+    setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3600);
+  };
+  const remove = id => setToasts(p => p.filter(t => t.id !== id));
+  return { toasts, show, remove };
+}
+
+function ToastPortal({ toasts, remove }) {
+  return (
+    <div style={{ position:"fixed", top:22, right:22, zIndex:9999, display:"flex", flexDirection:"column", gap:9, pointerEvents:"none" }}>
+      {toasts.map(t => (
+        <div key={t.id} className={`pf-toast pf-toast-${t.type}`}>
+          <div className="pf-toast-icon">{t.type==="success"?"✓":t.type==="error"?"✕":"!"}</div>
+          <div className="pf-toast-body">
+            <p className="pf-toast-title">{t.title}</p>
+            {t.msg && <p className="pf-toast-msg">{t.msg}</p>}
+          </div>
+          <button className="pf-toast-x" style={{pointerEvents:"auto"}} onClick={()=>remove(t.id)}>✕</button>
+          <div className="pf-toast-bar" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Main Component ─────────────────────────────────────── */
 export default function ProductForm() {
   const navigate = useNavigate();
-
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [barcodeKey, setBarcodeKey] = useState(0);
+  const { toasts, show, remove } = useToast();
 
   const [form, setForm] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    gst: "",
-    barcode: "",
-    category_id: "",
+    name: "", price: "", stock: "", gst: "", barcode: "", category_id: "",
   });
 
+  const set = (field, val) => setForm(p => ({ ...p, [field]: val }));
+
   const getCompanyId = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return Number(user?.company_id);
-};
+    const user = JSON.parse(localStorage.getItem("user"));
+    return Number(user?.company_id);
+  };
 
- const fetchCategories = async () => {
-  try {
-    const company_id = getCompanyId(); // ✅ FIXED
-
-    if (!company_id) {
-      console.log("Company ID missing");
-      return;
+  const fetchCategories = async () => {
+    try {
+      const company_id = getCompanyId();
+      if (!company_id) return;
+      const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+      if (res.data.status) setCategories(res.data.data);
+    } catch (err) {
+      console.error("Category fetch error:", err);
     }
+  };
 
-    const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
-
-    if (res.data.status) {
-      setCategories(res.data.data);
-    } else {
-      console.log(res.data.message);
-    }
-
-  } catch (err) {
-    console.error("Category fetch error:", err);
-  }
-};
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  useEffect(() => { fetchCategories(); }, []);
 
   const generateBarcode = () => {
     const code = "PRD" + Math.floor(100000 + Math.random() * 900000);
-    setForm({ ...form, barcode: code });
+    setForm(p => ({ ...p, barcode: code }));
+    setBarcodeKey(k => k + 1);
   };
 
   const handleSubmit = async () => {
+    if (!form.name.trim())        { show("warn", "Missing field", "Product name is required."); return; }
+    if (!form.category_id)        { show("warn", "Missing field", "Please select a category."); return; }
+    if (!form.price)              { show("warn", "Missing field", "Price is required."); return; }
+    if (!form.stock)              { show("warn", "Missing field", "Stock quantity is required."); return; }
+
+    setLoading(true);
     try {
       const res = await api.post("/product/add.php", {
         product_name: form.name,
@@ -178,82 +348,434 @@ export default function ProductForm() {
         gst_percentage: form.gst,
         barcode: form.barcode,
       });
-
       if (res.data.status) {
-        alert("Product Added ✅");
-        navigate("/products");
+        show("success", "Product added!", `"${form.name}" saved successfully.`);
+        setTimeout(() => navigate("/products"), 1800);
       } else {
-        alert(res.data.message);
+        show("error", "Failed", res.data.message || "Something went wrong.");
       }
     } catch (err) {
       console.error(err);
-      alert("Server error");
+      show("error", "Server error", "Unable to reach server. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const gstOptions = [
+    { val: "", label: "No GST / Exempt" },
+    { val: "5",  label: "5%  — Essential goods" },
+    { val: "12", label: "12% — Standard goods" },
+    { val: "18", label: "18% — General goods" },
+    { val: "28", label: "28% — Luxury goods" },
+  ];
+
   return (
-    <div className="max-w-xl bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Add Product</h2>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-      <input placeholder="Product Name"
-        className="w-full p-3 border mb-3"
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-      />
+        .pf-page {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          min-height: 100vh;
+          background: #eef2ff;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 2.5rem 1.5rem;
+          position: relative;
+          overflow-x: hidden;
+        }
 
-      {/* 🔥 CATEGORY */}
-      <select
-  className="w-full p-3 border mb-3"
-  value={form.category_id}
-  onChange={(e) =>
-    setForm({ ...form, category_id: e.target.value })
-  }
->
-  <option value="">Select Category</option>
+        /* bg decoration */
+        .pf-deco {
+          position: fixed;
+          pointer-events: none;
+          border-radius: 50%;
+          filter: blur(70px);
+          opacity: 0.28;
+        }
+        .pf-deco-1 { width:380px;height:380px;background:#3b82f6;top:-120px;right:-100px; }
+        .pf-deco-2 { width:260px;height:260px;background:#818cf8;bottom:-60px;left:-60px; }
 
-  {categories.map((c) => (
-    <option key={c.id} value={c.id}>
-      {c.name}
-    </option>
-  ))}
-</select>
+        /* ── Card ── */
+        .pf-card {
+          position: relative;
+          width: 100%;
+          max-width: 560px;
+          background: #fff;
+          border-radius: 26px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 8px 40px rgba(37,99,235,0.1), 0 2px 8px rgba(0,0,0,0.04);
+          overflow: hidden;
+          animation: pfUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes pfUp {
+          from{opacity:0;transform:translateY(28px) scale(0.97)}
+          to{opacity:1;transform:translateY(0) scale(1)}
+        }
 
-      <input type="number" placeholder="Price"
-        className="w-full p-3 border mb-3"
-        onChange={(e) => setForm({ ...form, price: e.target.value })}
-      />
+        .pf-stripe {
+          height: 4px;
+          background: linear-gradient(90deg,#1d4ed8,#6366f1,#3b82f6,#1d4ed8);
+          background-size: 200%;
+          animation: pfStripe 3s linear infinite;
+        }
+        @keyframes pfStripe{0%{background-position:0%}100%{background-position:200%}}
 
-      <input type="number" placeholder="Stock"
-        className="w-full p-3 border mb-3"
-        onChange={(e) => setForm({ ...form, stock: e.target.value })}
-      />
+        /* ── Header ── */
+        .pf-header {
+          background: linear-gradient(135deg,#1e40af 0%,#2563eb 55%,#3b82f6 100%);
+          padding: 1.75rem 2rem;
+          display: flex; align-items: center; gap: 1rem;
+          position: relative; overflow: hidden;
+        }
+        .pf-header::before {
+          content:''; position:absolute; top:-50px; right:-50px;
+          width:180px;height:180px; border-radius:50%;
+          background:rgba(255,255,255,0.07);
+        }
+        .pf-header-icon {
+          width: 52px; height: 52px;
+          border-radius: 16px;
+          background: rgba(255,255,255,0.18);
+          border: 1.5px solid rgba(255,255,255,0.3);
+          display: flex; align-items:center; justify-content:center;
+          font-size: 22px; flex-shrink:0; position:relative; z-index:1;
+        }
+        .pf-header-text { position:relative; z-index:1; }
+        .pf-header-text h1 {
+          font-size: 20px; font-weight: 800; color:#fff;
+          margin:0 0 3px; letter-spacing:-0.3px;
+        }
+        .pf-header-text p { font-size:12.5px; color:rgba(255,255,255,0.7); margin:0; }
 
-      <select className="w-full p-3 border mb-3"
-        onChange={(e) => setForm({ ...form, gst: e.target.value })}
-      >
-        <option value="">GST %</option>
-        <option value="5">5%</option>
-        <option value="12">12%</option>
-        <option value="18">18%</option>
-      </select>
+        /* ── Body ── */
+        .pf-body { padding: 2rem; }
 
-      <div className="flex gap-2 mb-3">
-        <input value={form.barcode}
-          className="w-full p-3 border"
-          onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-        />
+        /* Section label */
+        .pf-section {
+          font-size: 10.5px; font-weight: 800;
+          text-transform: uppercase; letter-spacing: 0.1em;
+          color: #3b82f6;
+          margin: 0 0 12px;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .pf-section::after {
+          content:''; flex:1; height:1px; background:#e8f0fe;
+        }
 
-        <button onClick={generateBarcode}
-          className="bg-indigo-600 text-white px-4">
-          Auto
-        </button>
+        .pf-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+        .pf-field { margin-bottom:12px; }
+
+        /* Label */
+        .pf-label {
+          display:block; font-size:11px; font-weight:700;
+          text-transform:uppercase; letter-spacing:0.07em;
+          color:#94a3b8; margin-bottom:6px;
+        }
+
+        /* Input & Select base */
+        .pf-input, .pf-select {
+          width:100%; padding:12px 14px 12px 42px;
+          border-radius:12px; border:1.5px solid #e2e8f0;
+          background:#f8faff;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:14px; font-weight:500; color:#1e293b;
+          outline:none; box-sizing:border-box;
+          transition: all 0.22s; appearance:none;
+        }
+        .pf-input::placeholder { color:#c4cdd6; font-weight:400; }
+        .pf-input:hover,.pf-select:hover { border-color:#bfdbfe; background:#f0f6ff; }
+        .pf-input:focus,.pf-select:focus {
+          border-color:#3b82f6; background:#fff;
+          box-shadow:0 0 0 4px rgba(59,130,246,0.1);
+        }
+        .pf-input-wrap { position:relative; }
+        .pf-input-icon {
+          position:absolute; left:13px; top:50%;
+          transform:translateY(-50%);
+          font-size:15px; pointer-events:none;
+          transition: transform 0.2s;
+        }
+        .pf-input-wrap:focus-within .pf-input-icon { transform:translateY(-50%) scale(1.15); }
+
+        /* Select arrow */
+        .pf-select-wrap { position:relative; }
+        .pf-select-arrow {
+          position:absolute; right:14px; top:50%;
+          transform:translateY(-50%);
+          pointer-events:none; font-size:11px; color:#94a3b8;
+        }
+        .pf-select { padding-right:36px; }
+
+        /* Price prefix */
+        .pf-prefix {
+          position:absolute; left:0; top:0; bottom:0;
+          width:42px; display:flex; align-items:center; justify-content:center;
+          border-right:1.5px solid #e2e8f0; border-radius:12px 0 0 12px;
+          background:#f1f5f9; font-size:13px; font-weight:700;
+          color:#64748b; pointer-events:none;
+          transition: all 0.22s;
+        }
+        .pf-input-wrap:focus-within .pf-prefix { border-right-color:#bfdbfe; background:#eff6ff; color:#3b82f6; }
+
+        /* GST badges */
+        .pf-gst-grid {
+          display:flex; flex-wrap:wrap; gap:8px; margin-bottom:4px;
+        }
+        .pf-gst-pill {
+          padding:7px 14px; border-radius:100px;
+          border:1.5px solid #e2e8f0; background:#f8faff;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:12.5px; font-weight:700; color:#64748b;
+          cursor:pointer; transition:all 0.18s;
+        }
+        .pf-gst-pill:hover { border-color:#3b82f6; color:#2563eb; background:#eff6ff; }
+        .pf-gst-pill.active {
+          border-color:#2563eb; background:#2563eb; color:#fff;
+          box-shadow:0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        /* Divider */
+        .pf-divider { height:1px; background:#f1f5f9; margin:1.5rem 0; }
+
+        /* Barcode section */
+        .pf-barcode-row { display:flex; gap:10px; margin-bottom:14px; align-items:flex-end; }
+        .pf-barcode-input-wrap { flex:1; }
+        .pf-gen-btn {
+          padding:12px 18px; border-radius:12px; border:none;
+          cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:12.5px; font-weight:700; white-space:nowrap;
+          background:linear-gradient(135deg,#6366f1,#818cf8);
+          color:#fff;
+          box-shadow:0 4px 14px rgba(99,102,241,0.35);
+          transition:all 0.2s;
+        }
+        .pf-gen-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(99,102,241,0.45); }
+
+        .pf-barcode-preview {
+          background:#f8faff; border-radius:14px;
+          border:1.5px solid #e2e8f0;
+          padding:16px; text-align:center;
+          animation:pfBarIn 0.3s ease both;
+        }
+        @keyframes pfBarIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+        .pf-barcode-label {
+          font-size:10.5px; font-weight:700;
+          text-transform:uppercase; letter-spacing:0.08em;
+          color:#94a3b8; margin-bottom:8px;
+        }
+
+        /* Submit */
+        .pf-submit {
+          width:100%; padding:15px;
+          border-radius:14px; border:none; cursor:pointer;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:15px; font-weight:800;
+          background:linear-gradient(135deg,#1e40af 0%,#2563eb 55%,#3b82f6 100%);
+          color:#fff;
+          box-shadow:0 4px 18px rgba(37,99,235,0.38);
+          position:relative; overflow:hidden;
+          display:flex; align-items:center; justify-content:center; gap:8px;
+          transition:all 0.25s;
+        }
+        .pf-submit::after {
+          content:''; position:absolute; inset:0;
+          background:linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 60%);
+          pointer-events:none;
+        }
+        .pf-submit:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 28px rgba(37,99,235,0.45); }
+        .pf-submit:active:not(:disabled) { transform:translateY(0); }
+        .pf-submit:disabled { opacity:0.6; cursor:not-allowed; }
+
+        .pf-cancel {
+          width:100%; margin-top:10px; padding:12px;
+          border-radius:12px; border:1.5px solid #e2e8f0;
+          background:transparent;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:13.5px; font-weight:600; color:#94a3b8;
+          cursor:pointer; transition:all 0.2s;
+        }
+        .pf-cancel:hover { background:#f8fafc; color:#475569; border-color:#cbd5e1; }
+
+        .pf-spinner {
+          width:17px;height:17px;
+          border:2.5px solid rgba(255,255,255,0.3);
+          border-top-color:#fff; border-radius:50%;
+          animation:spin 0.7s linear infinite; flex-shrink:0;
+        }
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ── Toast ── */
+        .pf-toast {
+          pointer-events:auto;
+          display:flex; align-items:center; gap:11px;
+          min-width:280px; max-width:360px;
+          padding:12px 15px; border-radius:15px;
+          position:relative; overflow:hidden;
+          box-shadow:0 8px 28px rgba(0,0,0,0.12);
+          animation:pfToastIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+          font-family:'Plus Jakarta Sans',sans-serif;
+        }
+        @keyframes pfToastIn{from{opacity:0;transform:translateX(60px) scale(0.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+        .pf-toast-success{background:#f0fdf4;border:1px solid #bbf7d0;}
+        .pf-toast-error  {background:#fff1f2;border:1px solid #fecdd3;}
+        .pf-toast-warn   {background:#fffbeb;border:1px solid #fde68a;}
+        .pf-toast-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+        .pf-toast-success .pf-toast-icon{background:#dcfce7;color:#16a34a;}
+        .pf-toast-error   .pf-toast-icon{background:#ffe4e6;color:#e11d48;}
+        .pf-toast-warn    .pf-toast-icon{background:#fef9c3;color:#b45309;}
+        .pf-toast-body{flex:1;}
+        .pf-toast-title{font-size:13px;font-weight:700;margin:0 0 2px;}
+        .pf-toast-success .pf-toast-title{color:#15803d;}
+        .pf-toast-error   .pf-toast-title{color:#be123c;}
+        .pf-toast-warn    .pf-toast-title{color:#92400e;}
+        .pf-toast-msg{font-size:12px;margin:0;}
+        .pf-toast-success .pf-toast-msg{color:#16a34a;}
+        .pf-toast-error   .pf-toast-msg{color:#e11d48;}
+        .pf-toast-warn    .pf-toast-msg{color:#b45309;}
+        .pf-toast-x{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.4;transition:opacity 0.2s;flex-shrink:0;padding:2px;}
+        .pf-toast-x:hover{opacity:0.9;}
+        .pf-toast-bar{position:absolute;bottom:0;left:0;height:3px;animation:pfShrink 3.6s linear forwards;}
+        .pf-toast-success .pf-toast-bar{background:#4ade80;}
+        .pf-toast-error   .pf-toast-bar{background:#fb7185;}
+        .pf-toast-warn    .pf-toast-bar{background:#fbbf24;}
+        @keyframes pfShrink{from{width:100%}to{width:0%}}
+      `}</style>
+
+      <ToastPortal toasts={toasts} remove={remove} />
+
+      <div className="pf-page">
+        <div className="pf-deco pf-deco-1" />
+        <div className="pf-deco pf-deco-2" />
+
+        <div className="pf-card">
+          <div className="pf-stripe" />
+
+          {/* Header */}
+          <div className="pf-header">
+            <div className="pf-header-icon">📦</div>
+            <div className="pf-header-text">
+              <h1>Add Product</h1>
+              <p>Fill in the details to create a new product</p>
+            </div>
+          </div>
+
+          <div className="pf-body">
+
+            {/* ── Section: Basic Info ── */}
+            <p className="pf-section">Basic Info</p>
+
+            <div className="pf-field">
+              <label className="pf-label">Product Name</label>
+              <div className="pf-input-wrap">
+                <span className="pf-input-icon">🏷️</span>
+                <input className="pf-input" placeholder="e.g. Bisleri Water 1L"
+                  value={form.name}
+                  onChange={e => set("name", e.target.value)} />
+              </div>
+            </div>
+
+            <div className="pf-field">
+              <label className="pf-label">Category</label>
+              <div className="pf-select-wrap pf-input-wrap">
+                <span className="pf-input-icon">🗂️</span>
+                <select className="pf-select"
+                  value={form.category_id}
+                  onChange={e => set("category_id", e.target.value)}>
+                  <option value="">Select a category…</option>
+                  {categories.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+                <span className="pf-select-arrow">▾</span>
+              </div>
+            </div>
+
+            {/* ── Section: Pricing & Stock ── */}
+            <p className="pf-section" style={{marginTop:"1.25rem"}}>Pricing & Stock</p>
+
+            <div className="pf-grid-2">
+              <div>
+                <label className="pf-label">Price (₹)</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-prefix">₹</span>
+                  <input type="number" className="pf-input" placeholder="0.00"
+                    value={form.price}
+                    onChange={e => set("price", e.target.value)} />
+                </div>
+              </div>
+              <div>
+                <label className="pf-label">Stock Qty</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">📦</span>
+                  <input type="number" className="pf-input" placeholder="0"
+                    value={form.stock}
+                    onChange={e => set("stock", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-field">
+              <label className="pf-label">GST Rate</label>
+              <div className="pf-gst-grid">
+                {[
+                  { val:"",  label:"Exempt" },
+                  { val:"5", label:"5%" },
+                  { val:"12",label:"12%" },
+                  { val:"18",label:"18%" },
+                  { val:"28",label:"28%" },
+                ].map(g => (
+                  <button key={g.val}
+                    className={`pf-gst-pill${form.gst === g.val ? " active" : ""}`}
+                    onClick={() => set("gst", g.val)}>
+                    {g.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Section: Barcode ── */}
+            <div className="pf-divider" />
+            <p className="pf-section">Barcode</p>
+
+            <div className="pf-barcode-row">
+              <div className="pf-barcode-input-wrap">
+                <label className="pf-label">Barcode Number</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">｜｜</span>
+                  <input className="pf-input" placeholder="Enter or auto-generate"
+                    value={form.barcode}
+                    onChange={e => set("barcode", e.target.value)} />
+                </div>
+              </div>
+              <button className="pf-gen-btn" onClick={generateBarcode}>⚡ Auto</button>
+            </div>
+
+            {form.barcode && (
+              <div className="pf-barcode-preview" key={barcodeKey}>
+                <p className="pf-barcode-label">Barcode Preview</p>
+                <Barcode value={form.barcode} height={55} fontSize={13} margin={0} />
+              </div>
+            )}
+
+            <div className="pf-divider" />
+
+            {/* Submit */}
+            <button className="pf-submit" onClick={handleSubmit} disabled={loading}>
+              {loading
+                ? <><div className="pf-spinner" /> Saving product…</>
+                : <>💾 Save Product</>
+              }
+            </button>
+            <button className="pf-cancel" onClick={() => navigate("/products")}>
+              Cancel
+            </button>
+
+          </div>
+        </div>
       </div>
-
-      {form.barcode && <Barcode value={form.barcode} />}
-
-      <button onClick={handleSubmit}
-        className="bg-blue-600 text-white w-full p-3 mt-3">
-        Save Product
-      </button>
-    </div>
+    </>
   );
 }

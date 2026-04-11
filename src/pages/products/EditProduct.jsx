@@ -1,3 +1,120 @@
+// // import { useEffect, useState } from "react";
+// // import { useNavigate, useParams } from "react-router-dom";
+// // import api from "../../services/api";
+// // import Barcode from "react-barcode";
+
+// // export default function EditProduct() {
+// //   const { id } = useParams();
+// //   const navigate = useNavigate();
+
+// //   const [form, setForm] = useState({
+// //     name: "",
+// //     price: "",
+// //     stock: "",
+// //     gst: "",
+// //     barcode: "",
+// //   });
+
+// //   // 🔥 fetch single product
+// //   const fetchProduct = async () => {
+// //     try {
+// //       const res = await api.post("/product/get_by_id.php", { id });
+
+// //       if (res.data.status) {
+// //         const p = res.data.data;
+
+// //         setForm({
+// //           name: p.product_name,
+// //           price: p.price,
+// //           stock: p.stock,
+// //           gst: p.gst_percentage,
+// //           barcode: p.barcode || "",
+// //         });
+// //       } else {
+// //         alert("Product not found");
+// //       }
+
+// //     } catch (err) {
+// //       console.error(err);
+// //     }
+// //   };
+
+// //   useEffect(() => {
+// //     fetchProduct();
+// //   }, [id]);
+
+// //   // 🔥 update
+// //   const handleUpdate = async () => {
+// //     try {
+// //       const res = await api.post("/product/update.php", {
+// //         id,
+// //         product_name: form.name,
+// //         price: form.price,
+// //         stock: form.stock,
+// //         gst_percentage: form.gst,
+// //         barcode: form.barcode,
+// //       });
+
+// //       if (res.data.status) {
+// //         alert("Updated Successfully ✅");
+// //         navigate("/products");
+// //       } else {
+// //         alert(res.data.message);
+// //       }
+
+// //     } catch (err) {
+// //       console.error(err);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="max-w-xl bg-white p-6 rounded shadow">
+// //       <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+
+// //       <input value={form.name}
+// //         onChange={(e) => setForm({ ...form, name: e.target.value })}
+// //         className="w-full p-3 border mb-3" />
+
+// //       <input value={form.price}
+// //         onChange={(e) => setForm({ ...form, price: e.target.value })}
+// //         className="w-full p-3 border mb-3" />
+
+// //       <input value={form.stock}
+// //         onChange={(e) => setForm({ ...form, stock: e.target.value })}
+// //         className="w-full p-3 border mb-3" />
+
+// //       <select value={form.gst}
+// //         onChange={(e) => setForm({ ...form, gst: e.target.value })}
+// //         className="w-full p-3 border mb-3"
+// //       >
+// //         <option value="">Select GST %</option>
+// //         <option value="0">0%</option>
+// //         <option value="5">5%</option>
+// //         <option value="12">12%</option>
+// //         <option value="18">18%</option>
+// //         <option value="28">28%</option>
+// //       </select>
+
+// //       <input value={form.barcode}
+// //         onChange={(e) => setForm({ ...form, barcode: e.target.value })}
+// //         className="w-full p-3 border mb-3" />
+
+// //       {form.barcode && (
+// //         <div className="text-center mb-3">
+// //           <Barcode value={form.barcode} />
+// //         </div>
+// //       )}
+
+// //       <button
+// //         onClick={handleUpdate}
+// //         className="bg-blue-600 text-white p-3 w-full rounded"
+// //       >
+// //         Update Product
+// //       </button>
+// //     </div>
+// //   );
+// // }
+
 // import { useEffect, useState } from "react";
 // import { useNavigate, useParams } from "react-router-dom";
 // import api from "../../services/api";
@@ -7,18 +124,41 @@
 //   const { id } = useParams();
 //   const navigate = useNavigate();
 
+//   const [categories, setCategories] = useState([]);
+
 //   const [form, setForm] = useState({
 //     name: "",
 //     price: "",
 //     stock: "",
 //     gst: "",
 //     barcode: "",
+//     category_id: "",
 //   });
 
-//   // 🔥 fetch single product
+  
+
+//   const getCompanyId = () => {
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   return Number(user?.company_id);
+// };
+// const fetchCategories = async () => {
+//   try {
+//     const company_id = getCompanyId();
+
+//     const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+
+//     if (res.data.status) {
+//       setCategories(res.data.data);
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+//   // 🔥 FETCH PRODUCT
 //   const fetchProduct = async () => {
 //     try {
-//       const res = await api.post("/product/get_by_id.php", { id });
+//       const res = await api.get(`/product/get_by_id.php?id=${id}`);
 
 //       if (res.data.status) {
 //         const p = res.data.data;
@@ -29,75 +169,104 @@
 //           stock: p.stock,
 //           gst: p.gst_percentage,
 //           barcode: p.barcode || "",
+//           category_id: p.category_id,
 //         });
 //       } else {
 //         alert("Product not found");
 //       }
-
 //     } catch (err) {
 //       console.error(err);
 //     }
 //   };
 
 //   useEffect(() => {
+//     fetchCategories();
 //     fetchProduct();
 //   }, [id]);
 
-//   // 🔥 update
+//   // 🔥 UPDATE
 //   const handleUpdate = async () => {
-//     try {
-//       const res = await api.post("/product/update.php", {
-//         id,
-//         product_name: form.name,
-//         price: form.price,
-//         stock: form.stock,
-//         gst_percentage: form.gst,
-//         barcode: form.barcode,
-//       });
+//   try {
+//     const company_id = getCompanyId(); // ✅ FIXED
 
-//       if (res.data.status) {
-//         alert("Updated Successfully ✅");
-//         navigate("/products");
-//       } else {
-//         alert(res.data.message);
-//       }
+//     const res = await api.post("/product/update.php", {
+//       id,
+//       product_name: form.name,
+//       category_id: form.category_id,
+//       company_id: company_id,
+//       price: form.price,
+//       stock: form.stock,
+//       gst_percentage: form.gst,
+//       barcode: form.barcode,
+//     });
 
-//     } catch (err) {
-//       console.error(err);
+//     if (res.data.status) {
+//       alert("Updated Successfully ✅");
+//       navigate("/products");
+//     } else {
+//       alert(res.data.message);
 //     }
-//   };
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 //   return (
 //     <div className="max-w-xl bg-white p-6 rounded shadow">
 //       <h2 className="text-xl font-bold mb-4">Edit Product</h2>
 
-//       <input value={form.name}
+//       <input
+//         value={form.name}
 //         onChange={(e) => setForm({ ...form, name: e.target.value })}
-//         className="w-full p-3 border mb-3" />
+//         className="w-full p-3 border mb-3"
+//         placeholder="Product Name"
+//       />
 
-//       <input value={form.price}
+//       {/* 🔥 CATEGORY */}
+//       <select
+//         value={form.category_id}
+//         onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+//         className="w-full p-3 border mb-3"
+//       >
+//         <option>Select Category</option>
+//         {categories.map((c) => (
+//           <option key={c.id} value={c.id}>
+//             {c.name}
+//           </option>
+//         ))}
+//       </select>
+
+//       <input
+//         value={form.price}
 //         onChange={(e) => setForm({ ...form, price: e.target.value })}
-//         className="w-full p-3 border mb-3" />
+//         className="w-full p-3 border mb-3"
+//         placeholder="Price"
+//       />
 
-//       <input value={form.stock}
+//       <input
+//         value={form.stock}
 //         onChange={(e) => setForm({ ...form, stock: e.target.value })}
-//         className="w-full p-3 border mb-3" />
+//         className="w-full p-3 border mb-3"
+//         placeholder="Stock"
+//       />
 
-//       <select value={form.gst}
+//       <select
+//         value={form.gst}
 //         onChange={(e) => setForm({ ...form, gst: e.target.value })}
 //         className="w-full p-3 border mb-3"
 //       >
-//         <option value="">Select GST %</option>
-//         <option value="0">0%</option>
+//         <option value="">GST %</option>
 //         <option value="5">5%</option>
 //         <option value="12">12%</option>
 //         <option value="18">18%</option>
-//         <option value="28">28%</option>
 //       </select>
 
-//       <input value={form.barcode}
+//       <input
+//         value={form.barcode}
 //         onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-//         className="w-full p-3 border mb-3" />
+//         className="w-full p-3 border mb-3"
+//         placeholder="Barcode"
+//       />
 
 //       {form.barcode && (
 //         <div className="text-center mb-3">
@@ -107,7 +276,7 @@
 
 //       <button
 //         onClick={handleUpdate}
-//         className="bg-blue-600 text-white p-3 w-full rounded"
+//         className="bg-blue-600 text-white p-3 w-full"
 //       >
 //         Update Product
 //       </button>
@@ -115,54 +284,77 @@
 //   );
 // }
 
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
 import Barcode from "react-barcode";
 
+/* ─── Toast Hook ─────────────────────────────────────────── */
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const show = (type, title, msg) => {
+    const id = Date.now();
+    setToasts(p => [...p, { id, type, title, msg }]);
+    setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3600);
+  };
+  const remove = id => setToasts(p => p.filter(t => t.id !== id));
+  return { toasts, show, remove };
+}
+
+function ToastPortal({ toasts, remove }) {
+  return (
+    <div style={{ position:"fixed", top:22, right:22, zIndex:9999, display:"flex", flexDirection:"column", gap:9, pointerEvents:"none" }}>
+      {toasts.map(t => (
+        <div key={t.id} className={`ep-toast ep-toast-${t.type}`}>
+          <div className="ep-toast-icon">{t.type==="success"?"✓":t.type==="error"?"✕":"!"}</div>
+          <div className="ep-toast-body">
+            <p className="ep-toast-title">{t.title}</p>
+            {t.msg && <p className="ep-toast-msg">{t.msg}</p>}
+          </div>
+          <button className="ep-toast-x" style={{pointerEvents:"auto"}} onClick={()=>remove(t.id)}>✕</button>
+          <div className="ep-toast-bar" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Main Component ─────────────────────────────────────── */
 export default function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [barcodeKey, setBarcodeKey] = useState(0);
+  const { toasts, show, remove } = useToast();
 
   const [form, setForm] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    gst: "",
-    barcode: "",
-    category_id: "",
+    name: "", price: "", stock: "", gst: "", barcode: "", category_id: "",
   });
 
-  
+  const set = (field, val) => setForm(p => ({ ...p, [field]: val }));
 
   const getCompanyId = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return Number(user?.company_id);
-};
-const fetchCategories = async () => {
-  try {
-    const company_id = getCompanyId();
+    const user = JSON.parse(localStorage.getItem("user"));
+    return Number(user?.company_id);
+  };
 
-    const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+  const fetchCategories = async () => {
+    try {
+      const company_id = getCompanyId();
+      const res = await api.get(`/category/get_all.php?company_id=${company_id}`);
+      if (res.data.status) setCategories(res.data.data);
+    } catch (err) { console.error(err); }
+  };
 
-    if (res.data.status) {
-      setCategories(res.data.data);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-  // 🔥 FETCH PRODUCT
   const fetchProduct = async () => {
+    setFetching(true);
     try {
       const res = await api.get(`/product/get_by_id.php?id=${id}`);
-
       if (res.data.status) {
         const p = res.data.data;
-
         setForm({
           name: p.product_name,
           price: p.price,
@@ -172,10 +364,13 @@ const fetchCategories = async () => {
           category_id: p.category_id,
         });
       } else {
-        alert("Product not found");
+        show("error", "Not found", "Product could not be loaded.");
       }
     } catch (err) {
       console.error(err);
+      show("error", "Server error", "Failed to fetch product details.");
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -184,102 +379,461 @@ const fetchCategories = async () => {
     fetchProduct();
   }, [id]);
 
-  // 🔥 UPDATE
+  const generateBarcode = () => {
+    const code = "PRD" + Math.floor(100000 + Math.random() * 900000);
+    setForm(p => ({ ...p, barcode: code }));
+    setBarcodeKey(k => k + 1);
+  };
+
   const handleUpdate = async () => {
-  try {
-    const company_id = getCompanyId(); // ✅ FIXED
+    if (!form.name.trim())  { show("warn", "Missing field", "Product name is required."); return; }
+    if (!form.category_id)  { show("warn", "Missing field", "Please select a category."); return; }
+    if (!form.price)        { show("warn", "Missing field", "Price is required."); return; }
+    if (!form.stock)        { show("warn", "Missing field", "Stock quantity is required."); return; }
 
-    const res = await api.post("/product/update.php", {
-      id,
-      product_name: form.name,
-      category_id: form.category_id,
-      company_id: company_id,
-      price: form.price,
-      stock: form.stock,
-      gst_percentage: form.gst,
-      barcode: form.barcode,
-    });
-
-    if (res.data.status) {
-      alert("Updated Successfully ✅");
-      navigate("/products");
-    } else {
-      alert(res.data.message);
+    setLoading(true);
+    try {
+      const res = await api.post("/product/update.php", {
+        id,
+        product_name: form.name,
+        category_id: form.category_id,
+        company_id: getCompanyId(),
+        price: form.price,
+        stock: form.stock,
+        gst_percentage: form.gst,
+        barcode: form.barcode,
+      });
+      if (res.data.status) {
+        show("success", "Product updated!", `"${form.name}" saved successfully.`);
+        setTimeout(() => navigate("/products"), 1800);
+      } else {
+        show("error", "Update failed", res.data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+      show("error", "Server error", "Unable to reach server. Try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
   return (
-    <div className="max-w-xl bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-      <input
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        className="w-full p-3 border mb-3"
-        placeholder="Product Name"
-      />
+        .ep-page {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          min-height: 100vh;
+          background: #eef2ff;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 2.5rem 1.5rem;
+          position: relative;
+          overflow-x: hidden;
+        }
+        .ep-deco {
+          position: fixed;
+          pointer-events: none;
+          border-radius: 50%;
+          filter: blur(70px);
+          opacity: 0.25;
+        }
+        .ep-deco-1 { width:380px;height:380px;background:#3b82f6;top:-120px;right:-100px; }
+        .ep-deco-2 { width:260px;height:260px;background:#6366f1;bottom:-60px;left:-60px; }
 
-      {/* 🔥 CATEGORY */}
-      <select
-        value={form.category_id}
-        onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-        className="w-full p-3 border mb-3"
-      >
-        <option>Select Category</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.name}
-          </option>
-        ))}
-      </select>
+        /* ── Card ── */
+        .ep-card {
+          position: relative;
+          width: 100%;
+          max-width: 560px;
+          background: #fff;
+          border-radius: 26px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 8px 40px rgba(37,99,235,0.1), 0 2px 8px rgba(0,0,0,0.04);
+          overflow: hidden;
+          animation: epUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes epUp {
+          from{opacity:0;transform:translateY(28px) scale(0.97)}
+          to{opacity:1;transform:translateY(0) scale(1)}
+        }
+        .ep-stripe {
+          height: 4px;
+          background: linear-gradient(90deg,#1d4ed8,#6366f1,#3b82f6,#1d4ed8);
+          background-size: 200%;
+          animation: epStripe 3s linear infinite;
+        }
+        @keyframes epStripe{0%{background-position:0%}100%{background-position:200%}}
 
-      <input
-        value={form.price}
-        onChange={(e) => setForm({ ...form, price: e.target.value })}
-        className="w-full p-3 border mb-3"
-        placeholder="Price"
-      />
+        /* ── Header ── */
+        .ep-header {
+          background: linear-gradient(135deg,#1e40af 0%,#2563eb 55%,#3b82f6 100%);
+          padding: 1.75rem 2rem;
+          display: flex; align-items: center; gap: 1rem;
+          position: relative; overflow: hidden;
+        }
+        .ep-header::before {
+          content:''; position:absolute; top:-50px; right:-50px;
+          width:180px; height:180px; border-radius:50%;
+          background:rgba(255,255,255,0.07);
+        }
+        .ep-header::after {
+          content:''; position:absolute; bottom:-30px; left:25%;
+          width:220px; height:80px; border-radius:50%;
+          background:rgba(255,255,255,0.05);
+        }
+        .ep-header-icon {
+          width:52px; height:52px; border-radius:16px;
+          background:rgba(255,255,255,0.18);
+          border:1.5px solid rgba(255,255,255,0.3);
+          display:flex; align-items:center; justify-content:center;
+          font-size:22px; flex-shrink:0; position:relative; z-index:1;
+        }
+        .ep-header-text { position:relative; z-index:1; }
+        .ep-header-text h1 { font-size:20px; font-weight:800; color:#fff; margin:0 0 3px; letter-spacing:-0.3px; }
+        .ep-header-text p  { font-size:12.5px; color:rgba(255,255,255,0.7); margin:0; }
 
-      <input
-        value={form.stock}
-        onChange={(e) => setForm({ ...form, stock: e.target.value })}
-        className="w-full p-3 border mb-3"
-        placeholder="Stock"
-      />
+        .ep-id-chip {
+          position: relative; z-index:1;
+          margin-top: 1rem;
+          display: inline-flex; align-items:center; gap:5px;
+          background:rgba(255,255,255,0.15);
+          border:1px solid rgba(255,255,255,0.25);
+          border-radius:100px; padding:4px 12px 4px 8px;
+          font-size:11.5px; font-weight:600; color:rgba(255,255,255,0.9);
+        }
+        .ep-id-dot { width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80; }
 
-      <select
-        value={form.gst}
-        onChange={(e) => setForm({ ...form, gst: e.target.value })}
-        className="w-full p-3 border mb-3"
-      >
-        <option value="">GST %</option>
-        <option value="5">5%</option>
-        <option value="12">12%</option>
-        <option value="18">18%</option>
-      </select>
+        /* ── Body ── */
+        .ep-body { padding: 2rem; }
 
-      <input
-        value={form.barcode}
-        onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-        className="w-full p-3 border mb-3"
-        placeholder="Barcode"
-      />
+        .ep-section {
+          font-size:10.5px; font-weight:800;
+          text-transform:uppercase; letter-spacing:0.1em;
+          color:#3b82f6; margin:0 0 12px;
+          display:flex; align-items:center; gap:8px;
+        }
+        .ep-section::after { content:''; flex:1; height:1px; background:#e8f0fe; }
 
-      {form.barcode && (
-        <div className="text-center mb-3">
-          <Barcode value={form.barcode} />
+        .ep-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+        .ep-field  { margin-bottom:12px; }
+
+        .ep-label {
+          display:block; font-size:11px; font-weight:700;
+          text-transform:uppercase; letter-spacing:0.07em;
+          color:#94a3b8; margin-bottom:6px;
+        }
+
+        /* Skeleton shimmer */
+        .ep-skel {
+          height:46px; border-radius:12px;
+          background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);
+          background-size:200% 100%;
+          animation:epSkel 1.4s ease infinite;
+        }
+        @keyframes epSkel{0%{background-position:200%}100%{background-position:-200%}}
+        .ep-skel-sm { height:46px; }
+
+        .ep-input, .ep-select {
+          width:100%; padding:12px 14px 12px 42px;
+          border-radius:12px; border:1.5px solid #e2e8f0;
+          background:#f8faff;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:14px; font-weight:500; color:#1e293b;
+          outline:none; box-sizing:border-box;
+          transition:all 0.22s; appearance:none;
+        }
+        .ep-input::placeholder { color:#c4cdd6; font-weight:400; }
+        .ep-input:hover,.ep-select:hover { border-color:#bfdbfe; background:#f0f6ff; }
+        .ep-input:focus,.ep-select:focus {
+          border-color:#3b82f6; background:#fff;
+          box-shadow:0 0 0 4px rgba(59,130,246,0.1);
+        }
+        .ep-input-wrap  { position:relative; }
+        .ep-input-icon  {
+          position:absolute; left:13px; top:50%;
+          transform:translateY(-50%); font-size:15px;
+          pointer-events:none; transition:transform 0.2s;
+        }
+        .ep-input-wrap:focus-within .ep-input-icon { transform:translateY(-50%) scale(1.15); }
+
+        .ep-select-wrap { position:relative; }
+        .ep-select-arrow {
+          position:absolute; right:14px; top:50%;
+          transform:translateY(-50%);
+          pointer-events:none; font-size:11px; color:#94a3b8;
+        }
+        .ep-select { padding-right:36px; }
+
+        .ep-prefix {
+          position:absolute; left:0; top:0; bottom:0;
+          width:42px; display:flex; align-items:center; justify-content:center;
+          border-right:1.5px solid #e2e8f0; border-radius:12px 0 0 12px;
+          background:#f1f5f9; font-size:13px; font-weight:700;
+          color:#64748b; pointer-events:none; transition:all 0.22s;
+        }
+        .ep-input-wrap:focus-within .ep-prefix { border-right-color:#bfdbfe; background:#eff6ff; color:#3b82f6; }
+
+        /* GST pills */
+        .ep-gst-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:4px; }
+        .ep-gst-pill {
+          padding:7px 14px; border-radius:100px;
+          border:1.5px solid #e2e8f0; background:#f8faff;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:12.5px; font-weight:700; color:#64748b;
+          cursor:pointer; transition:all 0.18s;
+        }
+        .ep-gst-pill:hover { border-color:#3b82f6; color:#2563eb; background:#eff6ff; }
+        .ep-gst-pill.active {
+          border-color:#2563eb; background:#2563eb; color:#fff;
+          box-shadow:0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        .ep-divider { height:1px; background:#f1f5f9; margin:1.5rem 0; }
+
+        /* Barcode */
+        .ep-barcode-row { display:flex; gap:10px; margin-bottom:14px; align-items:flex-end; }
+        .ep-barcode-iw  { flex:1; }
+        .ep-gen-btn {
+          padding:12px 18px; border-radius:12px; border:none;
+          cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:12.5px; font-weight:700; white-space:nowrap;
+          background:linear-gradient(135deg,#6366f1,#818cf8);
+          color:#fff; box-shadow:0 4px 14px rgba(99,102,241,0.35);
+          transition:all 0.2s;
+        }
+        .ep-gen-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(99,102,241,0.45); }
+
+        .ep-barcode-preview {
+          background:#f8faff; border-radius:14px;
+          border:1.5px solid #e2e8f0;
+          padding:16px; text-align:center;
+          animation:epBarIn 0.3s ease both;
+        }
+        @keyframes epBarIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+        .ep-barcode-label {
+          font-size:10.5px; font-weight:700;
+          text-transform:uppercase; letter-spacing:0.08em;
+          color:#94a3b8; margin-bottom:8px;
+        }
+
+        /* Buttons */
+        .ep-submit {
+          width:100%; padding:15px; border-radius:14px; border:none; cursor:pointer;
+          font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; font-weight:800;
+          background:linear-gradient(135deg,#1e40af 0%,#2563eb 55%,#3b82f6 100%);
+          color:#fff; box-shadow:0 4px 18px rgba(37,99,235,0.38);
+          position:relative; overflow:hidden;
+          display:flex; align-items:center; justify-content:center; gap:8px;
+          transition:all 0.25s;
+        }
+        .ep-submit::after {
+          content:''; position:absolute; inset:0;
+          background:linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 60%);
+          pointer-events:none;
+        }
+        .ep-submit:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 28px rgba(37,99,235,0.45); }
+        .ep-submit:active:not(:disabled){ transform:translateY(0); }
+        .ep-submit:disabled { opacity:0.6; cursor:not-allowed; }
+
+        .ep-cancel {
+          width:100%; margin-top:10px; padding:12px;
+          border-radius:12px; border:1.5px solid #e2e8f0;
+          background:transparent; font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:13.5px; font-weight:600; color:#94a3b8;
+          cursor:pointer; transition:all 0.2s;
+        }
+        .ep-cancel:hover { background:#f8fafc; color:#475569; border-color:#cbd5e1; }
+
+        .ep-spinner {
+          width:17px;height:17px;
+          border:2.5px solid rgba(255,255,255,0.3);
+          border-top-color:#fff; border-radius:50%;
+          animation:spin 0.7s linear infinite; flex-shrink:0;
+        }
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ── Toast ── */
+        .ep-toast {
+          pointer-events:auto; display:flex; align-items:center; gap:11px;
+          min-width:280px; max-width:360px; padding:12px 15px; border-radius:15px;
+          position:relative; overflow:hidden; box-shadow:0 8px 28px rgba(0,0,0,0.12);
+          animation:epToastIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+          font-family:'Plus Jakarta Sans',sans-serif;
+        }
+        @keyframes epToastIn{from{opacity:0;transform:translateX(60px) scale(0.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+        .ep-toast-success{background:#f0fdf4;border:1px solid #bbf7d0;}
+        .ep-toast-error  {background:#fff1f2;border:1px solid #fecdd3;}
+        .ep-toast-warn   {background:#fffbeb;border:1px solid #fde68a;}
+        .ep-toast-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+        .ep-toast-success .ep-toast-icon{background:#dcfce7;color:#16a34a;}
+        .ep-toast-error   .ep-toast-icon{background:#ffe4e6;color:#e11d48;}
+        .ep-toast-warn    .ep-toast-icon{background:#fef9c3;color:#b45309;}
+        .ep-toast-body{flex:1;}
+        .ep-toast-title{font-size:13px;font-weight:700;margin:0 0 2px;}
+        .ep-toast-success .ep-toast-title{color:#15803d;}
+        .ep-toast-error   .ep-toast-title{color:#be123c;}
+        .ep-toast-warn    .ep-toast-title{color:#92400e;}
+        .ep-toast-msg{font-size:12px;margin:0;}
+        .ep-toast-success .ep-toast-msg{color:#16a34a;}
+        .ep-toast-error   .ep-toast-msg{color:#e11d48;}
+        .ep-toast-warn    .ep-toast-msg{color:#b45309;}
+        .ep-toast-x{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.4;transition:opacity 0.2s;flex-shrink:0;padding:2px;}
+        .ep-toast-x:hover{opacity:0.9;}
+        .ep-toast-bar{position:absolute;bottom:0;left:0;height:3px;animation:epShrink 3.6s linear forwards;}
+        .ep-toast-success .ep-toast-bar{background:#4ade80;}
+        .ep-toast-error   .ep-toast-bar{background:#fb7185;}
+        .ep-toast-warn    .ep-toast-bar{background:#fbbf24;}
+        @keyframes epShrink{from{width:100%}to{width:0%}}
+      `}</style>
+
+      <ToastPortal toasts={toasts} remove={remove} />
+
+      <div className="ep-page">
+        <div className="ep-deco ep-deco-1" />
+        <div className="ep-deco ep-deco-2" />
+
+        <div className="ep-card">
+          <div className="ep-stripe" />
+
+          {/* Header */}
+          <div className="ep-header">
+            <div className="ep-header-icon">✏️</div>
+            <div className="ep-header-text">
+              <h1>Edit Product</h1>
+              <p>Update product details below</p>
+              <div className="ep-id-chip">
+                <span className="ep-id-dot" />
+                Product ID: #{id}
+              </div>
+            </div>
+          </div>
+
+          <div className="ep-body">
+
+            {/* ── Section: Basic Info ── */}
+            <p className="ep-section">Basic Info</p>
+
+            <div className="ep-field">
+              <label className="ep-label">Product Name</label>
+              {fetching
+                ? <div className="ep-skel" />
+                : <div className="ep-input-wrap">
+                    <span className="ep-input-icon">🏷️</span>
+                    <input className="ep-input" placeholder="Product name"
+                      value={form.name}
+                      onChange={e => set("name", e.target.value)} />
+                  </div>
+              }
+            </div>
+
+            <div className="ep-field">
+              <label className="ep-label">Category</label>
+              {fetching
+                ? <div className="ep-skel" />
+                : <div className="ep-select-wrap ep-input-wrap">
+                    <span className="ep-input-icon">🗂️</span>
+                    <select className="ep-select"
+                      value={form.category_id}
+                      onChange={e => set("category_id", e.target.value)}>
+                      <option value="">Select a category…</option>
+                      {categories.map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                    <span className="ep-select-arrow">▾</span>
+                  </div>
+              }
+            </div>
+
+            {/* ── Section: Pricing & Stock ── */}
+            <p className="ep-section" style={{marginTop:"1.25rem"}}>Pricing & Stock</p>
+
+            <div className="ep-grid-2">
+              <div>
+                <label className="ep-label">Price (₹)</label>
+                {fetching
+                  ? <div className="ep-skel ep-skel-sm" />
+                  : <div className="ep-input-wrap">
+                      <span className="ep-prefix">₹</span>
+                      <input type="number" className="ep-input" placeholder="0.00"
+                        value={form.price}
+                        onChange={e => set("price", e.target.value)} />
+                    </div>
+                }
+              </div>
+              <div>
+                <label className="ep-label">Stock Qty</label>
+                {fetching
+                  ? <div className="ep-skel ep-skel-sm" />
+                  : <div className="ep-input-wrap">
+                      <span className="ep-input-icon">📦</span>
+                      <input type="number" className="ep-input" placeholder="0"
+                        value={form.stock}
+                        onChange={e => set("stock", e.target.value)} />
+                    </div>
+                }
+              </div>
+            </div>
+
+            <div className="ep-field">
+              <label className="ep-label">GST Rate</label>
+              {fetching
+                ? <div className="ep-skel" style={{height:38}} />
+                : <div className="ep-gst-grid">
+                    {[{val:"",label:"Exempt"},{val:"5",label:"5%"},{val:"12",label:"12%"},{val:"18",label:"18%"},{val:"28",label:"28%"}].map(g => (
+                      <button key={g.val}
+                        className={`ep-gst-pill${form.gst === g.val || String(form.gst) === g.val ? " active" : ""}`}
+                        onClick={() => set("gst", g.val)}>
+                        {g.label}
+                      </button>
+                    ))}
+                  </div>
+              }
+            </div>
+
+            {/* ── Section: Barcode ── */}
+            <div className="ep-divider" />
+            <p className="ep-section">Barcode</p>
+
+            <div className="ep-barcode-row">
+              <div className="ep-barcode-iw">
+                <label className="ep-label">Barcode Number</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">｜｜</span>
+                  <input className="ep-input" placeholder="Enter or auto-generate"
+                    value={form.barcode}
+                    onChange={e => { set("barcode", e.target.value); setBarcodeKey(k=>k+1); }} />
+                </div>
+              </div>
+              <button className="ep-gen-btn" onClick={generateBarcode}>⚡ Auto</button>
+            </div>
+
+            {form.barcode && (
+              <div className="ep-barcode-preview" key={barcodeKey}>
+                <p className="ep-barcode-label">Barcode Preview</p>
+                <Barcode value={form.barcode} height={55} fontSize={13} margin={0} />
+              </div>
+            )}
+
+            <div className="ep-divider" />
+
+            {/* Submit */}
+            <button className="ep-submit" onClick={handleUpdate} disabled={loading || fetching}>
+              {loading
+                ? <><div className="ep-spinner" /> Updating…</>
+                : <>💾 Update Product</>
+              }
+            </button>
+            <button className="ep-cancel" onClick={() => navigate("/products")}>
+              Cancel
+            </button>
+
+          </div>
         </div>
-      )}
-
-      <button
-        onClick={handleUpdate}
-        className="bg-blue-600 text-white p-3 w-full"
-      >
-        Update Product
-      </button>
-    </div>
+      </div>
+    </>
   );
 }
