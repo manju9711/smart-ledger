@@ -306,14 +306,14 @@ const handleGenerate = async () => {
     {/* 🔥 UNIT INPUT SIDE */}
     {r.name && (
       <>
-       <input
+       {/* <input
   type="number"
   value={r.unit_value || 100}
   onChange={(e) =>
     updateRow(i, "unit_value", e.target.value)
   }
   className="w-16 border rounded text-center"
-/>
+/> */}
 
 <input
   type="text"

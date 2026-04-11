@@ -141,7 +141,7 @@ Amount: ₹${invoice.total_amount}`;
                 <tr key={i}>
                   <td className="border p-2 text-center">{i + 1}</td>
 <td className="border p-2">
-  {p.display_name || `${p.name} (${p.unit_value}${p.unit})`}
+  {p.display_name || `${p.name} (${p.unit})`}
 </td>                  <td className="border p-2 text-center">{p.qty}</td>
                   <td className="border p-2 text-right">₹{p.price}</td>
                   <td className="border p-2 text-right">
