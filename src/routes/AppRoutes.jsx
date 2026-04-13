@@ -26,6 +26,7 @@ import CategoryList from "../pages/category/categoryList";
 import EditCategory from "../pages/category/EditCategory";
 import Profile from "../pages/profile/profile";
 import ForgotPassword from "../pages/auth/ForgotPassword";
+import RegisterCompany from "../pages/auth/registercompany";
 
 export default function AppRoutes() {
   return (
@@ -43,6 +44,8 @@ export default function AppRoutes() {
         />
 
         <Route path="/register" element={<Register />} />
+                <Route path="/registercompany" element={<RegisterCompany />} />
+
 <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* 🔐 Protected */}
         <Route

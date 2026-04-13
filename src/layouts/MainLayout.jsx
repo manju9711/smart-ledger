@@ -30,11 +30,13 @@ export default function MainLayout() {
   // 🔥 ROLE BASED MENU
   const menuItems = [
     // COMMON
-    { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+    // { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
 
     // ADMIN ONLY
     ...(role === "admin"
       ? [
+            { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+
           { name: "Category", path: "/category", icon: <Package size={20} /> },
           { name: "Products", path: "/products", icon: <Package size={20} /> },
           // { name: "Billing", path: "/billing", icon: <ReceiptText size={20} /> },
@@ -54,6 +56,8 @@ export default function MainLayout() {
     // CASHIER ONLY
     ...(role === "cashier"
       ? [
+            { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+
           { name: "Billing", path: "/billing", icon: <ReceiptText size={20} /> },
           { name: "Reports", path: "/reports", icon: <BarChart3 size={20} /> }
         ]

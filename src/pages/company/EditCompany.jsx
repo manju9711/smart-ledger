@@ -11,6 +11,7 @@ export default function EditCompany() {
     code: "",
     address: "",
     gstin: "",
+    gst_type: "with_gst",
     phone: "",
     logo: null,
     preview: "",
@@ -43,6 +44,7 @@ export default function EditCompany() {
           code: c.company_code || "",
           address: c.company_address || "",
           gstin: c.gstin || "",
+           gst_type: c.gst_type || "with_gst",
           phone: c.phone || "",
           logo: null,
           preview: c.logo || "",
@@ -82,12 +84,39 @@ export default function EditCompany() {
         base64Logo = await convertToBase64(form.logo);
       }
 
+      const validate = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const gstRegex = /^[0-9A-Z]{15}$/;
+
+  if (!form.name.trim()) return "Company name required";
+  if (!form.code.trim()) return "Company code required";
+  if (!form.address.trim()) return "Address required";
+
+  if (form.gst_type === "with_gst") {
+    if (!form.gstin) return "GSTIN required";
+    if (!gstRegex.test(form.gstin)) return "Invalid GSTIN format";
+  }
+
+  if (form.phone.length !== 10) return "Phone must be 10 digits";
+
+  if (!form.owner_name.trim()) return "Owner name required";
+
+  if (!emailRegex.test(form.owner_email))
+    return "Invalid email format";
+
+  if (form.owner_password && form.owner_password.length < 6)
+    return "Password must be at least 6 characters";
+
+  return null;
+};
+
       const res = await api.post("/company/update_company.php", {
         id,
         company_name: form.name,
         company_code: form.code,
         company_address: form.address,
         gstin: form.gstin,
+        gst_type: form.gst_type,
         phone: form.phone,
         logo: base64Logo,
 
@@ -132,11 +161,29 @@ export default function EditCompany() {
         placeholder="Address"
       />
 
+      {form.gst_type === "with_gst" && (
+  <input
+    value={form.gstin}
+    onChange={(e) => setForm({ ...form, gstin: e.target.value })}
+    className="w-full p-3 border mb-3"
+    placeholder="GSTIN"
+  />
+)}
+{/* 
       <input value={form.gstin}
         onChange={(e) => setForm({ ...form, gstin: e.target.value })}
         className="w-full p-3 border mb-3"
         placeholder="GSTIN"
-      />
+      /> */}
+
+<select
+  value={form.gst_type}
+  onChange={(e) => setForm({ ...form, gst_type: e.target.value })}
+  className="w-full p-3 border mb-3"
+>
+  <option value="with_gst">With GST</option>
+  <option value="without_gst">Without GST</option>
+</select>
 
       <input value={form.phone}
         onChange={(e) => handlePhone(e.target.value)}

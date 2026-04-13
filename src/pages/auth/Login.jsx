@@ -43,8 +43,12 @@ const handleLogin = async () => {
 
       console.log("LOGIN USER 👉", user);
 
-      navigate("/dashboard");
-
+// 🔥 ROLE BASED NAVIGATION
+if (role === "superadmin") {
+  navigate("/company");
+} else {
+  navigate("/dashboard");
+}
     } else {
       alert(res.data.message);
     }
@@ -111,7 +115,7 @@ const handleLogin = async () => {
         </div>
 
         <p className="text-center mt-6 text-xs text-gray-500">
-          New here? <span onClick={() => navigate("/register")} className="text-blue-600 font-bold cursor-pointer hover:underline ml-1">Create Account</span>
+          New here? <span onClick={() => navigate("/registercompany")} className="text-blue-600 font-bold cursor-pointer hover:underline ml-1">Regiter Company</span>
         </p>
       </motion.div>
     </div>

@@ -439,7 +439,7 @@ export default function ProductList() {
                 <tr>
                   <th>#</th>
                   <th>Product</th>
-                  <th className="center">Unit</th>
+                  {/* <th className="center">Unit</th> */}
                   <th className="center">Price</th>
                   <th className="center">Stock</th>
                   <th className="center">GST</th>
@@ -485,7 +485,7 @@ export default function ProductList() {
                           <div className="pl-prod-name">{p.product_name}</div>
                           <div className="pl-prod-cat">{p.category_name || "No Category"}</div>
                         </td>
-                        <td className="center"><span className="pl-gst">{p.unit || "-"}</span></td>
+                        {/* <td className="center"><span className="pl-gst">{p.unit || "-"}</span></td> */}
                         <td className="center">
                           <span className="pl-price">₹{p.price}</span>
                         </td>
