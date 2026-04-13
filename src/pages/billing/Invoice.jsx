@@ -303,6 +303,9 @@ function DesignOriginal({ invoice, company, color, logoUrl }) {
             <p className="text-sm">{company?.company_address}</p>
             <p className="text-sm">Phone: {company?.phone}</p>
             <p className="text-sm">GSTIN: {company?.gstin}</p>
+            <p className="text-sm">
+  GST: {company?.gst_type }
+</p>
           </div>
 
           {company?.logo && (
@@ -541,6 +544,9 @@ function DesignClassic({ invoice, company, color, logoUrl }) {
           <div style={{ fontWeight:700, fontSize:18 }}>{company?.company_name}</div>
           <div style={{ fontSize:11, color:"#555" }}>{company?.company_address}</div>
           <div style={{ fontSize:11, color:"#555" }}>Ph: {company?.phone} &nbsp;|&nbsp; GSTIN: {company?.gstin}</div>
+          <p style={{ fontSize:11, color:"#555" }}>
+            GST: {company?.gst_type}
+          </p>
         </div>
         <div style={{ textAlign:"right" }}>
           <div style={{ fontSize:22, fontWeight:700, color, letterSpacing:1 }}>TAX INVOICE</div>
@@ -620,6 +626,9 @@ function DesignModern({ invoice, company, color, logoUrl }) {
           <div style={{ fontWeight:700, fontSize:16, color:"#0f172a" }}>{company?.company_name}</div>
           <div style={{ fontSize:11, color:"#64748b", marginTop:2 }}>{company?.company_address}</div>
           <div style={{ fontSize:11, color:"#64748b" }}>Ph: {company?.phone} &nbsp;·&nbsp; GSTIN: {company?.gstin}</div>
+        <p  style={{ fontSize:11, color:"#64748b" }}>
+  GST: {company?.gst_type}
+</p>
         </div>
         <div style={{ textAlign:"right" }}>
           <div style={{ display:"inline-block", background:color, color:"#fff", fontWeight:700, fontSize:13, padding:"5px 18px", borderRadius:20, letterSpacing:1 }}>TAX INVOICE</div>
@@ -697,10 +706,13 @@ function DesignBold({ invoice, company, color, logoUrl }) {
       {/* Full-color header block */}
       <div style={{ background:color, color:"#fff", padding:"20px 24px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div>
-          {logoUrl && <img src={logoUrl} alt="logo" style={{ height:44, marginBottom:6, objectFit:"contain", filter:"brightness(0) invert(1)" }} />}
+          {logoUrl && <img src={logoUrl} alt="logo" style={{ height:44, marginBottom:6, }} />}
           <div style={{ fontWeight:700, fontSize:20 }}>{company?.company_name}</div>
           <div style={{ fontSize:11, opacity:.85, marginTop:2 }}>{company?.company_address}</div>
           <div style={{ fontSize:11, opacity:.85 }}>Ph: {company?.phone} · GSTIN: {company?.gstin}</div>
+        <p  style={{ fontSize:11, opacity:.85 }}>
+  GST: {company?.gst_type }
+</p>
         </div>
         <div style={{ textAlign:"right" }}>
           <div style={{ fontWeight:900, fontSize:28, letterSpacing:2, opacity:.9 }}>INVOICE</div>
@@ -800,6 +812,9 @@ function DesignMinimal({ invoice, company, color, logoUrl }) {
           <div style={{ color:"#555" }}>{company?.company_address}</div>
           <div style={{ color:"#555" }}>{company?.phone}</div>
           <div style={{ color:"#555" }}>GSTIN: {company?.gstin}</div>
+          <div  style={{ color:"#555" }}>
+  GST: {company?.gst_type}
+</div>
         </div>
         <div style={{ textAlign:"right" }}>
           <div style={{ color:"#aaa", fontSize:10, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>Bill To</div>
@@ -860,6 +875,13 @@ function DesignCorporate({ invoice, company, color, logoUrl }) {
           <div style={{ fontWeight:700, fontSize:18, letterSpacing:1, color }}>{company?.company_name}</div>
           <div style={{ fontSize:11, color:"#777" }}>{company?.company_address} · Ph: {company?.phone}</div>
           <div style={{ fontSize:11, color:"#777" }}>GSTIN: {company?.gstin}</div>
+             <p className="text-sm" style={{ fontSize:11, color:"#777" }}>
+  GST: {company?.gst_type
+  }
+</p>
+          {/* <p className="text-sm">
+  GST: {company?.gst_type === "with_gst" ? "Applicable" : "Not Applicable"}
+</p> */}
         </div>
         <div style={{ textAlign:"right" }}>
           <div style={{ fontWeight:700, fontSize:14, letterSpacing:2, color }}>TAX INVOICE</div>
@@ -944,6 +966,9 @@ function DesignStripe({ invoice, company, color, logoUrl }) {
               <div style={{ fontWeight:700, fontSize:17, color:"#0f172a" }}>{company?.company_name}</div>
               <div style={{ fontSize:11, color:"#64748b" }}>{company?.company_address}</div>
               <div style={{ fontSize:11, color:"#64748b" }}>Ph: {company?.phone} · GSTIN: {company?.gstin}</div>
+            <p  style={{ fontSize:11, color:"#64748b" }}>
+  GST: {company?.gst_type}
+</p>
             </div>
             <div style={{ textAlign:"right" }}>
               <div style={{ fontWeight:800, fontSize:22, color, textTransform:"uppercase", letterSpacing:1 }}>Invoice</div>
