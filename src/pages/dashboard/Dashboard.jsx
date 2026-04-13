@@ -419,25 +419,48 @@ export default function Dashboard() {
 
   useEffect(() => { fetchStats(); fetchLowStockProducts(); }, []);
 
-  const fetchStats = async () => {
-    try {
-      const [basic, analytics] = await Promise.all([
-        api.get("/dashboard/get_stats.php"),
-        api.get("/dashboard/get_analytics.php"),
-      ]);
-      if (basic.data.status && analytics.data.status) {
-        setStats({ ...basic.data.data, monthly_sales: analytics.data.data.monthly_sales });
-      }
-    } catch (e) { console.error(e); }
-    finally { setLoading(false); }
-  };
+  const getCompanyId = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user?.company_id;
+};
 
-  const fetchLowStockProducts = async () => {
-    try {
-      const res = await api.get("/product/get.php");
-      if (res.data.status) setLowStockProducts(res.data.data.filter(p => p.stock <= 5));
-    } catch (e) { console.error(e); }
-  };
+ const fetchStats = async () => {
+  try {
+    const company_id = getCompanyId();
+
+    const [basic, analytics] = await Promise.all([
+      api.get(`/dashboard/get_stats.php?company_id=${company_id}`),
+      api.get(`/dashboard/get_analytics.php?company_id=${company_id}`)
+    ]);
+
+    if (basic.data.status && analytics.data.status) {
+      setStats({
+        ...basic.data.data,
+        monthly_sales: analytics.data.data.monthly_sales
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+};
+  
+const fetchLowStockProducts = async () => {
+  try {
+    const company_id = getCompanyId();
+
+    const res = await api.get(`/product/get.php?company_id=${company_id}`);
+
+    if (res.data.status) {
+      setLowStockProducts(
+        res.data.data.filter(p => p.stock <= 5)
+      );
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 
   // bar colors: highlight hovered bar
   const BAR_DEFAULT  = "#6366f1";
