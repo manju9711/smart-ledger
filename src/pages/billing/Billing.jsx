@@ -1294,7 +1294,7 @@ export default function Billing() {
   const navigate                      = useNavigate();
 
   function emptyRow() {
-    return { product_id: null, name: "", price: 0, qty: 1, gst: 0, unit: "", stock: 0 };
+    return { product_id: null, name: "", price: 0, qty: 0, gst: 0, unit: "", stock: 0 };
   }
 
   const showToast = (msg, type = "error") => {
@@ -1383,7 +1383,7 @@ export default function Billing() {
         showToast(`Only ${updated[i].stock} items in stock!`, "warning");
         updated[i][field] = updated[i].stock;
       } else {
-        updated[i][field] = num < 1 ? 1 : num;
+        updated[i][field] = num < 0 ? 0 : num;
       }
     } else {
       updated[i][field] = value;
@@ -1632,16 +1632,20 @@ export default function Billing() {
 
                 {/* Qty */}
                 <div style={{ display:"flex", alignItems:"center", gap:5, justifyContent:"center" }}>
-                  <button className="qty-btn" onClick={() => updateRow(i, "qty", Math.max(1, r.qty - 1))}>−</button>
-                  <input
-                    type="number"
-                    className="bill-input"
-                    value={r.qty}
-                    min={1}
-                    onChange={e => updateRow(i, "qty", e.target.value)}
-                    style={{ textAlign:"center", width:44, padding:"8px 4px", fontSize:14, fontWeight:700 }}
-                  />
-                  <button className="qty-btn" onClick={() => updateRow(i, "qty", r.qty + 1)}>+</button>
+                  {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", Math.max(1, r.qty - 1))}>−</button> */}
+                 {/* Qty */}
+<div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+  <input
+    type="number"
+    className="bill-input"
+    value={r.qty}
+    min={0}
+    onChange={e => updateRow(i, "qty", e.target.value)}
+    onWheel={e => e.target.blur()}
+    style={{ textAlign:"center", width:70, padding:"8px 6px", fontSize:14, fontWeight:700 }}
+  />
+</div>
+                  {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", r.qty + 1)}>+</button> */}
                 </div>
 
                 {/* Price */}
