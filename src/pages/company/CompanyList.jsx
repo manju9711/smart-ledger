@@ -466,7 +466,7 @@ export default function CompanyList() {
         {/* Table card */}
         <div className="cl-card">
           <table className="cl-table">
-            <thead>
+            <thead  className="bg-blue-600">
               <tr>
                 <th className="cl-th">#</th>
                 <th className="cl-th">Company</th>
