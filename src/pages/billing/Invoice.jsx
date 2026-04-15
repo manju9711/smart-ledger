@@ -1530,123 +1530,270 @@ function DesignStripe({ invoice, company, color, logoUrl }) {
 }
 
 /* ── 7. POS Receipt ──────────────────────────────────────────────────────── */
-function DesignPOS({ invoice, company, color, logoUrl }) {
-  const today = new Date().toLocaleDateString("en-IN");
-  const time  = new Date().toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" });
+// function DesignPOS({ invoice, company, color, logoUrl }) {
+//   const today = new Date().toLocaleDateString("en-IN");
+//   const time  = new Date().toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" });
+
+//   const S = {
+//     wrap:   { fontFamily:"'Courier New',Courier,monospace", fontSize:11, color:"#111", width:"100%", maxWidth:320, margin:"0 auto" },
+//     center: { textAlign:"center" },
+//     bold:   { fontWeight:"bold" },
+//     div:    { borderTop:"1px dashed #999", margin:"7px 0" },
+//     row:    { display:"flex", justifyContent:"space-between", margin:"2px 0" },
+//     sm:     { fontSize:10, color:"#444" },
+//     th:     { borderBottom:"1px dashed #999", padding:"3px 0", fontWeight:"bold", fontSize:10 },
+//     td:     { padding:"2px 0",  verticalAlign:"top", fontSize:10 },
+//     tdr:    { padding:"2px 0", textAlign:"right",  verticalAlign:"top", fontSize:10 },
+//     total:  { display:"flex", justifyContent:"space-between", fontWeight:"bold", fontSize:14, borderTop:"1px dashed #999", paddingTop:5, marginTop:5 },
+//     paid:   { fontSize:16, fontWeight:"bold", textAlign:"center", margin:"7px 0", letterSpacing:1 },
+//   };
+
+//   return (
+//     <div style={S.wrap}>
+
+//       {/* ── Shop Header ── */}
+//       {logoUrl && (
+//         <div style={{ textAlign:"center", marginBottom:6 }}>
+//           <img src={logoUrl} alt="logo" style={{ height:48, objectFit:"contain" }} />
+//         </div>
+//       )}
+//       <div style={{ ...S.center, ...S.bold, fontSize:15 }}>{company?.company_name}</div>
+//       <div style={{ ...S.center, ...S.sm }}>{company?.company_address}</div>
+//       <div style={{ ...S.center, ...S.sm }}>Ph: {company?.phone}</div>
+//       <div style={{ ...S.center, ...S.sm }}>GSTIN: {company?.gstin}</div>
+//       <div style={{ ...S.center, ...S.sm }}>GST: {company?.gst_type}</div>
+
+//       <div style={S.div} />
+
+//       {/* ── Invoice Meta ── */}
+//       <div style={{ ...S.center, ...S.bold, letterSpacing:2, fontSize:12 }}>*** TAX INVOICE ***</div>
+//       <div style={{ ...S.row, ...S.sm, marginTop:4 }}>
+//         <span>Bill No: {invoice.invoice_no}</span>
+//         <span>{today} {time}</span>
+//       </div>
+//       <div style={{ ...S.row, ...S.sm }}>
+//         <span>Customer: {invoice.customer_name}</span>
+//         <span>{invoice.customer_phone}</span>
+//       </div>
+
+//       <div style={S.div} />
+
+//       {/* ── Items Table ── */}
+//       <table style={{ width:"100%", borderCollapse:"collapse" }}>
+//         <thead>
+//           <tr>
+//             <th style={{ ...S.th, textAlign:"left",  width:"40%" }}>Item</th>
+//             <th style={{ ...S.th, textAlign:"right", width:"10%" }}>Qty</th>
+//             <th style={{ ...S.th, textAlign:"right", width:"22%" }}>Rate</th>
+//             <th style={{ ...S.th, textAlign:"right", width:"28%" }}>Amt</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {invoice.products.map((p, i) => {
+//             const base   = p.price * p.qty;
+//             const gstAmt = (base * p.gst) / 100;
+//             const total  = base + gstAmt;
+//             return (
+//               <>
+//                 <tr key={`item-${i}`}>
+//                   <td style={S.td}>{p.display_name || p.name}</td>
+//                   <td style={S.tdr}>{p.qty}</td>
+//                   <td style={S.tdr}>₹{p.price}</td>
+//                   <td style={S.tdr}>₹{base.toFixed(2)}</td>
+//                 </tr>
+//                 {p.gst > 0 && (
+//                   <tr key={`gst-${i}`}>
+//                     <td colSpan={3} style={{ ...S.td, color:"#666", paddingLeft:6 }}>
+//                       GST @{p.gst}%: ₹{gstAmt.toFixed(2)}
+//                     </td>
+//                     <td style={{ ...S.tdr, fontWeight:"bold" }}>₹{total.toFixed(2)}</td>
+//                   </tr>
+//                 )}
+//               </>
+//             );
+//           })}
+//         </tbody>
+//       </table>
+
+//       <div style={S.div} />
+
+//       {/* ── Summary ── */}
+//       <div style={{ ...S.row, ...S.sm }}><span>Items</span><span>{invoice.products.reduce((s,p)=>s+p.qty,0)}</span></div>
+//       <div style={{ ...S.row, ...S.sm }}><span>Sub Total</span><span>₹{invoice.sub_total}</span></div>
+//       <div style={{ ...S.row, ...S.sm }}><span>Total GST</span><span>₹{invoice.gst_total}</span></div>
+
+//       <div style={S.total}>
+//         <span>TOTAL</span>
+//         <span>₹{invoice.total_amount}</span>
+//       </div>
+
+//       <div style={S.div} />
+
+//       {/* ── Payment ── */}
+//       <div style={{ ...S.row, ...S.sm }}>
+//         <span>Mode</span>
+//         <span style={{ fontWeight:"bold", textTransform:"uppercase" }}>{invoice.payment_method}</span>
+//       </div>
+
+//       <div style={{ ...S.paid, color }}>
+//         *** PAID: ₹{invoice.paid_amount} ***
+//       </div>
+
+//       <div style={S.div} />
+
+//       {/* ── Footer ── */}
+//       <div style={{ ...S.center, ...S.sm }}>Thank You! Visit Again :)</div>
+//       <div style={{ ...S.center, fontSize:9, color:"#aaa", marginTop:4 }}>{company?.company_name}</div>
+//       <div style={{ ...S.center, fontSize:9, color:"#aaa", marginBottom:4 }}>
+//         {"- ".repeat(22)}
+//       </div>
+//     </div>
+//   );
+// }
+
+function DesignPOS({ invoice, company, logoUrl }) {
+  const date = new Date().toLocaleDateString("en-IN");
+  const time = new Date().toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 
   const S = {
-    wrap:   { fontFamily:"'Courier New',Courier,monospace", fontSize:11, color:"#111", width:"100%", maxWidth:320, margin:"0 auto" },
-    center: { textAlign:"center" },
-    bold:   { fontWeight:"bold" },
-    div:    { borderTop:"1px dashed #999", margin:"7px 0" },
-    row:    { display:"flex", justifyContent:"space-between", margin:"2px 0" },
-    sm:     { fontSize:10, color:"#444" },
-    th:     { borderBottom:"1px dashed #999", padding:"3px 0", fontWeight:"bold", fontSize:10 },
-    td:     { padding:"2px 0",  verticalAlign:"top", fontSize:10 },
-    tdr:    { padding:"2px 0", textAlign:"right",  verticalAlign:"top", fontSize:10 },
-    total:  { display:"flex", justifyContent:"space-between", fontWeight:"bold", fontSize:14, borderTop:"1px dashed #999", paddingTop:5, marginTop:5 },
-    paid:   { fontSize:16, fontWeight:"bold", textAlign:"center", margin:"7px 0", letterSpacing:1 },
+    wrap: {
+      fontFamily: "'Courier New', monospace",
+      fontSize: 12,
+      lineHeight: "18px",   // 🔥 line spacing
+      maxWidth: 320,
+      margin: "0 auto",
+      color: "#000"
+    },
+    center: { textAlign: "center" },
+    divider: { borderTop: "1px dashed #000", margin: "8px 0" }, // 🔥 spacing
+    row: {
+      display: "flex",
+      justifyContent: "space-between",
+      margin: "4px 0"
+    },
+    tableRow: {
+      display: "flex",
+      margin: "3px 0"
+    }
   };
 
   return (
     <div style={S.wrap}>
 
-      {/* ── Shop Header ── */}
+      {/* 🔥 LOGO CENTER */}
       {logoUrl && (
-        <div style={{ textAlign:"center", marginBottom:6 }}>
-          <img src={logoUrl} alt="logo" style={{ height:48, objectFit:"contain" }} />
+        <div style={{ textAlign: "center", marginBottom: 8 }}>
+          <img
+            src={logoUrl}
+            alt="logo"
+            style={{ height: 50, objectFit: "contain" }}
+          />
         </div>
       )}
-      <div style={{ ...S.center, ...S.bold, fontSize:15 }}>{company?.company_name}</div>
-      <div style={{ ...S.center, ...S.sm }}>{company?.company_address}</div>
-      <div style={{ ...S.center, ...S.sm }}>Ph: {company?.phone}</div>
-      <div style={{ ...S.center, ...S.sm }}>GSTIN: {company?.gstin}</div>
-      <div style={{ ...S.center, ...S.sm }}>GST: {company?.gst_type}</div>
 
-      <div style={S.div} />
-
-      {/* ── Invoice Meta ── */}
-      <div style={{ ...S.center, ...S.bold, letterSpacing:2, fontSize:12 }}>*** TAX INVOICE ***</div>
-      <div style={{ ...S.row, ...S.sm, marginTop:4 }}>
-        <span>Bill No: {invoice.invoice_no}</span>
-        <span>{today} {time}</span>
-      </div>
-      <div style={{ ...S.row, ...S.sm }}>
-        <span>Customer: {invoice.customer_name}</span>
-        <span>{invoice.customer_phone}</span>
+      {/* HEADER */}
+      <div style={S.center}>
+        <div style={{ fontSize: 16, fontWeight: "bold" }}>
+          {company?.company_name}
+        </div>
+        <div>{company?.company_address}</div>
+        <div>Ph: {company?.phone}</div>
+        <div>GSTIN: {company?.gstin}</div>
       </div>
 
-      <div style={S.div} />
+      <div style={S.divider} />
 
-      {/* ── Items Table ── */}
-      <table style={{ width:"100%", borderCollapse:"collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ ...S.th, textAlign:"left",  width:"40%" }}>Item</th>
-            <th style={{ ...S.th, textAlign:"right", width:"10%" }}>Qty</th>
-            <th style={{ ...S.th, textAlign:"right", width:"22%" }}>Rate</th>
-            <th style={{ ...S.th, textAlign:"right", width:"28%" }}>Amt</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoice.products.map((p, i) => {
-            const base   = p.price * p.qty;
-            const gstAmt = (base * p.gst) / 100;
-            const total  = base + gstAmt;
-            return (
-              <>
-                <tr key={`item-${i}`}>
-                  <td style={S.td}>{p.display_name || p.name}</td>
-                  <td style={S.tdr}>{p.qty}</td>
-                  <td style={S.tdr}>₹{p.price}</td>
-                  <td style={S.tdr}>₹{base.toFixed(2)}</td>
-                </tr>
-                {p.gst > 0 && (
-                  <tr key={`gst-${i}`}>
-                    <td colSpan={3} style={{ ...S.td, color:"#666", paddingLeft:6 }}>
-                      GST @{p.gst}%: ₹{gstAmt.toFixed(2)}
-                    </td>
-                    <td style={{ ...S.tdr, fontWeight:"bold" }}>₹{total.toFixed(2)}</td>
-                  </tr>
-                )}
-              </>
-            );
-          })}
-        </tbody>
-      </table>
+      {/* BILL INFO */}
+      <div style={S.row}>
+        <span>Bill {invoice.invoice_no}</span>
+        <span>{date} {time}</span>
+      </div>
 
-      <div style={S.div} />
+      <div style={{ marginTop: 4 }}>
+        Customer: {invoice.customer_name || "---"}
+      </div>
+      <div>Phone: {invoice.customer_phone}</div>
 
-      {/* ── Summary ── */}
-      <div style={{ ...S.row, ...S.sm }}><span>Items</span><span>{invoice.products.reduce((s,p)=>s+p.qty,0)}</span></div>
-      <div style={{ ...S.row, ...S.sm }}><span>Sub Total</span><span>₹{invoice.sub_total}</span></div>
-      <div style={{ ...S.row, ...S.sm }}><span>Total GST</span><span>₹{invoice.gst_total}</span></div>
+      <div style={S.divider} />
 
-      <div style={S.total}>
-        <span>TOTAL</span>
+      {/* TABLE HEADER */}
+      <div style={{ ...S.tableRow, fontWeight: "bold" }}>
+        <div style={{ flex: 2 }}>Item</div>
+        <div style={{ flex: 1, textAlign: "right" }}>Rate</div>
+        <div style={{ flex: 1, textAlign: "right" }}>Qty</div>
+        <div style={{ flex: 1, textAlign: "right" }}>Amt</div>
+      </div>
+
+      <div style={S.divider} />
+
+      {/* ITEMS */}
+      {invoice.products.map((p, i) => {
+        const amount = p.price * p.qty;
+        const gst = (amount * p.gst) / 100;
+
+        return (
+          <div key={i} style={{ marginBottom: 4 }}>
+            <div style={S.tableRow}>
+              <div style={{ flex: 2 }}>{p.name}</div>
+              <div style={{ flex: 1, textAlign: "right" }}>{p.price}</div>
+              <div style={{ flex: 1, textAlign: "right" }}>{p.qty}</div>
+              <div style={{ flex: 1, textAlign: "right" }}>{amount}</div>
+            </div>
+
+            <div style={{ fontSize: 10, marginLeft: 4 }}>
+              GST @{p.gst}% : ₹{gst.toFixed(2)}
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={S.divider} />
+
+      {/* SUMMARY */}
+      <div style={S.row}>
+        <span>Total Items</span>
+        <span>{invoice.products.length}</span>
+      </div>
+
+      <div style={S.row}>
+        <span>Subtotal</span>
+        <span>₹{invoice.sub_total}</span>
+      </div>
+
+      <div style={S.row}>
+        <span>Tax</span>
+        <span>₹{invoice.gst_total}</span>
+      </div>
+
+      <div style={S.divider} />
+
+      {/* TOTAL */}
+      <div style={{
+        ...S.row,
+        fontWeight: "bold",
+        fontSize: 16
+      }}>
+        <span>Total Amount</span>
         <span>₹{invoice.total_amount}</span>
       </div>
 
-      <div style={S.div} />
+      <div style={S.divider} />
 
-      {/* ── Payment ── */}
-      <div style={{ ...S.row, ...S.sm }}>
-        <span>Mode</span>
-        <span style={{ fontWeight:"bold", textTransform:"uppercase" }}>{invoice.payment_method}</span>
+      {/* PAYMENT */}
+      <div style={{ textAlign: "center", margin: "6px 0" }}>
+        {invoice.payment_method} ₹{invoice.paid_amount}
       </div>
 
-      <div style={{ ...S.paid, color }}>
-        *** PAID: ₹{invoice.paid_amount} ***
+      <div style={S.divider} />
+
+      {/* FOOTER */}
+      <div style={{ textAlign: "center", fontSize: 10, marginTop: 4 }}>
+        PLEASE NOTE - EXCHANGES ALLOWED ONLY WITHIN 3 DAYS
       </div>
 
-      <div style={S.div} />
-
-      {/* ── Footer ── */}
-      <div style={{ ...S.center, ...S.sm }}>Thank You! Visit Again :)</div>
-      <div style={{ ...S.center, fontSize:9, color:"#aaa", marginTop:4 }}>{company?.company_name}</div>
-      <div style={{ ...S.center, fontSize:9, color:"#aaa", marginBottom:4 }}>
-        {"- ".repeat(22)}
-      </div>
     </div>
   );
 }
@@ -1671,7 +1818,8 @@ export default function InvoicePreview() {
   const [invoice, setInvoice] = useState(null);
   const [company, setCompany] = useState(null);
   const [color,   setColor]   = useState("#2563eb");
-  const [design,  setDesign]  = useState("original");
+  // const [design,  setDesign]  = useState("original");
+  const [design, setDesign] = useState("pos");
 
   useEffect(() => {
     const s = document.createElement("style");
@@ -1684,7 +1832,13 @@ export default function InvoicePreview() {
     api.get(`/invoice/get_invoice_by_id.php?id=${invoiceNo}`).then(res => {
       if (res.data.status) {
         setInvoice(res.data.data);
-        setCompany(res.data.data);
+        // setCompany(res.data.data);
+        setCompany({
+  company_name: res.data.data.company_name,
+  company_address: res.data.data.company_address,
+  phone: res.data.data.phone,
+  gstin: res.data.data.gstin
+});
       }
     });
   }, [invoiceNo]);
