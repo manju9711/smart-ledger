@@ -552,14 +552,14 @@ export default function CompanyForm() {
           </Field>
 
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 20px" }}>
-            <Field label="GST Type *">
+            {/* <Field label="GST Type *">
               <select className="rc-select"
                 value={form.gst_type}
                 onChange={e => set("gst_type", e.target.value)}>
                 <option value="with_gst">With GST</option>
                 <option value="without_gst">Without GST</option>
               </select>
-            </Field>
+            </Field> */}
 
             <Field label="Phone Number *" error={errors.phone}>
               <input className="rc-input" placeholder="10-digit phone"

@@ -685,14 +685,14 @@ export default function EditCompany() {
             </Field>
 
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 20px" }}>
-              <Field label="GST Type *">
+              {/* <Field label="GST Type *">
                 <select className="ec-select"
                   value={form.gst_type}
                   onChange={e => set("gst_type", e.target.value)}>
                   <option value="with_gst">With GST</option>
                   <option value="without_gst">Without GST</option>
                 </select>
-              </Field>
+              </Field> */}
               <Field label="Phone Number *" error={errors.phone}>
                 <input className="ec-input" placeholder="10-digit phone"
                   value={form.phone}
