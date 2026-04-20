@@ -1713,7 +1713,7 @@ function DesignPOS({ invoice, company, logoUrl }) {
 )}
 
       {/* HEADER */}
-      <div style={S.center}>
+      <div style={S.center}>44
         <div style={{ fontSize: 16, fontWeight: "bold" }}>
           {company?.company_name}
         </div>
