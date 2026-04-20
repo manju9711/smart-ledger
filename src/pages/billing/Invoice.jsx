@@ -1684,7 +1684,7 @@ function DesignPOS({ invoice, company, logoUrl }) {
     <div style={S.wrap}>
 
       {/* 🔥 LOGO CENTER */}
-      {logoUrl && (
+      {/* {logoUrl && (
         <div style={{ textAlign: "center", marginBottom: 8 }}>
           <img
             src={logoUrl}
@@ -1692,7 +1692,25 @@ function DesignPOS({ invoice, company, logoUrl }) {
             style={{ height: 50, objectFit: "contain" }}
           />
         </div>
-      )}
+      )}  */}
+      {logoUrl && (
+  <div style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10
+  }}>
+    <img
+      src={logoUrl}
+      alt="logo"
+      style={{
+        height: 60,
+        objectFit: "contain",
+        display: "block"
+      }}
+    />
+  </div>
+)}
 
       {/* HEADER */}
       <div style={S.center}>
@@ -1837,7 +1855,8 @@ export default function InvoicePreview() {
   company_name: res.data.data.company_name,
   company_address: res.data.data.company_address,
   phone: res.data.data.phone,
-  gstin: res.data.data.gstin
+  gstin: res.data.data.gstin,
+  logo: res.data.data.logo 
 });
       }
     });
