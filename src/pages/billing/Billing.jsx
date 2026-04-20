@@ -154,6 +154,9 @@ export default function Billing() {
   const [toasts, setToasts]           = useState([]);
   const suggestRef                    = useRef(null);
   const navigate                      = useNavigate();
+const [paymentType, setPaymentType] = useState("cash"); // cash / credit
+const [gstType, setGstType] = useState("with_gst"); // with_gst / without_gst
+
 
   function emptyRow() {
     return { product_id: null, name: "", price: 0, qty: 0, gst: 0, unit: "", stock: 0 };
@@ -190,8 +193,11 @@ export default function Billing() {
   }, []);
 
   const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
-  const gstTotal = rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0);
-  const total    = subtotal + gstTotal;
+const gstTotal = gstType === "with_gst"
+  ? rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0)
+  : 0;
+
+const total = subtotal + gstTotal;
   const received = parseFloat(payment.received) || 0;
   const balance  = received - total;
 
@@ -272,17 +278,22 @@ export default function Billing() {
     setGenerating(true);
     try {
       const res = await api.post("/invoice/create_invoice.php", {
-        company_id:     user.company_id,
-        customer_name:  customer.name,
-        customer_phone: customer.phone,
-        products:       validRows,
-        sub_total:      parseFloat(subtotal.toFixed(2)),
-        gst_total:      parseFloat(gstTotal.toFixed(2)),
-        total_amount:   parseFloat(total.toFixed(2)),
-        paid_amount:    received,
-        balance_amount: parseFloat(balance.toFixed(2)),
-        payment_method: payment.method,
-      });
+  company_id: user.company_id,
+  customer_name: customer.name,
+  customer_phone: customer.phone,
+  products: validRows,
+
+  sub_total: subtotal,
+  gst_total: gstTotal,
+  total_amount: total,
+
+  paid_amount: paymentType === "credit" ? 0 : received,
+  balance_amount: paymentType === "credit" ? total : balance,
+
+  payment_method: payment.method,
+  payment_type: paymentType,
+  gst_type: gstType,
+});
       if (res.data.status) {
         showToast("Invoice generated!", "success");
         setTimeout(() => navigate(`/invoice/${res.data.invoice_no}`), 800);
@@ -622,6 +633,144 @@ export default function Billing() {
               <span style={{ fontWeight:800, color:"#312e81", fontSize:16 }}>Grand Total</span>
               <span style={{ fontWeight:900, color:"#4338ca", fontSize:18 }}>₹{total.toFixed(2)}</span>
             </div>
+
+<label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
+  Payment Type
+</label>
+
+<div style={{
+  display: "flex",
+  background: "#f1f5f9",
+  padding: 4,
+  borderRadius: 14,
+  gap: 6,
+  marginBottom: 14
+}}>
+  <button
+    onClick={()=>setPaymentType("cash")}
+    style={{
+      flex: 1,
+      padding: "10px 0",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      fontSize: 13,
+      fontWeight: 700,
+      fontFamily: "'Outfit', sans-serif",
+      transition: "all .25s",
+      background: paymentType==="cash"
+        ? "linear-gradient(135deg,#4f46e5,#6366f1)"
+        : "transparent",
+      color: paymentType==="cash" ? "#fff" : "#64748b",
+      boxShadow: paymentType==="cash"
+        ? "0 6px 16px rgba(99,102,241,.35)"
+        : "none",
+      transform: paymentType==="cash" ? "scale(1.03)" : "scale(1)"
+    }}
+  >
+    💵 Cash
+  </button>
+
+  <button
+    onClick={()=>setPaymentType("credit")}
+    style={{
+      flex: 1,
+      padding: "10px 0",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      fontSize: 13,
+      fontWeight: 700,
+      fontFamily: "'Outfit', sans-serif",
+      transition: "all .25s",
+      background: paymentType==="credit"
+        ? "linear-gradient(135deg,#4f46e5,#6366f1)"
+        : "transparent",
+      color: paymentType==="credit" ? "#fff" : "#64748b",
+      boxShadow: paymentType==="credit"
+        ? "0 6px 16px rgba(99,102,241,.35)"
+        : "none",
+      transform: paymentType==="credit" ? "scale(1.03)" : "scale(1)"
+    }}
+  >
+    🧾 Credit
+  </button>
+</div>
+
+
+
+
+<label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
+  GST Type
+</label>
+
+<div style={{
+  display: "flex",
+  background: "#f1f5f9",
+  padding: 4,
+  borderRadius: 14,
+  gap: 6,
+  marginBottom: 14
+}}>
+  <button
+    onClick={()=>setGstType("without_gst")}
+    style={{
+      flex: 1,
+      padding: "10px 0",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      fontSize: 13,
+      fontWeight: 700,
+      fontFamily: "'Outfit', sans-serif",
+      transition: "all .25s",
+      background: gstType==="without_gst"
+        ? "linear-gradient(135deg,#10b981,#34d399)"
+        : "transparent",
+      color: gstType==="without_gst" ? "#fff" : "#64748b",
+      boxShadow: gstType==="without_gst"
+        ? "0 6px 16px rgba(16,185,129,.35)"
+        : "none",
+      transform: gstType==="without_gst" ? "scale(1.03)" : "scale(1)"
+    }}
+  >
+    💰 Cash
+  </button>
+
+  <button
+    onClick={()=>setGstType("with_gst")}
+    style={{
+      flex: 1,
+      padding: "10px 0",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      fontSize: 13,
+      fontWeight: 700,
+      fontFamily: "'Outfit', sans-serif",
+      transition: "all .25s",
+      background: gstType==="with_gst"
+        ? "linear-gradient(135deg,#f59e0b,#fbbf24)"
+        : "transparent",
+      color: gstType==="with_gst" ? "#fff" : "#64748b",
+      boxShadow: gstType==="with_gst"
+        ? "0 6px 16px rgba(245,158,11,.35)"
+        : "none",
+      transform: gstType==="with_gst" ? "scale(1.03)" : "scale(1)"
+    }}
+  >
+    🧾 GST
+  </button>
+</div>
+
+<input
+  disabled={paymentType === "credit"}
+  value={paymentType === "credit" ? 0 : payment.received}
+  style={{
+    opacity: paymentType === "credit" ? 0.6 : 1,
+    cursor: paymentType === "credit" ? "not-allowed" : "text"
+  }}
+/>
 
             {/* Payment method */}
             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
