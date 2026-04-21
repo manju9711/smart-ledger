@@ -9,6 +9,7 @@ import {
   Building2,
   Settings,
   ShieldCheck,
+   AlertCircle ,
   LogOut
 } from "lucide-react";
 
@@ -59,7 +60,8 @@ export default function MainLayout() {
             { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
 
           { name: "Billing", path: "/billing", icon: <ReceiptText size={20} /> },
-          { name: "Reports", path: "/reports", icon: <BarChart3 size={20} /> }
+          { name: "Reports", path: "/reports", icon: <BarChart3 size={20} /> },
+           { name: "Pending Invoice", path: "/payment-pending", icon: <AlertCircle  size={20} /> }
         ]
       : [])
   ];
