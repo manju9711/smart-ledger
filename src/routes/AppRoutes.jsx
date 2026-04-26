@@ -28,6 +28,7 @@ import Profile from "../pages/profile/profile";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import RegisterCompany from "../pages/auth/registercompany";
 import PaymentPending from "../pages/reports/PaymentPending";
+import CreditSettings from "../pages/billing/CreditSettings";
 
 export default function AppRoutes() {
   return (
@@ -81,6 +82,8 @@ export default function AppRoutes() {
           <Route path="/cashier" element={<CashierList />} />
          <Route path="/profile" element={<Profile />} />
 <Route path="/payment-pending" element={<PaymentPending />} />
+<Route path="/credit-settings" element={<CreditSettings />} />
+
           <Route path="/cashier/edit/:id" element={<EditCashier/>} />
             <Route path="/category/add" element={<CategoryForm />} />
           <Route path="/category" element={<CategoryList/>} />
