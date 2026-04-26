@@ -28,6 +28,10 @@ import Profile from "../pages/profile/profile";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import RegisterCompany from "../pages/auth/registercompany";
 import PaymentPending from "../pages/reports/PaymentPending";
+import CustomerForm from "../pages/customer/CustomerForm";
+import CustomerList from "../pages/customer/CustomerList";
+import EditCustomer from "../pages/customer/EditCustomer";
+
 import CreditSettings from "../pages/billing/CreditSettings";
 
 export default function AppRoutes() {
@@ -75,6 +79,11 @@ export default function AppRoutes() {
           <Route path="/company" element={<CompanyList />} />
           <Route path="/company/add" element={<CompanyForm />} />
           <Route path="/company/edit/:id" element={<EditCompany />} />
+          <Route path="/customer" element={<CustomerList />} />
+          <Route path="/customer/add" element={<CustomerForm />} />
+          <Route path="/customer/edit/:id" element={<EditCustomer />} />
+
+
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/reports" element={<Reports />} />
