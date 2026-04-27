@@ -1,3 +1,857 @@
+// // import { useState, useEffect, useRef } from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import api from "../../services/api";
+
+// // /* ── Global CSS ─────────────────────────────────────────────────────────── */
+// // const GLOBAL_CSS = `
+// //   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap');
+
+// //   @keyframes slideDown  { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
+// //   @keyframes slideUp    { from{opacity:0;transform:translateY(10px)}  to{opacity:1;transform:none} }
+// //   @keyframes fadeIn     { from{opacity:0} to{opacity:1} }
+// //   @keyframes toastIn    { from{opacity:0;transform:translateX(120px)} to{opacity:1;transform:none} }
+// //   @keyframes toastOut   { from{opacity:1;transform:none} to{opacity:0;transform:translateX(120px)} }
+// //   @keyframes spin       { to{transform:rotate(360deg)} }
+// //   @keyframes rowPop     { 0%{opacity:0;transform:translateX(-8px)} 100%{opacity:1;transform:none} }
+
+// //   * { box-sizing:border-box; margin:0; padding:0; }
+// //   body { font-family:'Outfit',sans-serif; }
+
+// //   .bill-input {
+// //     width:100%; background:rgba(248,250,255,0.9);
+// //     border:1.5px solid #e2e8f0; border-radius:10px;
+// //     padding:9px 13px; color:#1e293b; font-size:14px;
+// //     font-family:'Outfit',sans-serif; outline:none;
+// //     transition:all .2s;
+// //   }
+// //   .bill-input:focus {
+// //     border-color:#6366f1 !important;
+// //     box-shadow:0 0 0 3px rgba(99,102,241,.12) !important;
+// //     background:#fff !important;
+// //   }
+// //   .bill-input::placeholder { color:#94a3b8; }
+
+// //   /* Remove number input spinners */
+// //   input[type=number]::-webkit-inner-spin-button,
+// //   input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+// //   input[type=number] { -moz-appearance:textfield; }
+
+// //   .row-enter { animation:rowPop .25s ease both; }
+
+// //   .qty-btn {
+// //     width:16px; height:16px; border-radius:8px; border:none;
+// //     background:linear-gradient(135deg,#6366f1,#818cf8);
+// //     color:#fff; font-size:16px; cursor:pointer; display:flex;
+// //     align-items:center; justify-content:center; flex-shrink:0;
+// //     transition:all .15s;
+// //   }
+// //   .qty-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(99,102,241,.4); }
+// //   .qty-btn:active { transform:scale(.95); }
+
+// //   .del-btn {
+// //     width:30px; height:30px; border-radius:8px; border:none;
+// //     background:rgba(239,68,68,.08); color:#ef4444; cursor:pointer;
+// //     display:flex; align-items:center; justify-content:center;
+// //     transition:all .15s; font-size:16px; flex-shrink:0;
+// //   }
+// //   .del-btn:hover { background:rgba(239,68,68,.18); transform:scale(1.1); }
+
+// //   .gen-btn {
+// //     width:100%; padding:14px; border:none; border-radius:14px;
+// //     background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);
+// //     color:#fff; font-size:15px; font-weight:700;
+// //     font-family:'Outfit',sans-serif; cursor:pointer;
+// //     box-shadow:0 8px 24px rgba(99,102,241,.35);
+// //     transition:all .22s; letter-spacing:.02em;
+// //   }
+// //   .gen-btn:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(99,102,241,.45); }
+// //   .gen-btn:active { transform:translateY(0); }
+// //   .gen-btn:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+
+// //   .suggest-item {
+// //     padding:10px 14px; cursor:pointer;
+// //     font-family:'Outfit',sans-serif; font-size:13.5px; color:#334155;
+// //     transition:background .15s; border-bottom:1px solid #f1f5f9;
+// //     display:flex; justify-content:space-between; align-items:center;
+// //   }
+// //   .suggest-item:hover { background:#eef2ff; }
+// //   .suggest-item:last-child { border-bottom:none; }
+// // `;
+
+// // /* ── SVG Icons ───────────────────────────────────────────────────────────── */
+// // const IconUser = () => (
+// //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+// //     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+// //     <circle cx="12" cy="7" r="4"/>
+// //   </svg>
+// // );
+
+// // const IconBox = () => (
+// //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+// //     <polyline points="21 8 21 21 3 21 3 8"/>
+// //     <rect x="1" y="3" width="22" height="5"/>
+// //     <line x1="10" y1="12" x2="14" y2="12"/>
+// //   </svg>
+// // );
+
+// // const IconCard = () => (
+// //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+// //     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+// //     <line x1="1" y1="10" x2="23" y2="10"/>
+// //   </svg>
+// // );
+
+// // const IconReceipt = () => (
+// //   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+// //     <path d="M14 2H6a2 2 0 0 0-2 2v16l4-2 4 2 4-2 4 2V8z"/>
+// //     <line x1="9" y1="9" x2="15" y2="9"/>
+// //     <line x1="9" y1="13" x2="15" y2="13"/>
+// //   </svg>
+// // );
+
+// // /* ── Toast ──────────────────────────────────────────────────────────────── */
+// // function Toast({ toasts }) {
+// //   return (
+// //     <div style={{ position:"fixed", top:20, right:20, zIndex:99999, display:"flex", flexDirection:"column", gap:10 }}>
+// //       {toasts.map(t => (
+// //         <div key={t.id} style={{
+// //           display:"flex", alignItems:"center", gap:10,
+// //           background: t.type === "success"
+// //             ? "linear-gradient(135deg,#059669,#10b981)"
+// //             : t.type === "error"
+// //             ? "linear-gradient(135deg,#dc2626,#ef4444)"
+// //             : "linear-gradient(135deg,#d97706,#f59e0b)",
+// //           color:"#fff", borderRadius:12, padding:"13px 18px",
+// //           fontWeight:600, fontSize:13.5,
+// //           boxShadow:"0 8px 28px rgba(0,0,0,.18)",
+// //           animation:"toastIn .35s cubic-bezier(.4,0,.2,1) both",
+// //           fontFamily:"'Outfit',sans-serif", minWidth:260, maxWidth:340,
+// //         }}>
+// //           <span style={{
+// //             width:22, height:22, borderRadius:6,
+// //             background:"rgba(255,255,255,.22)",
+// //             display:"flex", alignItems:"center", justifyContent:"center",
+// //             fontSize:12, fontWeight:900, flexShrink:0,
+// //           }}>
+// //             {t.type === "success" ? "✓" : t.type === "error" ? "✕" : "!"}
+// //           </span>
+// //           <span style={{ flex:1 }}>{t.msg}</span>
+// //         </div>
+// //       ))}
+// //     </div>
+// //   );
+// // }
+
+// // /* ── Main ───────────────────────────────────────────────────────────────── */
+// // export default function Billing() {
+// //   const [rows, setRows]               = useState([emptyRow()]);
+// //   const [products, setProducts]       = useState([]);
+// //   const [suggestions, setSuggestions] = useState([]);
+// //   const [activeIndex, setActiveIndex] = useState(null);
+// //   const [customer, setCustomer]       = useState({ name: "", phone: "" });
+// //   const [payment, setPayment]         = useState({ method: "cash", received:0 });
+// //   const [generating, setGenerating]   = useState(false);
+// //   const [toasts, setToasts]           = useState([]);
+// //   const suggestRef                    = useRef(null);
+// //   const navigate                      = useNavigate();
+// // const [paymentType, setPaymentType] = useState("cash"); // cash / credit
+// // const [gstType, setGstType] = useState("with_gst"); // with_gst / without_gst
+
+
+// //   function emptyRow() {
+// //     return { product_id: null, name: "", price: 0, qty: 0, gst: 0, unit: "", stock: 0 };
+// //   }
+
+// //   const showToast = (msg, type = "error") => {
+// //     const id = Date.now() + Math.random();
+// //     setToasts(p => [...p, { id, msg, type }]);
+// //     setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3500);
+// //   };
+
+// //   useEffect(() => {
+// //     const s = document.createElement("style");
+// //     s.innerHTML = GLOBAL_CSS;
+// //     document.head.appendChild(s);
+// //     return () => document.head.removeChild(s);
+// //   }, []);
+
+// //   useEffect(() => {
+// //     const user = JSON.parse(localStorage.getItem("user"));
+// //     if (!user?.company_id) return;
+// //     api.get("/product/get.php", { params: { company_id: user.company_id } })
+// //        .then(r => { if (r.data.status) setProducts(r.data.data); });
+// //   }, []);
+
+// //   useEffect(() => {
+// //     const handler = (e) => {
+// //       if (suggestRef.current && !suggestRef.current.contains(e.target)) {
+// //         setSuggestions([]); setActiveIndex(null);
+// //       }
+// //     };
+// //     document.addEventListener("mousedown", handler);
+// //     return () => document.removeEventListener("mousedown", handler);
+// //   }, []);
+
+// //   const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
+// // const gstTotal = gstType === "with_gst"
+// //   ? rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0)
+// //   : 0;
+
+// // const total = subtotal + gstTotal;
+// //   const received = parseFloat(payment.received) || 0;
+// //   const balance  = received - total;
+
+// //    useEffect(() => {
+// //   setPayment((prev) => ({
+// //     ...prev,
+// //     received: total
+// //   }));
+// // }, [total]);
+// //   const handleSearch = (value, index) => {
+// //     updateRow(index, "name", value);
+// //     const filtered = value
+// //       ? products.filter(p => p.stock > 0 && p.product_name.toLowerCase().includes(value.toLowerCase()))
+// //       : products.filter(p => p.stock > 0);
+// //     setSuggestions(filtered);
+// //     setActiveIndex(index);
+// //   };
+
+// //   const selectProduct = async (product, index) => {
+// //     const user = JSON.parse(localStorage.getItem("user"));
+// //     const res  = await api.get("/product/get_by_id.php", {
+// //       params: { id: product.id, company_id: user.company_id }
+// //     });
+// //     if (!res.data.status) return;
+// //     const p = res.data.data;
+
+// //     const updated = [...rows];
+// //     updated[index] = {
+// //       product_id: p.id,
+// //       name:  p.product_name,
+// //       price: Number(p.price),
+// //       gst:   Number(p.gst_percentage),
+// //       qty:   1,
+// //       unit:  p.unit,
+// //       stock: Number(p.stock),
+// //     };
+
+// //     const last = updated[updated.length - 1];
+// //     if (last.name && last.price > 0) updated.push(emptyRow());
+
+// //     setRows(updated);
+// //     setSuggestions([]);
+// //     setActiveIndex(null);
+// //   };
+
+// //   const updateRow = (i, field, value) => {
+// //     const updated = [...rows];
+// //     if (field === "qty") {
+// //       const num = Number(value);
+// //       if (updated[i].stock && num > updated[i].stock) {
+// //         showToast(`Only ${updated[i].stock} items in stock!`, "warning");
+// //         updated[i][field] = updated[i].stock;
+// //       } else {
+// //         updated[i][field] = num < 0 ? 0 : num;
+// //       }
+// //     } else {
+// //       updated[i][field] = value;
+// //     }
+// //     setRows(updated);
+// //   };
+
+// //   const deleteRow = (i) => {
+// //     if (rows.length === 1) { setRows([emptyRow()]); return; }
+// //     setRows(rows.filter((_, idx) => idx !== i));
+// //   };
+
+// //   const validRows = rows.filter(r => r.name && r.price > 0 && r.qty > 0);
+
+// //   const handleGenerate = async () => {
+// //     if (!customer.name.trim()) { showToast("Customer name is required!", "error"); return; }
+// //     if (!/^[0-9]{10}$/.test(customer.phone)) { showToast("Enter a valid 10-digit phone number!", "error"); return; }
+// //     if (validRows.length === 0) { showToast("Add at least one product!", "error"); return; }
+// //     if (received <= 0) { showToast("Enter received amount!", "error"); return; }
+
+// //     const user = JSON.parse(localStorage.getItem("user"));
+// //     if (!user?.company_id) { showToast("Company ID missing!", "error"); return; }
+
+// //     setGenerating(true);
+// //     try {
+// //       const res = await api.post("/invoice/create_invoice.php", {
+// //   company_id: user.company_id,
+// //   customer_name: customer.name,
+// //   customer_phone: customer.phone,
+// //   products: validRows,
+
+// //   sub_total: subtotal,
+// //   gst_total: gstTotal,
+// //   total_amount: total,
+
+// //   paid_amount: paymentType === "credit" ? 0 : received,
+// //   balance_amount: paymentType === "credit" ? total : balance,
+
+// //   payment_method: payment.method,
+// //   payment_type: paymentType,
+// //   gst_type: gstType,
+// // });
+// //       if (res.data.status) {
+// //         showToast("Invoice generated!", "success");
+// //         setTimeout(() => navigate(`/invoice/${res.data.invoice_no}`), 800);
+// //       } else {
+// //         showToast(res.data.message || "Something went wrong", "error");
+// //       }
+// //     } catch {
+// //       showToast("Server error. Try again!", "error");
+// //     }
+// //     setGenerating(false);
+// //   };
+
+// //   const rowAmount = (r) => {
+// //     const base   = r.price * r.qty;
+// //     const gstAmt = (base * r.gst) / 100;
+// //     return base + gstAmt;
+// //   };
+
+// //   /* ─────────────────────────────── RENDER ─────────────────────────────── */
+// //   return (
+// //     <div style={{ minHeight:"100vh", background:"#f1f5fb", fontFamily:"'Outfit',sans-serif" }}>
+// //       <Toast toasts={toasts}/>
+
+// //       {/* ── Top Header ── */}
+// //       <div style={{
+// //         background:"linear-gradient(135deg,#312e81 0%,#4338ca 50%,#6366f1 100%)",
+// //         padding:"22px 32px 60px", position:"relative", overflow:"hidden",
+// //       }}>
+// //         {[{s:200,t:-60,r:-50,op:.08},{s:120,t:10,r:160,op:.06},{s:70,b:-20,l:80,op:.07}].map((c,i)=>(
+// //           <div key={i} style={{
+// //             position:"absolute", top:c.t, right:c.r, bottom:c.b, left:c.l,
+// //             width:c.s, height:c.s, borderRadius:"50%",
+// //             background:`rgba(255,255,255,${c.op})`, pointerEvents:"none",
+// //           }}/>
+// //         ))}
+// //         <div style={{ position:"relative" }}>
+// //           <h1 style={{ fontSize:28, fontWeight:900, color:"#fff", fontFamily:"'Syne',sans-serif", letterSpacing:"-.02em" }}>
+// //             Invoice Billing
+// //           </h1>
+// //           <p style={{ fontSize:13.5, color:"rgba(255,255,255,.65)", marginTop:3, fontWeight:400 }}>
+// //             Create and manage customer invoices
+// //           </p>
+// //         </div>
+// //       </div>
+
+// //       {/* ── Content ── */}
+// //       <div style={{ padding:"0 28px 40px", marginTop:-38 }}>
+
+// //         {/* ── Customer Card ── */}
+// //         <div style={{
+// //           background:"#fff", borderRadius:20,
+// //           boxShadow:"0 4px 24px rgba(99,102,241,.1), 0 1px 4px rgba(0,0,0,.05)",
+// //           border:"1.5px solid rgba(199,210,254,.5)",
+// //           padding:"22px 24px", marginBottom:18,
+// //           animation:"slideDown .4s ease both",
+// //         }}>
+// //           <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16 }}>
+// //             <div style={{
+// //               width:28, height:28, borderRadius:8,
+// //               background:"linear-gradient(135deg,#4338ca,#6366f1)",
+// //               display:"flex", alignItems:"center", justifyContent:"center",
+// //               boxShadow:"0 4px 10px rgba(99,102,241,.35)",
+// //             }}>
+// //               <IconUser />
+// //             </div>
+// //             <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
+// //               Bill To
+// //             </span>
+// //           </div>
+
+// //           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+// //             <div>
+// //               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+// //                 Customer Name *
+// //               </label>
+// //               <input
+// //                 className="bill-input"
+// //                 placeholder="Enter customer name"
+// //                 value={customer.name}
+// //                 onChange={e => setCustomer({...customer, name: e.target.value})}
+// //               />
+// //             </div>
+// //             <div>
+// //               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+// //                 Phone Number *
+// //               </label>
+// //               <input
+// //                 className="bill-input"
+// //                 placeholder="10-digit phone"
+// //                 value={customer.phone}
+// //                 maxLength={10}
+// //                 onChange={e => setCustomer({...customer, phone: e.target.value.replace(/\D/g,"").slice(0,10)})}
+// //               />
+// //             </div>
+// //           </div>
+// //         </div>
+
+// //         {/* ── Products Card ── */}
+// //         <div style={{
+// //           background:"#fff", borderRadius:20,
+// //           boxShadow:"0 4px 24px rgba(99,102,241,.1), 0 1px 4px rgba(0,0,0,.05)",
+// //           border:"1.5px solid rgba(199,210,254,.5)",
+// //           marginBottom:18, overflow:"visible",
+// //           animation:"slideDown .4s ease .05s both",
+// //         }}>
+// //           {/* Card header */}
+// //           <div style={{
+// //             padding:"18px 24px 14px",
+// //             borderBottom:"1.5px solid #f1f5f9",
+// //             display:"flex", alignItems:"center", justifyContent:"space-between",
+// //           }}>
+// //             <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+// //               <div style={{
+// //                 width:28, height:28, borderRadius:8,
+// //                 background:"linear-gradient(135deg,#4338ca,#6366f1)",
+// //                 display:"flex", alignItems:"center", justifyContent:"center",
+// //                 boxShadow:"0 4px 10px rgba(99,102,241,.35)",
+// //               }}>
+// //                 <IconBox />
+// //               </div>
+// //               <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
+// //                 Products
+// //               </span>
+// //             </div>
+// //             <span style={{
+// //               fontSize:11.5, fontWeight:700, color:"#6366f1",
+// //               background:"#eef2ff", borderRadius:20, padding:"4px 12px",
+// //               border:"1px solid #c7d2fe",
+// //             }}>
+// //               {validRows.length} item{validRows.length !== 1 ? "s" : ""}
+// //             </span>
+// //           </div>
+
+// //           {/* Table header */}
+// //           <div style={{
+// //             display:"grid",
+// //             gridTemplateColumns:"2fr 110px 100px 90px 100px 36px",
+// //             gap:8, padding:"10px 20px",
+// //             background:"#f8faff",
+// //             borderBottom:"1.5px solid #f1f5f9",
+// //           }}>
+// //             {["Product","Qty","Price (₹)","GST %","Amount (₹)",""].map((h,i) => (
+// //               <span key={i} style={{
+// //                 fontSize:10.5, fontWeight:700, color:"#6366f1",
+// //                 letterSpacing:".09em", textTransform:"uppercase",
+// //                 textAlign: i > 0 ? "center" : "left",
+// //               }}>{h}</span>
+// //             ))}
+// //           </div>
+
+// //           {/* Rows */}
+// //           <div style={{ padding:"8px 12px" }} ref={suggestRef}>
+// //             {rows.map((r, i) => (
+// //               <div key={i} className="row-enter" style={{
+// //                 display:"grid",
+// //                 gridTemplateColumns:"2fr 110px 100px 90px 100px 36px",
+// //                 gap:8, alignItems:"center",
+// //                 padding:"8px",
+// //                 borderBottom: i < rows.length - 1 ? "1px dashed #e2e8f0" : "none",
+// //                 borderRadius:12,
+// //                 background: r.name ? "rgba(238,242,255,.3)" : "transparent",
+// //                 transition:"background .2s",
+// //               }}>
+
+// //                 {/* Product search */}
+// //                 <div style={{ position:"relative" }}>
+// //                   <input
+// //                     className="bill-input"
+// //                     value={r.name}
+// //                     placeholder="Search product..."
+// //                     onFocus={() => {
+// //                       setSuggestions(products.filter(p => p.stock > 0));
+// //                       setActiveIndex(i);
+// //                     }}
+// //                     onChange={e => handleSearch(e.target.value, i)}
+// //                     style={{ fontSize:13.5 }}
+// //                   />
+// //                   {/* {r.unit && (
+// //                     <span style={{
+// //                       position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
+// //                       fontSize:10.5, fontWeight:700, color:"#6366f1",
+// //                       background:"#eef2ff", borderRadius:6, padding:"2px 7px",
+// //                     }}>{r.unit}</span>
+// //                   )} */}
+// //                   {activeIndex === i && suggestions.length > 0 && (
+// //                     <div style={{
+// //                       position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
+// //                       background:"#fff", border:"1.5px solid #c7d2fe",
+// //                       borderRadius:12, zIndex:9999, maxHeight:200, overflowY:"auto",
+// //                       boxShadow:"0 12px 40px rgba(99,102,241,.2)",
+// //                       animation:"slideDown .2s ease both",
+// //                     }}>
+// //                       {suggestions.map(s => (
+// //                         <div key={s.id} className="suggest-item"
+// //                           onMouseDown={() => selectProduct(s, i)}>
+// //                           <span style={{ fontWeight:600 }}>{s.product_name}</span>
+// //                           <span style={{
+// //                             fontSize:11.5, color: s.stock < 5 ? "#ef4444" : "#059669",
+// //                             fontWeight:700, background: s.stock < 5 ? "#fef2f2" : "#f0fdf4",
+// //                             borderRadius:6, padding:"2px 8px",
+// //                           }}>
+// //                             Stock: {s.stock}
+// //                           </span>
+// //                         </div>
+// //                       ))}
+// //                     </div>
+// //                   )}
+// //                 </div>
+
+// //                 {/* Qty */}
+// //                 <div style={{ display:"flex", alignItems:"center", gap:5, justifyContent:"center" }}>
+// //                   {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", Math.max(1, r.qty - 1))}>−</button> */}
+// //                  {/* Qty */}
+// // <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+// //   <input
+// //     type="number"
+// //     className="bill-input"
+// //     value={r.qty}
+// //     min={0}
+// //     onChange={e => updateRow(i, "qty", e.target.value)}
+// //     onWheel={e => e.target.blur()}
+// //     style={{ textAlign:"center", width:70, padding:"8px 6px", fontSize:14, fontWeight:700 }}
+// //   />
+// // </div>
+// //                   {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", r.qty + 1)}>+</button> */}
+// //                 </div>
+
+// //                 {/* Price */}
+// //                 <div style={{ textAlign:"center" }}>
+// //                   <span style={{ fontSize:14.5, fontWeight:700, color:"#1e293b", display:"block" }}>
+// //                     {r.price > 0 ? `₹${r.price.toFixed(2)}` : <span style={{color:"#cbd5e1"}}>—</span>}
+// //                   </span>
+// //                   {r.qty > 1 && r.price > 0 && (
+// //                     <span style={{ fontSize:10.5, color:"#94a3b8" }}>
+// //                       ×{r.qty} = ₹{(r.price * r.qty).toFixed(2)}
+// //                     </span>
+// //                   )}
+// //                 </div>
+
+// //                 {/* GST % */}
+// //                 <div style={{ textAlign:"center" }}>
+// //                   {r.gst > 0 ? (
+// //                     <div>
+// //                       <span style={{
+// //                         fontSize:13, fontWeight:700, color:"#d97706",
+// //                         background:"#fef3c7", borderRadius:8,
+// //                         padding:"3px 10px", display:"inline-block",
+// //                         border:"1px solid #fde68a",
+// //                       }}>
+// //                         {r.gst}%
+// //                       </span>
+// //                       {r.price > 0 && (
+// //                         <span style={{ fontSize:10.5, color:"#94a3b8", display:"block", marginTop:2 }}>
+// //                           ₹{((r.price * r.qty * r.gst) / 100).toFixed(2)}
+// //                         </span>
+// //                       )}
+// //                     </div>
+// //                   ) : (
+// //                     <span style={{ color:"#cbd5e1", fontSize:13 }}>—</span>
+// //                   )}
+// //                 </div>
+
+// //                 {/* Row Total */}
+// //                 <div style={{ textAlign:"center" }}>
+// //                   {r.price > 0 ? (
+// //                     <span style={{ fontSize:15, fontWeight:800, color:"#4338ca" }}>
+// //                       ₹{rowAmount(r).toFixed(2)}
+// //                     </span>
+// //                   ) : (
+// //                     <span style={{ color:"#cbd5e1" }}>—</span>
+// //                   )}
+// //                 </div>
+
+// //                 {/* Delete */}
+// //                 <button className="del-btn" onClick={() => deleteRow(i)}>×</button>
+// //               </div>
+// //             ))}
+// //           </div>
+
+// //           {/* Add row button */}
+// //           <div style={{ padding:"10px 20px 18px" }}>
+// //             <button
+// //               onClick={() => setRows([...rows, emptyRow()])}
+// //               style={{
+// //                 display:"flex", alignItems:"center", gap:7,
+// //                 background:"transparent", border:"1.5px dashed #c7d2fe",
+// //                 borderRadius:12, padding:"9px 18px", cursor:"pointer",
+// //                 color:"#6366f1", fontWeight:600, fontSize:13.5,
+// //                 fontFamily:"'Outfit',sans-serif", transition:"all .2s",
+// //               }}
+// //               onMouseEnter={e=>{e.currentTarget.style.background="#eef2ff";e.currentTarget.style.borderColor="#818cf8";}}
+// //               onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor="#c7d2fe";}}
+// //             >
+// //               <span style={{ fontSize:18, lineHeight:1 }}>+</span> Add Product Row
+// //             </button>
+// //           </div>
+// //         </div>
+
+// //         {/* ── Payment Card — right aligned ── */}
+// //         <div style={{ display:"flex", justifyContent:"flex-end" }}>
+// //           <div style={{
+// //             background:"#fff", borderRadius:20,
+// //             boxShadow:"0 4px 24px rgba(99,102,241,.1)",
+// //             border:"1.5px solid rgba(199,210,254,.5)",
+// //             padding:"22px 24px", width:400,
+// //             animation:"slideUp .4s ease .15s both",
+// //           }}>
+// //             {/* Card header */}
+// //             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:18 }}>
+// //               <div style={{
+// //                 width:28, height:28, borderRadius:8,
+// //                 background:"linear-gradient(135deg,#4338ca,#6366f1)",
+// //                 display:"flex", alignItems:"center", justifyContent:"center",
+// //               }}>
+// //                 <IconCard />
+// //               </div>
+// //               <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
+// //                 Payment
+// //               </span>
+// //             </div>
+
+// //             {/* Totals */}
+// //             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
+// //               <span style={{ color:"#64748b", fontSize:14 }}>Sub Total <span style={{ fontSize:11, color:"#94a3b8" }}>(excl. GST)</span></span>
+// //               <span style={{ fontWeight:700, color:"#1e293b", fontSize:14 }}>₹{subtotal.toFixed(2)}</span>
+// //             </div>
+// //             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
+// //               <span style={{ color:"#64748b", fontSize:14 }}>GST Total</span>
+// //               <span style={{ fontWeight:700, color:"#d97706", fontSize:14 }}>₹{gstTotal.toFixed(2)}</span>
+// //             </div>
+// //             <div style={{
+// //               display:"flex", justifyContent:"space-between",
+// //               background:"linear-gradient(135deg,#eef2ff,#e0e7ff)",
+// //               borderRadius:12, padding:"12px 16px", marginBottom:18,
+// //               border:"1.5px solid #c7d2fe",
+// //             }}>
+// //               <span style={{ fontWeight:800, color:"#312e81", fontSize:16 }}>Grand Total</span>
+// //               <span style={{ fontWeight:900, color:"#4338ca", fontSize:18 }}>₹{total.toFixed(2)}</span>
+// //             </div>
+
+// // <label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
+// //   Payment Type
+// // </label>
+
+// // <div style={{
+// //   display: "flex",
+// //   background: "#f1f5f9",
+// //   padding: 4,
+// //   borderRadius: 14,
+// //   gap: 6,
+// //   marginBottom: 14
+// // }}>
+// //   <button
+// //     onClick={()=>setPaymentType("cash")}
+// //     style={{
+// //       flex: 1,
+// //       padding: "10px 0",
+// //       borderRadius: 10,
+// //       border: "none",
+// //       cursor: "pointer",
+// //       fontSize: 13,
+// //       fontWeight: 700,
+// //       fontFamily: "'Outfit', sans-serif",
+// //       transition: "all .25s",
+// //       background: paymentType==="cash"
+// //         ? "linear-gradient(135deg,#4f46e5,#6366f1)"
+// //         : "transparent",
+// //       color: paymentType==="cash" ? "#fff" : "#64748b",
+// //       boxShadow: paymentType==="cash"
+// //         ? "0 6px 16px rgba(99,102,241,.35)"
+// //         : "none",
+// //       transform: paymentType==="cash" ? "scale(1.03)" : "scale(1)"
+// //     }}
+// //   >
+// //     💵 Cash
+// //   </button>
+
+// //   <button
+// //     onClick={()=>setPaymentType("credit")}
+// //     style={{
+// //       flex: 1,
+// //       padding: "10px 0",
+// //       borderRadius: 10,
+// //       border: "none",
+// //       cursor: "pointer",
+// //       fontSize: 13,
+// //       fontWeight: 700,
+// //       fontFamily: "'Outfit', sans-serif",
+// //       transition: "all .25s",
+// //       background: paymentType==="credit"
+// //         ? "linear-gradient(135deg,#4f46e5,#6366f1)"
+// //         : "transparent",
+// //       color: paymentType==="credit" ? "#fff" : "#64748b",
+// //       boxShadow: paymentType==="credit"
+// //         ? "0 6px 16px rgba(99,102,241,.35)"
+// //         : "none",
+// //       transform: paymentType==="credit" ? "scale(1.03)" : "scale(1)"
+// //     }}
+// //   >
+// //     🧾 Credit
+// //   </button>
+// // </div>
+
+
+
+
+// // <label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
+// //   GST Type
+// // </label>
+
+// // <div style={{
+// //   display: "flex",
+// //   background: "#f1f5f9",
+// //   padding: 4,
+// //   borderRadius: 14,
+// //   gap: 6,
+// //   marginBottom: 14
+// // }}>
+// //   <button
+// //     onClick={()=>setGstType("without_gst")}
+// //     style={{
+// //       flex: 1,
+// //       padding: "10px 0",
+// //       borderRadius: 10,
+// //       border: "none",
+// //       cursor: "pointer",
+// //       fontSize: 13,
+// //       fontWeight: 700,
+// //       fontFamily: "'Outfit', sans-serif",
+// //       transition: "all .25s",
+// //       background: gstType==="without_gst"
+// //         ? "linear-gradient(135deg,#10b981,#34d399)"
+// //         : "transparent",
+// //       color: gstType==="without_gst" ? "#fff" : "#64748b",
+// //       boxShadow: gstType==="without_gst"
+// //         ? "0 6px 16px rgba(16,185,129,.35)"
+// //         : "none",
+// //       transform: gstType==="without_gst" ? "scale(1.03)" : "scale(1)"
+// //     }}
+// //   >
+// //     💰 Cash
+// //   </button>
+
+// //   <button
+// //     onClick={()=>setGstType("with_gst")}
+// //     style={{
+// //       flex: 1,
+// //       padding: "10px 0",
+// //       borderRadius: 10,
+// //       border: "none",
+// //       cursor: "pointer",
+// //       fontSize: 13,
+// //       fontWeight: 700,
+// //       fontFamily: "'Outfit', sans-serif",
+// //       transition: "all .25s",
+// //       background: gstType==="with_gst"
+// //         ? "linear-gradient(135deg,#f59e0b,#fbbf24)"
+// //         : "transparent",
+// //       color: gstType==="with_gst" ? "#fff" : "#64748b",
+// //       boxShadow: gstType==="with_gst"
+// //         ? "0 6px 16px rgba(245,158,11,.35)"
+// //         : "none",
+// //       transform: gstType==="with_gst" ? "scale(1.03)" : "scale(1)"
+// //     }}
+// //   >
+// //     🧾 GST
+// //   </button>
+// // </div>
+
+// // <input
+// //   disabled={paymentType === "credit"}
+// //   value={paymentType === "credit" ? 0 : payment.received}
+// //   style={{
+// //     opacity: paymentType === "credit" ? 0.6 : 1,
+// //     cursor: paymentType === "credit" ? "not-allowed" : "text"
+// //   }}
+// // />
+
+// //             {/* Payment method */}
+// //             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+// //               Payment Method
+// //             </label>
+// //             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:16 }}>
+// //               {[
+// //                 { val:"cash", label:"Cash" },
+// //                 { val:"upi",  label:"UPI" },
+// //                 { val:"card", label:"Card" },
+// //               ].map(m => (
+// //                 <button key={m.val}
+// //                   onClick={() => setPayment(p => ({...p, method: m.val}))}
+// //                   style={{
+// //                     padding:"10px 6px", borderRadius:12, cursor:"pointer",
+// //                     fontFamily:"'Outfit',sans-serif", fontSize:13, fontWeight:700,
+// //                     border: payment.method === m.val ? "2px solid #6366f1" : "1.5px solid #e2e8f0",
+// //                     background: payment.method === m.val ? "linear-gradient(135deg,#eef2ff,#e0e7ff)" : "#f8faff",
+// //                     color: payment.method === m.val ? "#4338ca" : "#64748b",
+// //                     transition:"all .18s",
+// //                     boxShadow: payment.method === m.val ? "0 4px 12px rgba(99,102,241,.2)" : "none",
+// //                   }}
+// //                 >
+// //                   {m.label}
+// //                 </button>
+// //               ))}
+// //             </div>
+
+// //             {/* Amount Received — no spinner, no auto-fill */}
+// //             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+// //               Amount Received (₹)
+// //             </label>
+// //             <input
+// //               type="number"
+// //               className="bill-input"
+// //               placeholder={`₹${total.toFixed(2)}`}
+// //               value={payment.received}
+// //               onChange={e => setPayment(p => ({...p, received: e.target.value}))}
+// //               onWheel={(e) => e.target.blur()}
+// //               style={{ fontSize:16, fontWeight:700, marginBottom:14 }}
+// //             />
+
+// //             {/* Balance */}
+// //             {received > 0 && (
+// //               <div style={{
+// //                 display:"flex", justifyContent:"space-between", alignItems:"center",
+// //                 padding:"12px 16px", borderRadius:12, marginBottom:20,
+// //                 background: balance < 0 ? "#fef2f2" : "#f0fdf4",
+// //                 border: `1.5px solid ${balance < 0 ? "#fecaca" : "#bbf7d0"}`,
+// //               }}>
+// //                 <span style={{ fontWeight:700, color: balance < 0 ? "#dc2626" : "#059669", fontSize:14 }}>
+// //                   {balance < 0 ? "Balance Due" : "Change Return"}
+// //                 </span>
+// //                 <span style={{ fontWeight:900, fontSize:16, color: balance < 0 ? "#dc2626" : "#059669" }}>
+// //                   ₹{Math.abs(balance).toFixed(2)}
+// //                 </span>
+// //               </div>
+// //             )}
+
+// //             {/* Generate */}
+// //             <button className="gen-btn" onClick={handleGenerate} disabled={generating}>
+// //               {generating ? (
+// //                 <span style={{ display:"flex", alignItems:"center", gap:10, justifyContent:"center" }}>
+// //                   <span style={{ width:16,height:16,border:"2.5px solid rgba(255,255,255,.4)",borderTopColor:"#fff",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite" }}/>
+// //                   Generating…
+// //                 </span>
+// //               ) : (
+// //                 <span style={{ display:"flex", alignItems:"center", gap:8, justifyContent:"center" }}>
+// //                   <IconReceipt /> Generate Invoice
+// //                 </span>
+// //               )}
+// //             </button>
+// //           </div>
+// //         </div>
+
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+
 // import { useState, useEffect, useRef } from "react";
 // import { useNavigate } from "react-router-dom";
 // import api from "../../services/api";
@@ -13,6 +867,7 @@
 //   @keyframes toastOut   { from{opacity:1;transform:none} to{opacity:0;transform:translateX(120px)} }
 //   @keyframes spin       { to{transform:rotate(360deg)} }
 //   @keyframes rowPop     { 0%{opacity:0;transform:translateX(-8px)} 100%{opacity:1;transform:none} }
+//   @keyframes pulseGlow  { 0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.25)} 50%{box-shadow:0 0 0 6px rgba(99,102,241,0)} }
 
 //   * { box-sizing:border-box; margin:0; padding:0; }
 //   body { font-family:'Outfit',sans-serif; }
@@ -30,23 +885,13 @@
 //     background:#fff !important;
 //   }
 //   .bill-input::placeholder { color:#94a3b8; }
+//   .bill-input:disabled { background:#f1f5f9; color:#94a3b8; cursor:not-allowed; }
 
-//   /* Remove number input spinners */
 //   input[type=number]::-webkit-inner-spin-button,
 //   input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
 //   input[type=number] { -moz-appearance:textfield; }
 
 //   .row-enter { animation:rowPop .25s ease both; }
-
-//   .qty-btn {
-//     width:16px; height:16px; border-radius:8px; border:none;
-//     background:linear-gradient(135deg,#6366f1,#818cf8);
-//     color:#fff; font-size:16px; cursor:pointer; display:flex;
-//     align-items:center; justify-content:center; flex-shrink:0;
-//     transition:all .15s;
-//   }
-//   .qty-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(99,102,241,.4); }
-//   .qty-btn:active { transform:scale(.95); }
 
 //   .del-btn {
 //     width:30px; height:30px; border-radius:8px; border:none;
@@ -76,16 +921,40 @@
 //   }
 //   .suggest-item:hover { background:#eef2ff; }
 //   .suggest-item:last-child { border-bottom:none; }
+
+//   .customer-suggest-item {
+//     padding:11px 14px; cursor:pointer;
+//     font-family:'Outfit',sans-serif; font-size:13px; color:#334155;
+//     transition:background .15s; border-bottom:1px solid #f1f5f9;
+//   }
+//   .customer-suggest-item:hover { background:#eef2ff; }
+//   .customer-suggest-item:last-child { border-bottom:none; }
+
+//   .seg-btn {
+//     flex:1; padding:10px 0; border-radius:10px; border:none;
+//     cursor:pointer; font-size:13px; font-weight:700;
+//     font-family:'Outfit',sans-serif; transition:all .25s;
+//   }
+
+//   .bill-type-dropdown {
+//     width:100%; padding:10px 14px; border:1.5px solid #e2e8f0; border-radius:12px;
+//     background:#f8faff; color:#1e293b; font-size:13.5px; font-weight:600;
+//     font-family:'Outfit',sans-serif; outline:none; cursor:pointer;
+//     transition:all .2s; appearance:none;
+//     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+//     background-repeat:no-repeat; background-position:right 12px center;
+//     padding-right:36px;
+//   }
+//   .bill-type-dropdown:focus { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.12); }
 // `;
 
-// /* ── SVG Icons ───────────────────────────────────────────────────────────── */
+// /* ── Icons ──────────────────────────────────────────────────────────────── */
 // const IconUser = () => (
 //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 //     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
 //     <circle cx="12" cy="7" r="4"/>
 //   </svg>
 // );
-
 // const IconBox = () => (
 //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 //     <polyline points="21 8 21 21 3 21 3 8"/>
@@ -93,19 +962,28 @@
 //     <line x1="10" y1="12" x2="14" y2="12"/>
 //   </svg>
 // );
-
 // const IconCard = () => (
 //   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 //     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
 //     <line x1="1" y1="10" x2="23" y2="10"/>
 //   </svg>
 // );
-
 // const IconReceipt = () => (
 //   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 //     <path d="M14 2H6a2 2 0 0 0-2 2v16l4-2 4 2 4-2 4 2V8z"/>
 //     <line x1="9" y1="9" x2="15" y2="9"/>
 //     <line x1="9" y1="13" x2="15" y2="13"/>
+//   </svg>
+// );
+// const IconGST = () => (
+//   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+//     <path d="M9 14l6-6"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="15" r="1.5"/>
+//     <rect x="3" y="3" width="18" height="18" rx="3"/>
+//   </svg>
+// );
+// const IconPhone = () => (
+//   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+//     <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
 //   </svg>
 // );
 
@@ -116,9 +994,9 @@
 //       {toasts.map(t => (
 //         <div key={t.id} style={{
 //           display:"flex", alignItems:"center", gap:10,
-//           background: t.type === "success"
+//           background: t.type==="success"
 //             ? "linear-gradient(135deg,#059669,#10b981)"
-//             : t.type === "error"
+//             : t.type==="error"
 //             ? "linear-gradient(135deg,#dc2626,#ef4444)"
 //             : "linear-gradient(135deg,#d97706,#f59e0b)",
 //           color:"#fff", borderRadius:12, padding:"13px 18px",
@@ -133,7 +1011,7 @@
 //             display:"flex", alignItems:"center", justifyContent:"center",
 //             fontSize:12, fontWeight:900, flexShrink:0,
 //           }}>
-//             {t.type === "success" ? "✓" : t.type === "error" ? "✕" : "!"}
+//             {t.type==="success" ? "✓" : t.type==="error" ? "✕" : "!"}
 //           </span>
 //           <span style={{ flex:1 }}>{t.msg}</span>
 //         </div>
@@ -142,32 +1020,64 @@
 //   );
 // }
 
-// /* ── Main ───────────────────────────────────────────────────────────────── */
+// /* ── Helpers ─────────────────────────────────────────────────────────────── */
+// function emptyRow() {
+//   return { product_id:null, name:"", price:0, qty:0, gst:0, unit:"", stock:0 };
+// }
+
+// /* ══════════════════════════════════════════════════════════════════════════
+//    MAIN COMPONENT
+// ══════════════════════════════════════════════════════════════════════════ */
 // export default function Billing() {
+//   const navigate = useNavigate();
+
+//   /* ── Product rows ── */
 //   const [rows, setRows]               = useState([emptyRow()]);
 //   const [products, setProducts]       = useState([]);
 //   const [suggestions, setSuggestions] = useState([]);
 //   const [activeIndex, setActiveIndex] = useState(null);
-//   const [customer, setCustomer]       = useState({ name: "", phone: "" });
-//   const [payment, setPayment]         = useState({ method: "cash", received:0 });
-//   const [generating, setGenerating]   = useState(false);
-//   const [toasts, setToasts]           = useState([]);
 //   const suggestRef                    = useRef(null);
-//   const navigate                      = useNavigate();
-// const [paymentType, setPaymentType] = useState("cash"); // cash / credit
-// const [gstType, setGstType] = useState("with_gst"); // with_gst / without_gst
 
+//   /* ── Customer ── */
+//   const [customer, setCustomer] = useState({
+//     id:      null,   // filled after save/lookup
+//     name:    "",
+//     phone:   "",
+//     address: "",
+//     type:    "retail", // retail / wholesale / regular
+//     gst_no:  "",       // only when bill_type = "gst_bill"
+//   });
+//   const [customerSuggestions, setCustomerSuggestions] = useState([]);
+//   const [customerSearchLoading, setCustomerSearchLoading] = useState(false);
+//   const customerSuggestRef = useRef(null);
+//   const customerSearchTimer = useRef(null);
 
-//   function emptyRow() {
-//     return { product_id: null, name: "", price: 0, qty: 0, gst: 0, unit: "", stock: 0 };
-//   }
+//   /* ── Bill / Payment ── */
+//   const [billType, setBillType]     = useState("cash_bill"); // cash_bill / gst_bill
+//   const [paymentMethod, setPaymentMethod] = useState("cash"); // cash / online / upi / credit
+//   const [payment, setPayment]       = useState({ received: 0 });
 
-//   const showToast = (msg, type = "error") => {
-//     const id = Date.now() + Math.random();
-//     setToasts(p => [...p, { id, msg, type }]);
-//     setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3500);
-//   };
+//   /* ── UI ── */
+//   const [generating, setGenerating] = useState(false);
+//   const [toasts, setToasts]         = useState([]);
 
+//   /* ── Derived totals ── */
+//   const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
+//   const gstTotal = billType === "gst_bill"
+//     ? rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0)
+//     : 0;
+//   const total    = subtotal + gstTotal;
+//   const received = parseFloat(payment.received) || 0;
+//   const balance  = received - total;
+
+//   /* Auto-fill received amount when total changes (only for non-credit) */
+//   useEffect(() => {
+//     if (paymentMethod !== "credit") {
+//       setPayment(p => ({ ...p, received: total }));
+//     }
+//   }, [total, paymentMethod]);
+
+//   /* ── Global CSS ── */
 //   useEffect(() => {
 //     const s = document.createElement("style");
 //     s.innerHTML = GLOBAL_CSS;
@@ -175,6 +1085,7 @@
 //     return () => document.head.removeChild(s);
 //   }, []);
 
+//   /* ── Load products ── */
 //   useEffect(() => {
 //     const user = JSON.parse(localStorage.getItem("user"));
 //     if (!user?.company_id) return;
@@ -182,31 +1093,63 @@
 //        .then(r => { if (r.data.status) setProducts(r.data.data); });
 //   }, []);
 
+//   /* ── Close dropdowns on outside click ── */
 //   useEffect(() => {
-//     const handler = (e) => {
+//     const handler = e => {
 //       if (suggestRef.current && !suggestRef.current.contains(e.target)) {
 //         setSuggestions([]); setActiveIndex(null);
+//       }
+//       if (customerSuggestRef.current && !customerSuggestRef.current.contains(e.target)) {
+//         setCustomerSuggestions([]);
 //       }
 //     };
 //     document.addEventListener("mousedown", handler);
 //     return () => document.removeEventListener("mousedown", handler);
 //   }, []);
 
-//   const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
-// const gstTotal = gstType === "with_gst"
-//   ? rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0)
-//   : 0;
+//   const showToast = (msg, type = "error") => {
+//     const id = Date.now() + Math.random();
+//     setToasts(p => [...p, { id, msg, type }]);
+//     setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3500);
+//   };
 
-// const total = subtotal + gstTotal;
-//   const received = parseFloat(payment.received) || 0;
-//   const balance  = received - total;
+//   /* ════════════════════════════════════════════════════════════════════════
+//      CUSTOMER SEARCH (search by name or phone from customers table)
+//   ════════════════════════════════════════════════════════════════════════ */
+//   const handleCustomerSearch = (field, value) => {
+//     setCustomer(c => ({ ...c, [field]: value, id: null }));
+//     clearTimeout(customerSearchTimer.current);
+//     if (!value || value.length < 2) { setCustomerSuggestions([]); return; }
+//     customerSearchTimer.current = setTimeout(async () => {
+//       const user = JSON.parse(localStorage.getItem("user"));
+//       if (!user?.company_id) return;
+//       setCustomerSearchLoading(true);
+//       try {
+//         const res = await api.get("/customer/customer_search.php", {
+//           params: { company_id: user.company_id, q: value }
+//         });
+//         if (res.data.status) setCustomerSuggestions(res.data.data || []);
+//         else setCustomerSuggestions([]);
+//       } catch { setCustomerSuggestions([]); }
+//       setCustomerSearchLoading(false);
+//     }, 300);
+//   };
 
-//    useEffect(() => {
-//   setPayment((prev) => ({
-//     ...prev,
-//     received: total
-//   }));
-// }, [total]);
+//   const selectCustomer = (c) => {
+//     setCustomer({
+//       id:      c.id,
+//       name:    c.name,
+//       phone:   c.phone,
+//       // address: c.address || "",
+//       // type:    c.type || "retail",
+//       gst_no:  c.gst_no || "",
+//     });
+//     setCustomerSuggestions([]);
+//   };
+
+//   /* ════════════════════════════════════════════════════════════════════════
+//      PRODUCT ROW LOGIC
+//   ════════════════════════════════════════════════════════════════════════ */
 //   const handleSearch = (value, index) => {
 //     updateRow(index, "name", value);
 //     const filtered = value
@@ -223,7 +1166,6 @@
 //     });
 //     if (!res.data.status) return;
 //     const p = res.data.data;
-
 //     const updated = [...rows];
 //     updated[index] = {
 //       product_id: p.id,
@@ -234,10 +1176,7 @@
 //       unit:  p.unit,
 //       stock: Number(p.stock),
 //     };
-
-//     const last = updated[updated.length - 1];
-//     if (last.name && last.price > 0) updated.push(emptyRow());
-
+//     if (updated[updated.length - 1].name) updated.push(emptyRow());
 //     setRows(updated);
 //     setSuggestions([]);
 //     setActiveIndex(null);
@@ -266,53 +1205,90 @@
 
 //   const validRows = rows.filter(r => r.name && r.price > 0 && r.qty > 0);
 
+//   const rowAmount = (r) => {
+//     const base   = r.price * r.qty;
+//     const gstAmt = billType === "gst_bill" ? (base * r.gst) / 100 : 0;
+//     return base + gstAmt;
+//   };
+
+//   /* ════════════════════════════════════════════════════════════════════════
+//      SAVE CUSTOMER → then create invoice
+//   ════════════════════════════════════════════════════════════════════════ */
+//   const saveOrGetCustomer = async (user) => {
+//     // If already selected from DB, return existing id
+//     if (customer.id) return customer.id;
+
+//     // Otherwise create new customer
+//     const res = await api.post("/customer/customer_save.php", {
+//       company_id: user.company_id,
+//       name:       customer.name,
+//       phone:      customer.phone,
+//       // address:    customer.address,
+//       // type:       customer.type,
+//       gst_no:     billType === "gst_bill" ? customer.gst_no : "",
+//     });
+
+//     if (res.data.status) return res.data.customer_id;
+//     throw new Error(res.data.message || "Failed to save customer");
+//   };
+
+//   /* ════════════════════════════════════════════════════════════════════════
+//      GENERATE INVOICE
+//   ════════════════════════════════════════════════════════════════════════ */
 //   const handleGenerate = async () => {
+//     /* Validations */
 //     if (!customer.name.trim()) { showToast("Customer name is required!", "error"); return; }
 //     if (!/^[0-9]{10}$/.test(customer.phone)) { showToast("Enter a valid 10-digit phone number!", "error"); return; }
+//     // if (customer.address.trim().length < 3) { showToast("Enter customer address!", "error"); return; }
+//     if (billType === "gst_bill" && !customer.gst_no.trim()) {
+//       showToast("GST Number is mandatory for GST Bill!", "error"); return;
+//     }
 //     if (validRows.length === 0) { showToast("Add at least one product!", "error"); return; }
-//     if (received <= 0) { showToast("Enter received amount!", "error"); return; }
+//     if (paymentMethod !== "credit" && received <= 0) {
+//       showToast("Enter received amount!", "error"); return;
+//     }
 
 //     const user = JSON.parse(localStorage.getItem("user"));
 //     if (!user?.company_id) { showToast("Company ID missing!", "error"); return; }
 
 //     setGenerating(true);
 //     try {
+//       /* Step 1: Save / get customer */
+//       const customer_id = await saveOrGetCustomer(user);
+
+//       /* Step 2: Create invoice */
 //       const res = await api.post("/invoice/create_invoice.php", {
-//   company_id: user.company_id,
-//   customer_name: customer.name,
-//   customer_phone: customer.phone,
-//   products: validRows,
+//         company_id:     user.company_id,
+//         customer_id,
+//         customer_name:  customer.name,
+//         customer_phone: customer.phone,
+//         products:       validRows,
+//         sub_total:      subtotal,
+//         gst_total:      gstTotal,
+//         total_amount:   total,
+//         paid_amount:    paymentMethod === "credit" ? 0 : received,
+//         balance_amount: paymentMethod === "credit" ? total : Math.max(0, total - received),
+//         payment_method: paymentMethod,
+//         payment_type:   paymentMethod === "credit" ? "credit" : "cash",
+//         gst_type:       billType === "gst_bill" ? "with_gst" : "without_gst",
+//         gst_no:         billType === "gst_bill" ? customer.gst_no : "",
+//       });
 
-//   sub_total: subtotal,
-//   gst_total: gstTotal,
-//   total_amount: total,
-
-//   paid_amount: paymentType === "credit" ? 0 : received,
-//   balance_amount: paymentType === "credit" ? total : balance,
-
-//   payment_method: payment.method,
-//   payment_type: paymentType,
-//   gst_type: gstType,
-// });
 //       if (res.data.status) {
 //         showToast("Invoice generated!", "success");
 //         setTimeout(() => navigate(`/invoice/${res.data.invoice_no}`), 800);
 //       } else {
 //         showToast(res.data.message || "Something went wrong", "error");
 //       }
-//     } catch {
-//       showToast("Server error. Try again!", "error");
+//     } catch (err) {
+//       showToast(err.message || "Server error. Try again!", "error");
 //     }
 //     setGenerating(false);
 //   };
 
-//   const rowAmount = (r) => {
-//     const base   = r.price * r.qty;
-//     const gstAmt = (base * r.gst) / 100;
-//     return base + gstAmt;
-//   };
-
-//   /* ─────────────────────────────── RENDER ─────────────────────────────── */
+//   /* ════════════════════════════════════════════════════════════════════════
+//      RENDER
+//   ════════════════════════════════════════════════════════════════════════ */
 //   return (
 //     <div style={{ minHeight:"100vh", background:"#f1f5fb", fontFamily:"'Outfit',sans-serif" }}>
 //       <Toast toasts={toasts}/>
@@ -322,27 +1298,68 @@
 //         background:"linear-gradient(135deg,#312e81 0%,#4338ca 50%,#6366f1 100%)",
 //         padding:"22px 32px 60px", position:"relative", overflow:"hidden",
 //       }}>
-//         {[{s:200,t:-60,r:-50,op:.08},{s:120,t:10,r:160,op:.06},{s:70,b:-20,l:80,op:.07}].map((c,i)=>(
+//         {[{s:200,t:-60,r:-50,op:.08},{s:120,t:10,r:160,op:.06},{s:70,b:-20,l:80,op:.07}].map((c,i) => (
 //           <div key={i} style={{
 //             position:"absolute", top:c.t, right:c.r, bottom:c.b, left:c.l,
 //             width:c.s, height:c.s, borderRadius:"50%",
 //             background:`rgba(255,255,255,${c.op})`, pointerEvents:"none",
 //           }}/>
 //         ))}
-//         <div style={{ position:"relative" }}>
-//           <h1 style={{ fontSize:28, fontWeight:900, color:"#fff", fontFamily:"'Syne',sans-serif", letterSpacing:"-.02em" }}>
-//             Invoice Billing
-//           </h1>
-//           <p style={{ fontSize:13.5, color:"rgba(255,255,255,.65)", marginTop:3, fontWeight:400 }}>
-//             Create and manage customer invoices
-//           </p>
+//         <div style={{ position:"relative", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:14 }}>
+//           <div>
+//             <h1 style={{ fontSize:28, fontWeight:900, color:"#fff", fontFamily:"'Syne',sans-serif", letterSpacing:"-.02em" }}>
+//               Invoice Billing
+//             </h1>
+//             <p style={{ fontSize:13.5, color:"rgba(255,255,255,.65)", marginTop:3, fontWeight:400 }}>
+//               Create and manage customer invoices
+//             </p>
+//           </div>
+
+//           {/* ── Bill Type Dropdown ── */}
+//           <div style={{ position:"relative", minWidth:180 }}>
+//             <label style={{
+//               fontSize:10.5, fontWeight:700, color:"rgba(255,255,255,.7)",
+//               letterSpacing:".08em", textTransform:"uppercase",
+//               display:"block", marginBottom:6,
+//             }}>Bill Type</label>
+//             <div style={{ position:"relative" }}>
+//               <select
+//                 className="bill-type-dropdown"
+//                 value={billType}
+//                 onChange={e => setBillType(e.target.value)}
+//                 style={{
+//                   background:"rgba(255,255,255,.95)",
+//                   fontWeight:700,
+//                   color: billType === "gst_bill" ? "#d97706" : "#059669",
+//                   border:"2px solid rgba(255,255,255,.4)",
+//                 }}
+//               >
+//                 <option value="cash_bill">💰 Cash Bill</option>
+//                 <option value="gst_bill">🧾 GST Bill</option>
+//               </select>
+//             </div>
+//             {/* Badge */}
+//             <div style={{
+//               display:"inline-flex", alignItems:"center", gap:5,
+//               marginTop:6, background:"rgba(255,255,255,.15)",
+//               borderRadius:20, padding:"3px 10px",
+//               fontSize:11, color:"rgba(255,255,255,.8)", fontWeight:600,
+//             }}>
+//               {billType === "gst_bill"
+//                 ? <><IconGST/> GST will be calculated</>
+//                 : <>No GST on this bill</>
+//               }
+//             </div>
+//           </div>
 //         </div>
 //       </div>
 
 //       {/* ── Content ── */}
 //       <div style={{ padding:"0 28px 40px", marginTop:-38 }}>
 
-//         {/* ── Customer Card ── */}
+//         {/* ══════════════════════════════════════════════
+//             CUSTOMER CARD
+//         ══════════════════════════════════════════════ */}
 //         <div style={{
 //           background:"#fff", borderRadius:20,
 //           boxShadow:"0 4px 24px rgba(99,102,241,.1), 0 1px 4px rgba(0,0,0,.05)",
@@ -350,32 +1367,91 @@
 //           padding:"22px 24px", marginBottom:18,
 //           animation:"slideDown .4s ease both",
 //         }}>
-//           <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16 }}>
-//             <div style={{
-//               width:28, height:28, borderRadius:8,
-//               background:"linear-gradient(135deg,#4338ca,#6366f1)",
-//               display:"flex", alignItems:"center", justifyContent:"center",
-//               boxShadow:"0 4px 10px rgba(99,102,241,.35)",
-//             }}>
-//               <IconUser />
+//           {/* Card Header */}
+//           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:18 }}>
+//             <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+//               <div style={{
+//                 width:28, height:28, borderRadius:8,
+//                 background:"linear-gradient(135deg,#4338ca,#6366f1)",
+//                 display:"flex", alignItems:"center", justifyContent:"center",
+//                 boxShadow:"0 4px 10px rgba(99,102,241,.35)",
+//               }}>
+//                 <IconUser/>
+//               </div>
+//               <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
+//                 Customer Details
+//               </span>
 //             </div>
-//             <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
-//               Bill To
-//             </span>
+//             {customer.id && (
+//               <div style={{
+//                 display:"flex", alignItems:"center", gap:6,
+//                 background:"#f0fdf4", border:"1.5px solid #bbf7d0",
+//                 borderRadius:20, padding:"5px 12px",
+//                 fontSize:12, fontWeight:700, color:"#059669",
+//               }}>
+//                 <span style={{ width:7, height:7, borderRadius:"50%", background:"#10b981", display:"inline-block" }}/>
+//                 Existing Customer
+//               </div>
+//             )}
 //           </div>
 
-//           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
-//             <div>
+//           {/* Row 1: Name + Phone */}
+//           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:14 }}>
+
+//             {/* Customer Name with autocomplete */}
+//             <div ref={customerSuggestRef} style={{ position:"relative" }}>
 //               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
 //                 Customer Name *
 //               </label>
 //               <input
 //                 className="bill-input"
-//                 placeholder="Enter customer name"
+//                 placeholder="Search or enter customer name"
 //                 value={customer.name}
-//                 onChange={e => setCustomer({...customer, name: e.target.value})}
+//                 onChange={e => handleCustomerSearch("name", e.target.value)}
+//                 onFocus={() => {
+//                   if (customer.name.length >= 2) handleCustomerSearch("name", customer.name);
+//                 }}
 //               />
+//               {/* Autocomplete dropdown */}
+//               {customerSuggestions.length > 0 && (
+//                 <div style={{
+//                   position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
+//                   background:"#fff", border:"1.5px solid #c7d2fe",
+//                   borderRadius:12, zIndex:9999, maxHeight:200, overflowY:"auto",
+//                   boxShadow:"0 12px 40px rgba(99,102,241,.2)",
+//                   animation:"slideDown .2s ease both",
+//                 }}>
+//                   {customerSuggestions.map(c => (
+//                     <div key={c.id} className="customer-suggest-item"
+//                       onMouseDown={() => selectCustomer(c)}>
+//                       <div style={{ fontWeight:700, color:"#1e293b", fontSize:13.5 }}>{c.name}</div>
+//                       <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
+//                         <IconPhone/>
+//                         <span style={{ fontSize:12, color:"#64748b" }}>{c.phone}</span>
+//                         {c.type && (
+//                           <span style={{
+//                             fontSize:10, fontWeight:700, textTransform:"uppercase",
+//                             background:"#eef2ff", color:"#6366f1",
+//                             borderRadius:6, padding:"1px 7px", marginLeft:4,
+//                           }}>{c.type}</span>
+//                         )}
+//                       </div>
+//                     </div>
+//                   ))}
+//                 </div>
+//               )}
+//               {customerSearchLoading && (
+//                 <div style={{ position:"absolute", right:12, top:"50%", marginTop:8 }}>
+//                   <span style={{
+//                     width:14, height:14, border:"2px solid #c7d2fe",
+//                     borderTopColor:"#6366f1", borderRadius:"50%",
+//                     display:"inline-block", animation:"spin .7s linear infinite",
+//                   }}/>
+//                 </div>
+//               )}
 //             </div>
+
+//             {/* Phone */}
 //             <div>
 //               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
 //                 Phone Number *
@@ -385,13 +1461,89 @@
 //                 placeholder="10-digit phone"
 //                 value={customer.phone}
 //                 maxLength={10}
-//                 onChange={e => setCustomer({...customer, phone: e.target.value.replace(/\D/g,"").slice(0,10)})}
+//                 onChange={e => {
+//                   const v = e.target.value.replace(/\D/g,"").slice(0,10);
+//                   setCustomer(c => ({ ...c, phone: v, id: null }));
+//                   if (v.length >= 3) handleCustomerSearch("phone", v);
+//                 }}
 //               />
 //             </div>
 //           </div>
+
+//           {/* Row 2: Address + Customer Type */}
+//           {/* <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:14, marginBottom: billType === "gst_bill" ? 14 : 0 }}>
+//             <div>
+//               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+//                 Address *
+//               </label>
+//               <input
+//                 className="bill-input"
+//                 placeholder="Street, City, State"
+//                 value={customer.address}
+//                 onChange={e => setCustomer(c => ({ ...c, address: e.target.value }))}
+//               />
+//             </div>
+//             <div>
+//               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+//                 Customer Type
+//               </label>
+//               <select
+//                 className="bill-input"
+//                 value={customer.type}
+//                 onChange={e => setCustomer(c => ({ ...c, type: e.target.value }))}
+//                 style={{ cursor:"pointer", appearance:"none",
+//                   backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
+//                   backgroundRepeat:"no-repeat", backgroundPosition:"right 10px center", paddingRight:32,
+//                 }}
+//               >
+//                 <option value="retail">🛒 Retail</option>
+//                 <option value="wholesale">📦 Wholesale</option>
+//                 <option value="regular">⭐ Regular</option>
+//               </select>
+//             </div>
+//           </div> */}
+
+//           {/* Row 3: GST Number — only for GST Bill */}
+//           {billType === "gst_bill" && (
+//             <div style={{ animation:"slideDown .25s ease both" }}>
+//               <label style={{ fontSize:11, fontWeight:600, color:"#d97706", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+//                 GST Number * <span style={{ fontSize:10, color:"#94a3b8", fontWeight:400, textTransform:"none" }}>(mandatory for GST Bill)</span>
+//               </label>
+//               <div style={{ position:"relative" }}>
+//                 <input
+//                   className="bill-input"
+//                   placeholder="e.g. 29ABCDE1234F1Z5"
+//                   value={customer.gst_no}
+//                   maxLength={15}
+//                   onChange={e => setCustomer(c => ({ ...c, gst_no: e.target.value.toUpperCase() }))}
+//                   style={{
+//                     borderColor: customer.gst_no ? "#f59e0b" : "#e2e8f0",
+//                     background: customer.gst_no ? "#fffbeb" : undefined,
+//                     fontWeight: customer.gst_no ? 700 : 400,
+//                     letterSpacing: customer.gst_no ? ".05em" : 0,
+//                   }}
+//                 />
+//                 {customer.gst_no && (
+//                   <span style={{
+//                     position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
+//                     fontSize:10, fontWeight:700, color:"#d97706",
+//                     background:"#fef3c7", borderRadius:6, padding:"2px 8px",
+//                     border:"1px solid #fde68a",
+//                   }}>
+//                     {customer.gst_no.length}/15
+//                   </span>
+//                 )}
+//               </div>
+//               <div style={{ fontSize:11, color:"#94a3b8", marginTop:5, fontWeight:400 }}>
+//                 Format: 2-digit state code + PAN + entity + Z + checksum (15 chars)
+//               </div>
+//             </div>
+//           )}
 //         </div>
 
-//         {/* ── Products Card ── */}
+//         {/* ══════════════════════════════════════════════
+//             PRODUCTS CARD
+//         ══════════════════════════════════════════════ */}
 //         <div style={{
 //           background:"#fff", borderRadius:20,
 //           boxShadow:"0 4px 24px rgba(99,102,241,.1), 0 1px 4px rgba(0,0,0,.05)",
@@ -412,19 +1564,30 @@
 //                 display:"flex", alignItems:"center", justifyContent:"center",
 //                 boxShadow:"0 4px 10px rgba(99,102,241,.35)",
 //               }}>
-//                 <IconBox />
+//                 <IconBox/>
 //               </div>
 //               <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
 //                 Products
 //               </span>
 //             </div>
-//             <span style={{
-//               fontSize:11.5, fontWeight:700, color:"#6366f1",
-//               background:"#eef2ff", borderRadius:20, padding:"4px 12px",
-//               border:"1px solid #c7d2fe",
-//             }}>
-//               {validRows.length} item{validRows.length !== 1 ? "s" : ""}
-//             </span>
+//             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+//               {billType === "gst_bill" && (
+//                 <span style={{
+//                   fontSize:11, fontWeight:700, color:"#d97706",
+//                   background:"#fef3c7", borderRadius:20, padding:"4px 12px",
+//                   border:"1px solid #fde68a",
+//                 }}>
+//                   GST Inclusive
+//                 </span>
+//               )}
+//               <span style={{
+//                 fontSize:11.5, fontWeight:700, color:"#6366f1",
+//                 background:"#eef2ff", borderRadius:20, padding:"4px 12px",
+//                 border:"1px solid #c7d2fe",
+//               }}>
+//                 {validRows.length} item{validRows.length !== 1 ? "s" : ""}
+//               </span>
+//             </div>
 //           </div>
 
 //           {/* Table header */}
@@ -435,7 +1598,7 @@
 //             background:"#f8faff",
 //             borderBottom:"1.5px solid #f1f5f9",
 //           }}>
-//             {["Product","Qty","Price (₹)","GST %","Amount (₹)",""].map((h,i) => (
+//             {["Product","Qty","Price (₹)", billType === "gst_bill" ? "GST %" : "—","Amount (₹)",""].map((h,i) => (
 //               <span key={i} style={{
 //                 fontSize:10.5, fontWeight:700, color:"#6366f1",
 //                 letterSpacing:".09em", textTransform:"uppercase",
@@ -457,7 +1620,6 @@
 //                 background: r.name ? "rgba(238,242,255,.3)" : "transparent",
 //                 transition:"background .2s",
 //               }}>
-
 //                 {/* Product search */}
 //                 <div style={{ position:"relative" }}>
 //                   <input
@@ -471,13 +1633,6 @@
 //                     onChange={e => handleSearch(e.target.value, i)}
 //                     style={{ fontSize:13.5 }}
 //                   />
-//                   {/* {r.unit && (
-//                     <span style={{
-//                       position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
-//                       fontSize:10.5, fontWeight:700, color:"#6366f1",
-//                       background:"#eef2ff", borderRadius:6, padding:"2px 7px",
-//                     }}>{r.unit}</span>
-//                   )} */}
 //                   {activeIndex === i && suggestions.length > 0 && (
 //                     <div style={{
 //                       position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
@@ -504,21 +1659,16 @@
 //                 </div>
 
 //                 {/* Qty */}
-//                 <div style={{ display:"flex", alignItems:"center", gap:5, justifyContent:"center" }}>
-//                   {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", Math.max(1, r.qty - 1))}>−</button> */}
-//                  {/* Qty */}
-// <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
-//   <input
-//     type="number"
-//     className="bill-input"
-//     value={r.qty}
-//     min={0}
-//     onChange={e => updateRow(i, "qty", e.target.value)}
-//     onWheel={e => e.target.blur()}
-//     style={{ textAlign:"center", width:70, padding:"8px 6px", fontSize:14, fontWeight:700 }}
-//   />
-// </div>
-//                   {/* <button className="qty-btn" onClick={() => updateRow(i, "qty", r.qty + 1)}>+</button> */}
+//                 <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
+//                   <input
+//                     type="number"
+//                     className="bill-input"
+//                     value={r.qty}
+//                     min={0}
+//                     onChange={e => updateRow(i, "qty", e.target.value)}
+//                     onWheel={e => e.target.blur()}
+//                     style={{ textAlign:"center", width:70, padding:"8px 6px", fontSize:14, fontWeight:700 }}
+//                   />
 //                 </div>
 
 //                 {/* Price */}
@@ -535,7 +1685,7 @@
 
 //                 {/* GST % */}
 //                 <div style={{ textAlign:"center" }}>
-//                   {r.gst > 0 ? (
+//                   {billType === "gst_bill" && r.gst > 0 ? (
 //                     <div>
 //                       <span style={{
 //                         fontSize:13, fontWeight:700, color:"#d97706",
@@ -573,7 +1723,7 @@
 //             ))}
 //           </div>
 
-//           {/* Add row button */}
+//           {/* Add row */}
 //           <div style={{ padding:"10px 20px 18px" }}>
 //             <button
 //               onClick={() => setRows([...rows, emptyRow()])}
@@ -592,13 +1742,15 @@
 //           </div>
 //         </div>
 
-//         {/* ── Payment Card — right aligned ── */}
+//         {/* ══════════════════════════════════════════════
+//             PAYMENT CARD
+//         ══════════════════════════════════════════════ */}
 //         <div style={{ display:"flex", justifyContent:"flex-end" }}>
 //           <div style={{
 //             background:"#fff", borderRadius:20,
 //             boxShadow:"0 4px 24px rgba(99,102,241,.1)",
 //             border:"1.5px solid rgba(199,210,254,.5)",
-//             padding:"22px 24px", width:400,
+//             padding:"22px 24px", width:420,
 //             animation:"slideUp .4s ease .15s both",
 //           }}>
 //             {/* Card header */}
@@ -608,7 +1760,7 @@
 //                 background:"linear-gradient(135deg,#4338ca,#6366f1)",
 //                 display:"flex", alignItems:"center", justifyContent:"center",
 //               }}>
-//                 <IconCard />
+//                 <IconCard/>
 //               </div>
 //               <span style={{ fontWeight:700, fontSize:14, color:"#312e81", letterSpacing:".04em", textTransform:"uppercase" }}>
 //                 Payment
@@ -617,181 +1769,58 @@
 
 //             {/* Totals */}
 //             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-//               <span style={{ color:"#64748b", fontSize:14 }}>Sub Total <span style={{ fontSize:11, color:"#94a3b8" }}>(excl. GST)</span></span>
+//               <span style={{ color:"#64748b", fontSize:14 }}>
+//                 Sub Total <span style={{ fontSize:11, color:"#94a3b8" }}>(excl. GST)</span>
+//               </span>
 //               <span style={{ fontWeight:700, color:"#1e293b", fontSize:14 }}>₹{subtotal.toFixed(2)}</span>
 //             </div>
 //             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-//               <span style={{ color:"#64748b", fontSize:14 }}>GST Total</span>
-//               <span style={{ fontWeight:700, color:"#d97706", fontSize:14 }}>₹{gstTotal.toFixed(2)}</span>
+//               <span style={{ color:"#64748b", fontSize:14 }}>
+//                 GST Total
+//                 {billType === "cash_bill" && (
+//                   <span style={{ fontSize:11, color:"#94a3b8", marginLeft:5 }}>(Cash Bill)</span>
+//                 )}
+//               </span>
+//               <span style={{ fontWeight:700, color: billType === "gst_bill" ? "#d97706" : "#94a3b8", fontSize:14 }}>
+//                 {billType === "gst_bill" ? `₹${gstTotal.toFixed(2)}` : "—"}
+//               </span>
 //             </div>
 //             <div style={{
 //               display:"flex", justifyContent:"space-between",
 //               background:"linear-gradient(135deg,#eef2ff,#e0e7ff)",
-//               borderRadius:12, padding:"12px 16px", marginBottom:18,
+//               borderRadius:12, padding:"12px 16px", marginBottom:20,
 //               border:"1.5px solid #c7d2fe",
 //             }}>
 //               <span style={{ fontWeight:800, color:"#312e81", fontSize:16 }}>Grand Total</span>
 //               <span style={{ fontWeight:900, color:"#4338ca", fontSize:18 }}>₹{total.toFixed(2)}</span>
 //             </div>
 
-// <label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
-//   Payment Type
-// </label>
-
-// <div style={{
-//   display: "flex",
-//   background: "#f1f5f9",
-//   padding: 4,
-//   borderRadius: 14,
-//   gap: 6,
-//   marginBottom: 14
-// }}>
-//   <button
-//     onClick={()=>setPaymentType("cash")}
-//     style={{
-//       flex: 1,
-//       padding: "10px 0",
-//       borderRadius: 10,
-//       border: "none",
-//       cursor: "pointer",
-//       fontSize: 13,
-//       fontWeight: 700,
-//       fontFamily: "'Outfit', sans-serif",
-//       transition: "all .25s",
-//       background: paymentType==="cash"
-//         ? "linear-gradient(135deg,#4f46e5,#6366f1)"
-//         : "transparent",
-//       color: paymentType==="cash" ? "#fff" : "#64748b",
-//       boxShadow: paymentType==="cash"
-//         ? "0 6px 16px rgba(99,102,241,.35)"
-//         : "none",
-//       transform: paymentType==="cash" ? "scale(1.03)" : "scale(1)"
-//     }}
-//   >
-//     💵 Cash
-//   </button>
-
-//   <button
-//     onClick={()=>setPaymentType("credit")}
-//     style={{
-//       flex: 1,
-//       padding: "10px 0",
-//       borderRadius: 10,
-//       border: "none",
-//       cursor: "pointer",
-//       fontSize: 13,
-//       fontWeight: 700,
-//       fontFamily: "'Outfit', sans-serif",
-//       transition: "all .25s",
-//       background: paymentType==="credit"
-//         ? "linear-gradient(135deg,#4f46e5,#6366f1)"
-//         : "transparent",
-//       color: paymentType==="credit" ? "#fff" : "#64748b",
-//       boxShadow: paymentType==="credit"
-//         ? "0 6px 16px rgba(99,102,241,.35)"
-//         : "none",
-//       transform: paymentType==="credit" ? "scale(1.03)" : "scale(1)"
-//     }}
-//   >
-//     🧾 Credit
-//   </button>
-// </div>
-
-
-
-
-// <label style={{ fontSize:12, fontWeight:700, marginBottom:6, display:"block" }}>
-//   GST Type
-// </label>
-
-// <div style={{
-//   display: "flex",
-//   background: "#f1f5f9",
-//   padding: 4,
-//   borderRadius: 14,
-//   gap: 6,
-//   marginBottom: 14
-// }}>
-//   <button
-//     onClick={()=>setGstType("without_gst")}
-//     style={{
-//       flex: 1,
-//       padding: "10px 0",
-//       borderRadius: 10,
-//       border: "none",
-//       cursor: "pointer",
-//       fontSize: 13,
-//       fontWeight: 700,
-//       fontFamily: "'Outfit', sans-serif",
-//       transition: "all .25s",
-//       background: gstType==="without_gst"
-//         ? "linear-gradient(135deg,#10b981,#34d399)"
-//         : "transparent",
-//       color: gstType==="without_gst" ? "#fff" : "#64748b",
-//       boxShadow: gstType==="without_gst"
-//         ? "0 6px 16px rgba(16,185,129,.35)"
-//         : "none",
-//       transform: gstType==="without_gst" ? "scale(1.03)" : "scale(1)"
-//     }}
-//   >
-//     💰 Cash
-//   </button>
-
-//   <button
-//     onClick={()=>setGstType("with_gst")}
-//     style={{
-//       flex: 1,
-//       padding: "10px 0",
-//       borderRadius: 10,
-//       border: "none",
-//       cursor: "pointer",
-//       fontSize: 13,
-//       fontWeight: 700,
-//       fontFamily: "'Outfit', sans-serif",
-//       transition: "all .25s",
-//       background: gstType==="with_gst"
-//         ? "linear-gradient(135deg,#f59e0b,#fbbf24)"
-//         : "transparent",
-//       color: gstType==="with_gst" ? "#fff" : "#64748b",
-//       boxShadow: gstType==="with_gst"
-//         ? "0 6px 16px rgba(245,158,11,.35)"
-//         : "none",
-//       transform: gstType==="with_gst" ? "scale(1.03)" : "scale(1)"
-//     }}
-//   >
-//     🧾 GST
-//   </button>
-// </div>
-
-// <input
-//   disabled={paymentType === "credit"}
-//   value={paymentType === "credit" ? 0 : payment.received}
-//   style={{
-//     opacity: paymentType === "credit" ? 0.6 : 1,
-//     cursor: paymentType === "credit" ? "not-allowed" : "text"
-//   }}
-// />
-
-//             {/* Payment method */}
-//             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+//             {/* ── Payment Method (Radio-style 4 buttons) ── */}
+//             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:8 }}>
 //               Payment Method
 //             </label>
-//             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:16 }}>
+//             <div style={{
+//               display:"grid", gridTemplateColumns:"1fr 1fr",
+//               gap:8, marginBottom:16,
+//             }}>
 //               {[
-//                 { val:"cash", label:"Cash" },
-//                 { val:"upi",  label:"UPI" },
-//                 { val:"card", label:"Card" },
+//                 { val:"cash",   label:"💵 Cash",   color:"#059669", bg:"#f0fdf4", border:"#bbf7d0", activeBg:"linear-gradient(135deg,#059669,#10b981)" },
+//                 { val:"online", label:"🌐 Online", color:"#2563eb", bg:"#eff6ff", border:"#bfdbfe", activeBg:"linear-gradient(135deg,#1d4ed8,#3b82f6)" },
+//                 { val:"upi",    label:"📲 UPI",    color:"#7c3aed", bg:"#f5f3ff", border:"#ddd6fe", activeBg:"linear-gradient(135deg,#6d28d9,#8b5cf6)" },
+//                 { val:"credit", label:"🧾 Credit", color:"#dc2626", bg:"#fef2f2", border:"#fecaca", activeBg:"linear-gradient(135deg,#dc2626,#ef4444)" },
 //               ].map(m => (
-//                 <button key={m.val}
-//                   onClick={() => setPayment(p => ({...p, method: m.val}))}
+//                 <button
+//                   key={m.val}
+//                   onClick={() => setPaymentMethod(m.val)}
 //                   style={{
-//                     padding:"10px 6px", borderRadius:12, cursor:"pointer",
+//                     padding:"11px 8px", borderRadius:12, cursor:"pointer",
 //                     fontFamily:"'Outfit',sans-serif", fontSize:13, fontWeight:700,
-//                     border: payment.method === m.val ? "2px solid #6366f1" : "1.5px solid #e2e8f0",
-//                     background: payment.method === m.val ? "linear-gradient(135deg,#eef2ff,#e0e7ff)" : "#f8faff",
-//                     color: payment.method === m.val ? "#4338ca" : "#64748b",
-//                     transition:"all .18s",
-//                     boxShadow: payment.method === m.val ? "0 4px 12px rgba(99,102,241,.2)" : "none",
+//                     border: paymentMethod === m.val ? "2px solid transparent" : `1.5px solid ${m.border}`,
+//                     background: paymentMethod === m.val ? m.activeBg : m.bg,
+//                     color: paymentMethod === m.val ? "#fff" : m.color,
+//                     transition:"all .2s",
+//                     boxShadow: paymentMethod === m.val ? "0 4px 14px rgba(0,0,0,.15)" : "none",
+//                     transform: paymentMethod === m.val ? "scale(1.03)" : "scale(1)",
 //                   }}
 //                 >
 //                   {m.label}
@@ -799,34 +1828,69 @@
 //               ))}
 //             </div>
 
-//             {/* Amount Received — no spinner, no auto-fill */}
-//             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
-//               Amount Received (₹)
-//             </label>
-//             <input
-//               type="number"
-//               className="bill-input"
-//               placeholder={`₹${total.toFixed(2)}`}
-//               value={payment.received}
-//               onChange={e => setPayment(p => ({...p, received: e.target.value}))}
-//               onWheel={(e) => e.target.blur()}
-//               style={{ fontSize:16, fontWeight:700, marginBottom:14 }}
-//             />
+//             {/* Credit info banner */}
+//             {paymentMethod === "credit" && (
+//               <div style={{
+//                 display:"flex", alignItems:"flex-start", gap:10,
+//                 background:"#fef2f2", border:"1.5px solid #fecaca",
+//                 borderRadius:12, padding:"12px 14px", marginBottom:16,
+//                 animation:"slideDown .25s ease both",
+//               }}>
+//                 <span style={{ fontSize:18, lineHeight:1 }}>⚠️</span>
+//                 <div>
+//                   <div style={{ fontWeight:700, color:"#dc2626", fontSize:13 }}>Credit Sale</div>
+//                   <div style={{ fontSize:12, color:"#ef4444", marginTop:2 }}>
+//                     Invoice will be saved as unpaid. Due in 30 days.
+//                     Full amount ₹{total.toFixed(2)} will be recorded as outstanding.
+//                   </div>
+//                 </div>
+//               </div>
+//             )}
 
-//             {/* Balance */}
-//             {received > 0 && (
+//             {/* Amount Received — hidden for credit */}
+//             {paymentMethod !== "credit" && (
+//               <>
+//                 <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
+//                   Amount Received (₹)
+//                 </label>
+//                 <input
+//                   type="number"
+//                   className="bill-input"
+//                   placeholder={`₹${total.toFixed(2)}`}
+//                   value={payment.received}
+//                   onChange={e => setPayment(p => ({...p, received: e.target.value}))}
+//                   onWheel={e => e.target.blur()}
+//                   style={{ fontSize:16, fontWeight:700, marginBottom:14 }}
+//                 />
+
+//                 {/* Balance */}
+//                 {received > 0 && (
+//                   <div style={{
+//                     display:"flex", justifyContent:"space-between", alignItems:"center",
+//                     padding:"12px 16px", borderRadius:12, marginBottom:20,
+//                     background: balance < 0 ? "#fef2f2" : "#f0fdf4",
+//                     border: `1.5px solid ${balance < 0 ? "#fecaca" : "#bbf7d0"}`,
+//                   }}>
+//                     <span style={{ fontWeight:700, color: balance < 0 ? "#dc2626" : "#059669", fontSize:14 }}>
+//                       {balance < 0 ? "Balance Due" : "Change Return"}
+//                     </span>
+//                     <span style={{ fontWeight:900, fontSize:16, color: balance < 0 ? "#dc2626" : "#059669" }}>
+//                       ₹{Math.abs(balance).toFixed(2)}
+//                     </span>
+//                   </div>
+//                 )}
+//               </>
+//             )}
+
+//             {/* Credit — show total as outstanding */}
+//             {paymentMethod === "credit" && (
 //               <div style={{
 //                 display:"flex", justifyContent:"space-between", alignItems:"center",
 //                 padding:"12px 16px", borderRadius:12, marginBottom:20,
-//                 background: balance < 0 ? "#fef2f2" : "#f0fdf4",
-//                 border: `1.5px solid ${balance < 0 ? "#fecaca" : "#bbf7d0"}`,
+//                 background:"#fef2f2", border:"1.5px solid #fecaca",
 //               }}>
-//                 <span style={{ fontWeight:700, color: balance < 0 ? "#dc2626" : "#059669", fontSize:14 }}>
-//                   {balance < 0 ? "Balance Due" : "Change Return"}
-//                 </span>
-//                 <span style={{ fontWeight:900, fontSize:16, color: balance < 0 ? "#dc2626" : "#059669" }}>
-//                   ₹{Math.abs(balance).toFixed(2)}
-//                 </span>
+//                 <span style={{ fontWeight:700, color:"#dc2626", fontSize:14 }}>Outstanding Amount</span>
+//                 <span style={{ fontWeight:900, fontSize:16, color:"#dc2626" }}>₹{total.toFixed(2)}</span>
 //               </div>
 //             )}
 
@@ -834,12 +1898,16 @@
 //             <button className="gen-btn" onClick={handleGenerate} disabled={generating}>
 //               {generating ? (
 //                 <span style={{ display:"flex", alignItems:"center", gap:10, justifyContent:"center" }}>
-//                   <span style={{ width:16,height:16,border:"2.5px solid rgba(255,255,255,.4)",borderTopColor:"#fff",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite" }}/>
+//                   <span style={{
+//                     width:16, height:16, border:"2.5px solid rgba(255,255,255,.4)",
+//                     borderTopColor:"#fff", borderRadius:"50%",
+//                     display:"inline-block", animation:"spin .7s linear infinite",
+//                   }}/>
 //                   Generating…
 //                 </span>
 //               ) : (
 //                 <span style={{ display:"flex", alignItems:"center", gap:8, justifyContent:"center" }}>
-//                   <IconReceipt /> Generate Invoice
+//                   <IconReceipt/> Generate Invoice
 //                 </span>
 //               )}
 //             </button>
@@ -850,7 +1918,6 @@
 //     </div>
 //   );
 // }
-
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -946,6 +2013,16 @@ const GLOBAL_CSS = `
     padding-right:36px;
   }
   .bill-type-dropdown:focus { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.12); }
+
+  .pay-method-btn {
+    padding:11px 8px; border-radius:12px; cursor:pointer;
+    font-family:'Outfit',sans-serif; font-size:13px; font-weight:700;
+    transition:all .2s;
+  }
+  .pay-method-btn:disabled {
+    opacity:0.35; cursor:not-allowed; transform:none !important;
+    filter:grayscale(0.5);
+  }
 `;
 
 /* ── Icons ──────────────────────────────────────────────────────────────── */
@@ -1040,26 +2117,32 @@ export default function Billing() {
 
   /* ── Customer ── */
   const [customer, setCustomer] = useState({
-    id:      null,   // filled after save/lookup
-    name:    "",
-    phone:   "",
-    address: "",
-    type:    "retail", // retail / wholesale / regular
-    gst_no:  "",       // only when bill_type = "gst_bill"
+    id:             null,
+    name:           "",
+    phone:          "",
+    gst_no:         "",
+    credit_enabled: "0",   // ← from DB: "yes" | "0"
+    credit_limit:   0,
   });
-  const [customerSuggestions, setCustomerSuggestions] = useState([]);
+
+  // Separate suggestion lists for name-search vs phone-search
+  const [nameSuggestions,  setNameSuggestions]  = useState([]);
+  const [phoneSuggestions, setPhoneSuggestions] = useState([]);
   const [customerSearchLoading, setCustomerSearchLoading] = useState(false);
-  const customerSuggestRef = useRef(null);
-  const customerSearchTimer = useRef(null);
+
+  const nameSuggestRef  = useRef(null);
+  const phoneSuggestRef = useRef(null);
+  const nameSearchTimer  = useRef(null);
+  const phoneSearchTimer = useRef(null);
 
   /* ── Bill / Payment ── */
-  const [billType, setBillType]     = useState("cash_bill"); // cash_bill / gst_bill
-  const [paymentMethod, setPaymentMethod] = useState("cash"); // cash / online / upi / credit
-  const [payment, setPayment]       = useState({ received: 0 });
+  const [billType,       setBillType]       = useState("cash_bill");
+  const [paymentMethod,  setPaymentMethod]  = useState("cash");
+  const [payment,        setPayment]        = useState({ received: 0 });
 
   /* ── UI ── */
   const [generating, setGenerating] = useState(false);
-  const [toasts, setToasts]         = useState([]);
+  const [toasts,     setToasts]     = useState([]);
 
   /* ── Derived totals ── */
   const subtotal = rows.reduce((s, r) => s + r.price * r.qty, 0);
@@ -1069,6 +2152,13 @@ export default function Billing() {
   const total    = subtotal + gstTotal;
   const received = parseFloat(payment.received) || 0;
   const balance  = received - total;
+
+  /* ── If credit_enabled becomes "0", switch away from credit ── */
+  useEffect(() => {
+    if (customer.credit_enabled !== "1" && paymentMethod === "credit") {
+      setPaymentMethod("cash");
+    }
+  }, [customer.credit_enabled]);
 
   /* Auto-fill received amount when total changes (only for non-credit) */
   useEffect(() => {
@@ -1099,8 +2189,11 @@ export default function Billing() {
       if (suggestRef.current && !suggestRef.current.contains(e.target)) {
         setSuggestions([]); setActiveIndex(null);
       }
-      if (customerSuggestRef.current && !customerSuggestRef.current.contains(e.target)) {
-        setCustomerSuggestions([]);
+      if (nameSuggestRef.current && !nameSuggestRef.current.contains(e.target)) {
+        setNameSuggestions([]);
+      }
+      if (phoneSuggestRef.current && !phoneSuggestRef.current.contains(e.target)) {
+        setPhoneSuggestions([]);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -1114,13 +2207,31 @@ export default function Billing() {
   };
 
   /* ════════════════════════════════════════════════════════════════════════
-     CUSTOMER SEARCH (search by name or phone from customers table)
+     SELECT CUSTOMER — shared handler (used by both name & phone dropdowns)
+     Fills all fields + reads credit_enabled from DB row
   ════════════════════════════════════════════════════════════════════════ */
-  const handleCustomerSearch = (field, value) => {
-    setCustomer(c => ({ ...c, [field]: value, id: null }));
-    clearTimeout(customerSearchTimer.current);
-    if (!value || value.length < 2) { setCustomerSuggestions([]); return; }
-    customerSearchTimer.current = setTimeout(async () => {
+  const selectCustomer = (c) => {
+    setCustomer({
+      id:             c.id,
+      name:           c.name,
+      phone:          c.phone,
+      gst_no:         c.gst_no || "",
+      credit_enabled: c.credit_enabled || "0",
+      credit_limit:   c.credit_limit   || 0,
+    });
+    setNameSuggestions([]);
+    setPhoneSuggestions([]);
+  };
+
+  /* ════════════════════════════════════════════════════════════════════════
+     CUSTOMER NAME SEARCH  (search by name)
+  ════════════════════════════════════════════════════════════════════════ */
+  const handleNameSearch = (value) => {
+    // Reset customer id & credit when manually typing
+    setCustomer(c => ({ ...c, name: value, id: null, credit_enabled: "0" }));
+    clearTimeout(nameSearchTimer.current);
+    if (!value || value.length < 2) { setNameSuggestions([]); return; }
+    nameSearchTimer.current = setTimeout(async () => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user?.company_id) return;
       setCustomerSearchLoading(true);
@@ -1128,23 +2239,52 @@ export default function Billing() {
         const res = await api.get("/customer/customer_search.php", {
           params: { company_id: user.company_id, q: value }
         });
-        if (res.data.status) setCustomerSuggestions(res.data.data || []);
-        else setCustomerSuggestions([]);
-      } catch { setCustomerSuggestions([]); }
+        if (res.data.status) setNameSuggestions(res.data.data || []);
+        else setNameSuggestions([]);
+      } catch { setNameSuggestions([]); }
       setCustomerSearchLoading(false);
     }, 300);
   };
 
-  const selectCustomer = (c) => {
-    setCustomer({
-      id:      c.id,
-      name:    c.name,
-      phone:   c.phone,
-      // address: c.address || "",
-      // type:    c.type || "retail",
-      gst_no:  c.gst_no || "",
-    });
-    setCustomerSuggestions([]);
+  /* ════════════════════════════════════════════════════════════════════════
+     CUSTOMER PHONE SEARCH  (search by phone number)
+     Uses get_by_phone.php — returns single customer when exact 10-digit
+     OR customer_search.php for partial match suggestions
+  ════════════════════════════════════════════════════════════════════════ */
+  const handlePhoneSearch = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    setCustomer(c => ({ ...c, phone: digits, id: null, name: c.id ? "" : c.name, credit_enabled: "0" }));
+    setPhoneSuggestions([]);
+    clearTimeout(phoneSearchTimer.current);
+
+    if (digits.length < 3) return;
+
+    phoneSearchTimer.current = setTimeout(async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user?.company_id) return;
+      setCustomerSearchLoading(true);
+      try {
+        // Exact 10-digit → use get_by_phone.php for instant auto-fill
+        if (digits.length === 10) {
+          const res = await api.get("/customer/get_by_phone.php", {
+            params: { company_id: user.company_id, phone: digits }
+          });
+          if (res.data.status && res.data.data) {
+            // Auto-fill everything silently (no dropdown needed)
+            selectCustomer(res.data.data);
+            setCustomerSearchLoading(false);
+            return;
+          }
+        }
+        // Partial → show suggestions dropdown
+        const res = await api.get("/customer/customer_search.php", {
+          params: { company_id: user.company_id, q: digits }
+        });
+        if (res.data.status) setPhoneSuggestions(res.data.data || []);
+        else setPhoneSuggestions([]);
+      } catch { setPhoneSuggestions([]); }
+      setCustomerSearchLoading(false);
+    }, 300);
   };
 
   /* ════════════════════════════════════════════════════════════════════════
@@ -1215,31 +2355,55 @@ export default function Billing() {
      SAVE CUSTOMER → then create invoice
   ════════════════════════════════════════════════════════════════════════ */
   const saveOrGetCustomer = async (user) => {
-    // If already selected from DB, return existing id
     if (customer.id) return customer.id;
-
-    // Otherwise create new customer
     const res = await api.post("/customer/customer_save.php", {
       company_id: user.company_id,
       name:       customer.name,
       phone:      customer.phone,
-      // address:    customer.address,
-      // type:       customer.type,
       gst_no:     billType === "gst_bill" ? customer.gst_no : "",
     });
-
     if (res.data.status) return res.data.customer_id;
     throw new Error(res.data.message || "Failed to save customer");
+  };
+
+  /* ════════════════════════════════════════════════════════════════════════
+     PAYMENT FLOW LOGIC
+     ─────────────────────────────────────────────────────────────────────
+     | payment_method | paid_amount   | balance_amount | payment_status |
+     |----------------|---------------|----------------|----------------|
+     | cash/online/upi| = received    | total - paid   | paid / partial |
+     | credit         | 0             | total          | pending        |
+     ─────────────────────────────────────────────────────────────────────
+     payments table stores:
+       total_amount  = grand total of invoice  (subtotal + gst)
+       paid_amount   = actual money received
+       balance_amount= total_amount - paid_amount
+  ════════════════════════════════════════════════════════════════════════ */
+  const buildPaymentPayload = () => {
+    if (paymentMethod === "credit") {
+      return {
+        payment_method: "credit",
+        payment_status: "pending",
+        paid_amount:    0,
+        balance_amount: total,
+      };
+    }
+    const paid    = Math.min(received, total); // never overpay in DB
+    const balance = total - paid;
+    return {
+      payment_method: paymentMethod,
+      payment_status: balance > 0 ? "partial" : "paid",
+      paid_amount:    paid,
+      balance_amount: Math.max(0, balance),
+    };
   };
 
   /* ════════════════════════════════════════════════════════════════════════
      GENERATE INVOICE
   ════════════════════════════════════════════════════════════════════════ */
   const handleGenerate = async () => {
-    /* Validations */
     if (!customer.name.trim()) { showToast("Customer name is required!", "error"); return; }
     if (!/^[0-9]{10}$/.test(customer.phone)) { showToast("Enter a valid 10-digit phone number!", "error"); return; }
-    // if (customer.address.trim().length < 3) { showToast("Enter customer address!", "error"); return; }
     if (billType === "gst_bill" && !customer.gst_no.trim()) {
       showToast("GST Number is mandatory for GST Bill!", "error"); return;
     }
@@ -1248,15 +2412,25 @@ export default function Billing() {
       showToast("Enter received amount!", "error"); return;
     }
 
+    // Credit limit check
+if (paymentMethod === "credit" && customer.credit_enabled == "1") {
+  const limit = parseFloat(customer.credit_limit) || 0;
+  if (limit > 0 && total > limit) {
+    showToast(
+      `Purchase ₹${total.toFixed(2)} exceeds credit limit ₹${limit.toLocaleString()}!`,
+      "error"
+    );
+    return;
+  }
+}
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user?.company_id) { showToast("Company ID missing!", "error"); return; }
 
     setGenerating(true);
     try {
-      /* Step 1: Save / get customer */
-      const customer_id = await saveOrGetCustomer(user);
+      const customer_id      = await saveOrGetCustomer(user);
+      const paymentPayload   = buildPaymentPayload();
 
-      /* Step 2: Create invoice */
       const res = await api.post("/invoice/create_invoice.php", {
         company_id:     user.company_id,
         customer_id,
@@ -1265,13 +2439,13 @@ export default function Billing() {
         products:       validRows,
         sub_total:      subtotal,
         gst_total:      gstTotal,
-        total_amount:   total,
-        paid_amount:    paymentMethod === "credit" ? 0 : received,
-        balance_amount: paymentMethod === "credit" ? total : Math.max(0, total - received),
-        payment_method: paymentMethod,
-        payment_type:   paymentMethod === "credit" ? "credit" : "cash",
+        total_amount:   total,          // grand total → payments.total_amount
         gst_type:       billType === "gst_bill" ? "with_gst" : "without_gst",
         gst_no:         billType === "gst_bill" ? customer.gst_no : "",
+        // Payment fields (backend saves to payments table)
+        ...paymentPayload,
+        // keep legacy fields for backward compat if your backend uses them
+        payment_type:   paymentMethod === "credit" ? "credit" : "cash",
       });
 
       if (res.data.status) {
@@ -1285,6 +2459,21 @@ export default function Billing() {
     }
     setGenerating(false);
   };
+
+  /* ════════════════════════════════════════════════════════════════════════
+     PAYMENT METHOD BUTTONS CONFIG
+  ════════════════════════════════════════════════════════════════════════ */
+  const paymentMethods = [
+    { val:"cash",   label:"💵 Cash",   color:"#059669", bg:"#f0fdf4", border:"#bbf7d0", activeBg:"linear-gradient(135deg,#059669,#10b981)" },
+    { val:"online", label:"🌐 Online", color:"#2563eb", bg:"#eff6ff", border:"#bfdbfe", activeBg:"linear-gradient(135deg,#1d4ed8,#3b82f6)" },
+    { val:"upi",    label:"📲 UPI",    color:"#7c3aed", bg:"#f5f3ff", border:"#ddd6fe", activeBg:"linear-gradient(135deg,#6d28d9,#8b5cf6)" },
+    {
+      val:"credit", label:"🧾 Credit", color:"#dc2626", bg:"#fef2f2", border:"#fecaca", activeBg:"linear-gradient(135deg,#dc2626,#ef4444)",
+      // Disabled when credit_enabled !== "yes"
+      disabled: customer.credit_enabled !== "1",
+      disabledTitle: "Credit not enabled for this customer",
+    },
+  ];
 
   /* ════════════════════════════════════════════════════════════════════════
      RENDER
@@ -1338,7 +2527,6 @@ export default function Billing() {
                 <option value="gst_bill">🧾 GST Bill</option>
               </select>
             </div>
-            {/* Badge */}
             <div style={{
               display:"inline-flex", alignItems:"center", gap:5,
               marginTop:6, background:"rgba(255,255,255,.15)",
@@ -1382,24 +2570,42 @@ export default function Billing() {
                 Customer Details
               </span>
             </div>
-            {customer.id && (
-              <div style={{
-                display:"flex", alignItems:"center", gap:6,
-                background:"#f0fdf4", border:"1.5px solid #bbf7d0",
-                borderRadius:20, padding:"5px 12px",
-                fontSize:12, fontWeight:700, color:"#059669",
-              }}>
-                <span style={{ width:7, height:7, borderRadius:"50%", background:"#10b981", display:"inline-block" }}/>
-                Existing Customer
-              </div>
-            )}
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              {/* Credit badge — shows only when customer has credit enabled */}
+              {customer.id && customer.credit_enabled === "1" && (
+                <div style={{
+                  display:"flex", alignItems:"center", gap:6,
+                  background:"#fef2f2", border:"1.5px solid #fecaca",
+                  borderRadius:20, padding:"5px 12px",
+                  fontSize:12, fontWeight:700, color:"#dc2626",
+                }}>
+                  🧾 Credit Enabled
+                  {customer.credit_limit > 0 && (
+                    <span style={{ color:"#ef4444", fontWeight:600 }}>
+                      · ₹{Number(customer.credit_limit).toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              )}
+              {customer.id && (
+                <div style={{
+                  display:"flex", alignItems:"center", gap:6,
+                  background:"#f0fdf4", border:"1.5px solid #bbf7d0",
+                  borderRadius:20, padding:"5px 12px",
+                  fontSize:12, fontWeight:700, color:"#059669",
+                }}>
+                  <span style={{ width:7, height:7, borderRadius:"50%", background:"#10b981", display:"inline-block" }}/>
+                  Existing Customer
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Row 1: Name + Phone */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:14 }}>
 
-            {/* Customer Name with autocomplete */}
-            <div ref={customerSuggestRef} style={{ position:"relative" }}>
+            {/* ── Customer Name with autocomplete ── */}
+            <div ref={nameSuggestRef} style={{ position:"relative" }}>
               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
                 Customer Name *
               </label>
@@ -1407,13 +2613,13 @@ export default function Billing() {
                 className="bill-input"
                 placeholder="Search or enter customer name"
                 value={customer.name}
-                onChange={e => handleCustomerSearch("name", e.target.value)}
+                onChange={e => handleNameSearch(e.target.value)}
                 onFocus={() => {
-                  if (customer.name.length >= 2) handleCustomerSearch("name", customer.name);
+                  if (customer.name.length >= 2) handleNameSearch(customer.name);
                 }}
               />
-              {/* Autocomplete dropdown */}
-              {customerSuggestions.length > 0 && (
+              {/* Name autocomplete dropdown */}
+              {nameSuggestions.length > 0 && (
                 <div style={{
                   position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
                   background:"#fff", border:"1.5px solid #c7d2fe",
@@ -1421,19 +2627,20 @@ export default function Billing() {
                   boxShadow:"0 12px 40px rgba(99,102,241,.2)",
                   animation:"slideDown .2s ease both",
                 }}>
-                  {customerSuggestions.map(c => (
+                  {nameSuggestions.map(c => (
                     <div key={c.id} className="customer-suggest-item"
                       onMouseDown={() => selectCustomer(c)}>
                       <div style={{ fontWeight:700, color:"#1e293b", fontSize:13.5 }}>{c.name}</div>
                       <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
                         <IconPhone/>
                         <span style={{ fontSize:12, color:"#64748b" }}>{c.phone}</span>
-                        {c.type && (
+                        {c.credit_enabled === "yes" && (
                           <span style={{
                             fontSize:10, fontWeight:700, textTransform:"uppercase",
-                            background:"#eef2ff", color:"#6366f1",
+                            background:"#fef2f2", color:"#dc2626",
                             borderRadius:6, padding:"1px 7px", marginLeft:4,
-                          }}>{c.type}</span>
+                            border:"1px solid #fecaca",
+                          }}>Credit</span>
                         )}
                       </div>
                     </div>
@@ -1451,59 +2658,64 @@ export default function Billing() {
               )}
             </div>
 
-            {/* Phone */}
-            <div>
+            {/* ── Phone with autocomplete + auto-fill ── */}
+            <div ref={phoneSuggestRef} style={{ position:"relative" }}>
               <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
                 Phone Number *
               </label>
-              <input
-                className="bill-input"
-                placeholder="10-digit phone"
-                value={customer.phone}
-                maxLength={10}
-                onChange={e => {
-                  const v = e.target.value.replace(/\D/g,"").slice(0,10);
-                  setCustomer(c => ({ ...c, phone: v, id: null }));
-                  if (v.length >= 3) handleCustomerSearch("phone", v);
-                }}
-              />
+              <div style={{ position:"relative" }}>
+                <input
+                  className="bill-input"
+                  placeholder="10-digit phone"
+                  value={customer.phone}
+                  maxLength={10}
+                  onChange={e => handlePhoneSearch(e.target.value)}
+                />
+                {/* Phone loader */}
+                {customerSearchLoading && (
+                  <span style={{
+                    position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
+                    width:14, height:14, border:"2px solid #c7d2fe",
+                    borderTopColor:"#6366f1", borderRadius:"50%",
+                    display:"inline-block", animation:"spin .7s linear infinite",
+                  }}/>
+                )}
+              </div>
+              {/* Phone suggestion dropdown (for partial matches) */}
+              {phoneSuggestions.length > 0 && (
+                <div style={{
+                  position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
+                  background:"#fff", border:"1.5px solid #c7d2fe",
+                  borderRadius:12, zIndex:9999, maxHeight:200, overflowY:"auto",
+                  boxShadow:"0 12px 40px rgba(99,102,241,.2)",
+                  animation:"slideDown .2s ease both",
+                }}>
+                  {phoneSuggestions.map(c => (
+                    <div key={c.id} className="customer-suggest-item"
+                      onMouseDown={() => selectCustomer(c)}>
+                      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                        <IconPhone/>
+                        <span style={{ fontWeight:700, color:"#1e293b", fontSize:13.5 }}>{c.phone}</span>
+                      </div>
+                      {/* <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
+                        <span style={{ fontSize:12, color:"#64748b", fontWeight:600 }}>{c.name}</span>
+                        {c.credit_enabled === "yes" && (
+                          <span style={{
+                            fontSize:10, fontWeight:700, textTransform:"uppercase",
+                            background:"#fef2f2", color:"#dc2626",
+                            borderRadius:6, padding:"1px 7px",
+                            border:"1px solid #fecaca",
+                          }}>Credit</span>
+                        )}
+                      </div> */}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Row 2: Address + Customer Type */}
-          {/* <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:14, marginBottom: billType === "gst_bill" ? 14 : 0 }}>
-            <div>
-              <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
-                Address *
-              </label>
-              <input
-                className="bill-input"
-                placeholder="Street, City, State"
-                value={customer.address}
-                onChange={e => setCustomer(c => ({ ...c, address: e.target.value }))}
-              />
-            </div>
-            <div>
-              <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
-                Customer Type
-              </label>
-              <select
-                className="bill-input"
-                value={customer.type}
-                onChange={e => setCustomer(c => ({ ...c, type: e.target.value }))}
-                style={{ cursor:"pointer", appearance:"none",
-                  backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
-                  backgroundRepeat:"no-repeat", backgroundPosition:"right 10px center", paddingRight:32,
-                }}
-              >
-                <option value="retail">🛒 Retail</option>
-                <option value="wholesale">📦 Wholesale</option>
-                <option value="regular">⭐ Regular</option>
-              </select>
-            </div>
-          </div> */}
-
-          {/* Row 3: GST Number — only for GST Bill */}
+          {/* GST Number — only for GST Bill */}
           {billType === "gst_bill" && (
             <div style={{ animation:"slideDown .25s ease both" }}>
               <label style={{ fontSize:11, fontWeight:600, color:"#d97706", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:6 }}>
@@ -1551,7 +2763,6 @@ export default function Billing() {
           marginBottom:18, overflow:"visible",
           animation:"slideDown .4s ease .05s both",
         }}>
-          {/* Card header */}
           <div style={{
             padding:"18px 24px 14px",
             borderBottom:"1.5px solid #f1f5f9",
@@ -1590,7 +2801,6 @@ export default function Billing() {
             </div>
           </div>
 
-          {/* Table header */}
           <div style={{
             display:"grid",
             gridTemplateColumns:"2fr 110px 100px 90px 100px 36px",
@@ -1607,7 +2817,6 @@ export default function Billing() {
             ))}
           </div>
 
-          {/* Rows */}
           <div style={{ padding:"8px 12px" }} ref={suggestRef}>
             {rows.map((r, i) => (
               <div key={i} className="row-enter" style={{
@@ -1620,7 +2829,6 @@ export default function Billing() {
                 background: r.name ? "rgba(238,242,255,.3)" : "transparent",
                 transition:"background .2s",
               }}>
-                {/* Product search */}
                 <div style={{ position:"relative" }}>
                   <input
                     className="bill-input"
@@ -1658,7 +2866,6 @@ export default function Billing() {
                   )}
                 </div>
 
-                {/* Qty */}
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"center" }}>
                   <input
                     type="number"
@@ -1671,7 +2878,6 @@ export default function Billing() {
                   />
                 </div>
 
-                {/* Price */}
                 <div style={{ textAlign:"center" }}>
                   <span style={{ fontSize:14.5, fontWeight:700, color:"#1e293b", display:"block" }}>
                     {r.price > 0 ? `₹${r.price.toFixed(2)}` : <span style={{color:"#cbd5e1"}}>—</span>}
@@ -1683,7 +2889,6 @@ export default function Billing() {
                   )}
                 </div>
 
-                {/* GST % */}
                 <div style={{ textAlign:"center" }}>
                   {billType === "gst_bill" && r.gst > 0 ? (
                     <div>
@@ -1706,7 +2911,6 @@ export default function Billing() {
                   )}
                 </div>
 
-                {/* Row Total */}
                 <div style={{ textAlign:"center" }}>
                   {r.price > 0 ? (
                     <span style={{ fontSize:15, fontWeight:800, color:"#4338ca" }}>
@@ -1717,13 +2921,11 @@ export default function Billing() {
                   )}
                 </div>
 
-                {/* Delete */}
                 <button className="del-btn" onClick={() => deleteRow(i)}>×</button>
               </div>
             ))}
           </div>
 
-          {/* Add row */}
           <div style={{ padding:"10px 20px 18px" }}>
             <button
               onClick={() => setRows([...rows, emptyRow()])}
@@ -1753,7 +2955,6 @@ export default function Billing() {
             padding:"22px 24px", width:420,
             animation:"slideUp .4s ease .15s both",
           }}>
-            {/* Card header */}
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:18 }}>
               <div style={{
                 width:28, height:28, borderRadius:8,
@@ -1795,30 +2996,34 @@ export default function Billing() {
               <span style={{ fontWeight:900, color:"#4338ca", fontSize:18 }}>₹{total.toFixed(2)}</span>
             </div>
 
-            {/* ── Payment Method (Radio-style 4 buttons) ── */}
+            {/* ── Payment Method Buttons ── */}
             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:8 }}>
               Payment Method
             </label>
-            <div style={{
-              display:"grid", gridTemplateColumns:"1fr 1fr",
-              gap:8, marginBottom:16,
-            }}>
-              {[
-                { val:"cash",   label:"💵 Cash",   color:"#059669", bg:"#f0fdf4", border:"#bbf7d0", activeBg:"linear-gradient(135deg,#059669,#10b981)" },
-                { val:"online", label:"🌐 Online", color:"#2563eb", bg:"#eff6ff", border:"#bfdbfe", activeBg:"linear-gradient(135deg,#1d4ed8,#3b82f6)" },
-                { val:"upi",    label:"📲 UPI",    color:"#7c3aed", bg:"#f5f3ff", border:"#ddd6fe", activeBg:"linear-gradient(135deg,#6d28d9,#8b5cf6)" },
-                { val:"credit", label:"🧾 Credit", color:"#dc2626", bg:"#fef2f2", border:"#fecaca", activeBg:"linear-gradient(135deg,#dc2626,#ef4444)" },
-              ].map(m => (
+
+            {/* Show note if credit not enabled */}
+            {customer.id && customer.credit_enabled !== "1" && (
+              <div style={{
+                fontSize:11.5, color:"#94a3b8", fontWeight:500,
+                background:"#f8faff", borderRadius:8, padding:"6px 12px",
+                marginBottom:10, border:"1px solid #e2e8f0",
+              }}>
+                💡 Credit option is disabled — not enabled for this customer
+              </div>
+            )}
+
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:16 }}>
+              {paymentMethods.map(m => (
                 <button
                   key={m.val}
-                  onClick={() => setPaymentMethod(m.val)}
+                  className="pay-method-btn"
+                  disabled={m.disabled}
+                  title={m.disabled ? m.disabledTitle : undefined}
+                  onClick={() => !m.disabled && setPaymentMethod(m.val)}
                   style={{
-                    padding:"11px 8px", borderRadius:12, cursor:"pointer",
-                    fontFamily:"'Outfit',sans-serif", fontSize:13, fontWeight:700,
                     border: paymentMethod === m.val ? "2px solid transparent" : `1.5px solid ${m.border}`,
                     background: paymentMethod === m.val ? m.activeBg : m.bg,
                     color: paymentMethod === m.val ? "#fff" : m.color,
-                    transition:"all .2s",
                     boxShadow: paymentMethod === m.val ? "0 4px 14px rgba(0,0,0,.15)" : "none",
                     transform: paymentMethod === m.val ? "scale(1.03)" : "scale(1)",
                   }}
@@ -1840,8 +3045,12 @@ export default function Billing() {
                 <div>
                   <div style={{ fontWeight:700, color:"#dc2626", fontSize:13 }}>Credit Sale</div>
                   <div style={{ fontSize:12, color:"#ef4444", marginTop:2 }}>
-                    Invoice will be saved as unpaid. Due in 30 days.
-                    Full amount ₹{total.toFixed(2)} will be recorded as outstanding.
+                    Invoice will be saved as unpaid. Full amount ₹{total.toFixed(2)} recorded as outstanding.
+                    {customer.credit_limit > 0 && (
+                      <span style={{ display:"block", marginTop:4, fontWeight:700 }}>
+                        Credit Limit: ₹{Number(customer.credit_limit).toLocaleString()}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1863,7 +3072,6 @@ export default function Billing() {
                   style={{ fontSize:16, fontWeight:700, marginBottom:14 }}
                 />
 
-                {/* Balance */}
                 {received > 0 && (
                   <div style={{
                     display:"flex", justifyContent:"space-between", alignItems:"center",
@@ -1882,7 +3090,7 @@ export default function Billing() {
               </>
             )}
 
-            {/* Credit — show total as outstanding */}
+            {/* Credit outstanding */}
             {paymentMethod === "credit" && (
               <div style={{
                 display:"flex", justifyContent:"space-between", alignItems:"center",
