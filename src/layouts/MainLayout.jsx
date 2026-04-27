@@ -10,7 +10,9 @@ import {
   Settings,
   ShieldCheck,
    AlertCircle ,
-  LogOut
+   User,
+  LogOut,
+  CreditCard
 } from "lucide-react";
 
 export default function MainLayout() {
@@ -44,7 +46,9 @@ export default function MainLayout() {
           { name: "Reports", path: "/reports", icon: <BarChart3 size={20} /> },
           { name: "Cashiers", path: "/cashier", icon: <Building2 size={20} /> },
           { name: "Profile", path: "/profile", icon: <Settings size={20} /> },
-          { name: "Customer", path: "/customer", icon: <Settings size={20} /> }
+          { name: "Customer", path: "/customer", icon: <User size={20} /> },
+          { name: "Credit Settings", path: "/credit-settings", icon: <CreditCard size={20} /> }
+          
         ]
       : []),
 
