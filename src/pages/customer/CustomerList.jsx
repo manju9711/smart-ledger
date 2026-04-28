@@ -208,7 +208,7 @@ const fetchCustomers = async () => {
 
               {/* CREDIT */}
               <div>
-                {c.credit_enabled ? (
+               {Number(c.credit_enabled) === 1 ? (
                   <span style={{ color: "#16a34a", fontWeight: 600 }}>
                     Yes ₹{c.credit_limit}
                   </span>

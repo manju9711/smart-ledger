@@ -2123,6 +2123,8 @@ export default function Billing() {
     gst_no:         "",
     credit_enabled: "0",   // ← from DB: "yes" | "0"
     credit_limit:   0,
+     points: 0 
+
   });
 
   // Separate suggestion lists for name-search vs phone-search
@@ -2150,6 +2152,7 @@ export default function Billing() {
     ? rows.reduce((s, r) => s + (r.price * r.qty * r.gst) / 100, 0)
     : 0;
   const total    = subtotal + gstTotal;
+  const earnedPoints = Math.floor(total / 100);
   const received = parseFloat(payment.received) || 0;
   const balance  = received - total;
 
@@ -2218,9 +2221,12 @@ export default function Billing() {
       gst_no:         c.gst_no || "",
       credit_enabled: c.credit_enabled || "0",
       credit_limit:   c.credit_limit   || 0,
+       points: c.loyalty_points || 0 
     });
+    showToast(`Customer has ${c.loyalty_points || 0} points`, "success");
     setNameSuggestions([]);
     setPhoneSuggestions([]);
+   
   };
 
   /* ════════════════════════════════════════════════════════════════════════
@@ -2618,6 +2624,17 @@ if (paymentMethod === "credit" && customer.credit_enabled == "1") {
                   if (customer.name.length >= 2) handleNameSearch(customer.name);
                 }}
               />
+
+                {customer.points > 0 && (
+    <div style={{
+      marginTop: 6,
+      fontSize: 12,
+      color: "#059669",
+      fontWeight: 600
+    }}>
+      ⭐ Available Points: {customer.points}
+    </div>
+  )}
               {/* Name autocomplete dropdown */}
               {nameSuggestions.length > 0 && (
                 <div style={{
@@ -2657,6 +2674,9 @@ if (paymentMethod === "credit" && customer.credit_enabled == "1") {
                 </div>
               )}
             </div>
+
+       
+            
 
             {/* ── Phone with autocomplete + auto-fill ── */}
             <div ref={phoneSuggestRef} style={{ position:"relative" }}>
@@ -2995,6 +3015,17 @@ if (paymentMethod === "credit" && customer.credit_enabled == "1") {
               <span style={{ fontWeight:800, color:"#312e81", fontSize:16 }}>Grand Total</span>
               <span style={{ fontWeight:900, color:"#4338ca", fontSize:18 }}>₹{total.toFixed(2)}</span>
             </div>
+            <div style={{
+  marginTop: -10,
+  marginBottom: 16,
+  fontSize: 13,
+  color: "#6366f1",
+  fontWeight: 600
+}}>
+  🎁 You will earn: {earnedPoints} points
+</div>
+
+            
 
             {/* ── Payment Method Buttons ── */}
             <label style={{ fontSize:11, fontWeight:600, color:"#6366f1", letterSpacing:".08em", textTransform:"uppercase", display:"block", marginBottom:8 }}>
