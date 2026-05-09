@@ -633,7 +633,7 @@ export default function Reports() {
 
         {/* right */}
 
-        <div
+        {/* <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -692,7 +692,119 @@ export default function Reports() {
             Download
           </button>
 
-        </div>
+        </div> */}
+
+        <div
+  style={{
+    display: "flex",
+    alignItems: "end",
+    gap: 14,
+    flexWrap: "wrap"
+  }}
+>
+
+  {/* START DATE */}
+
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }}
+  >
+
+    <label
+      style={{
+        fontSize: 12,
+        fontWeight: 700,
+        color: "#4338ca",
+        paddingLeft: 2
+      }}
+    >
+      Start Date
+    </label>
+
+    <input
+      type="date"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+      style={{
+        padding: "10px 14px",
+        borderRadius: 10,
+        border: "1.5px solid #dbeafe",
+        fontFamily: font,
+        fontSize: 13,
+        outline: "none",
+        minWidth: 170
+      }}
+    />
+
+  </div>
+
+  {/* END DATE */}
+
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }}
+  >
+
+    <label
+      style={{
+        fontSize: 12,
+        fontWeight: 700,
+        color: "#4338ca",
+        paddingLeft: 2
+      }}
+    >
+      End Date
+    </label>
+
+    <input
+      type="date"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+      style={{
+        padding: "10px 14px",
+        borderRadius: 10,
+        border: "1.5px solid #dbeafe",
+        fontFamily: font,
+        fontSize: 13,
+        outline: "none",
+        minWidth: 170
+      }}
+    />
+
+  </div>
+
+  {/* DOWNLOAD BUTTON */}
+
+  <button
+    onClick={downloadExcel}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      background: "#4338ca",
+      border: "none",
+      color: "#fff",
+      padding: "10px 18px",
+      borderRadius: 12,
+      fontSize: 13,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontFamily: font,
+      height: 42,
+      boxShadow: "0 2px 10px rgba(67,56,202,.2)"
+    }}
+  >
+    <Download size={15} />
+    Download
+  </button>
+
+</div>
 
       </div>
 
