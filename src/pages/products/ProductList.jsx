@@ -440,6 +440,7 @@ export default function ProductList() {
                   <th>#</th>
                   <th>Product</th>
                   {/* <th className="center">Unit</th> */}
+                  <th className="center"> Product Code</th>
                   <th className="center">Price</th>
                   <th className="center">Stock</th>
                   <th className="center">GST</th>
@@ -479,42 +480,118 @@ export default function ProductList() {
                   : paginated.map((p, i) => {
                     const sb = stockBadge(p.stock);
                     return (
-                      <tr key={p.id} style={{animationDelay:`${i*0.03}s`}}>
-                        <td><span className="pl-index">{(safePage-1)*ITEMS_PER_PAGE+i+1}</span></td>
-                        <td>
-                          <div className="pl-prod-name">{p.product_name}</div>
-                          <div className="pl-prod-cat">{p.category_name || "No Category"}</div>
-                        </td>
-                        {/* <td className="center"><span className="pl-gst">{p.unit || "-"}</span></td> */}
-                        <td className="center">
-                          <span className="pl-price">₹{p.price}</span>
-                        </td>
-                        <td className="center">
-                          <div className="pl-stock-wrap">
-                            <span>{p.stock}</span>
-                            <span className={sb.cls}>{sb.label}</span>
-                          </div>
-                        </td>
-                        <td className="center">
-                          <span className="pl-gst">{p.gst_percentage}%</span>
-                        </td>
-                        <td className="center">
-                          <div className="pl-barcode-cell">
-                            <Barcode value={p.barcode || "NA"} width={1} height={36} fontSize={0} margin={0} />
-                            <span className="pl-barcode-num">{p.barcode || "—"}</span>
-                          </div>
-                        </td>
-                        <td className="center">
-                          <div className="pl-actions">
-                            <button className="pl-btn-edit" title="Edit" onClick={() => navigate(`/products/edit/${p.id}`)}>
-                              <Pencil size={14} />
-                            </button>
-                            <button className="pl-btn-del" title="Delete" onClick={() => setDeleteTarget(p)}>
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                     
+<tr key={p.id} style={{animationDelay:`${i*0.03}s`}}>
+
+  {/* INDEX */}
+
+  <td>
+    <span className="pl-index">
+      {(safePage-1)*ITEMS_PER_PAGE+i+1}
+    </span>
+  </td>
+
+  {/* PRODUCT */}
+
+  <td>
+    <div className="pl-prod-name">
+      {p.product_name}
+    </div>
+
+    <div className="pl-prod-cat">
+      {p.category_name || "No Category"}
+    </div>
+  </td>
+
+  {/* PRODUCT CODE */}
+
+  <td className="center">
+    <span className="pl-gst">
+      {p.product_code || "-"}
+    </span>
+  </td>
+
+  {/* PRICE */}
+
+  <td className="center">
+    <span className="pl-price">
+      ₹{p.price}
+    </span>
+  </td>
+
+  {/* STOCK */}
+
+  <td className="center">
+    <div className="pl-stock-wrap">
+      <span>{p.stock}</span>
+
+      <span className={sb.cls}>
+        {sb.label}
+      </span>
+    </div>
+  </td>
+
+  {/* GST */}
+
+  <td className="center">
+    <span className="pl-gst">
+      {p.gst_percentage}%
+    </span>
+  </td>
+
+  {/* BARCODE */}
+
+  <td className="center">
+
+    <div className="pl-barcode-cell">
+
+      <Barcode
+        value={p.barcode || "NA"}
+        width={1}
+        height={36}
+        fontSize={0}
+        margin={0}
+      />
+
+      <span className="pl-barcode-num">
+        {p.barcode || "—"}
+      </span>
+
+    </div>
+
+  </td>
+
+  {/* ACTION */}
+
+  <td className="center">
+
+    <div className="pl-actions">
+
+      <button
+        className="pl-btn-edit"
+        title="Edit"
+        onClick={() =>
+          navigate(`/products/edit/${p.id}`)
+        }
+      >
+        <Pencil size={14} />
+      </button>
+
+      <button
+        className="pl-btn-del"
+        title="Delete"
+        onClick={() => setDeleteTarget(p)}
+      >
+        <Trash2 size={14} />
+      </button>
+
+    </div>
+
+  </td>
+
+</tr>
+
+
                     );
                   })
                 }
