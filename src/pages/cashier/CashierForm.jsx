@@ -1,70 +1,3 @@
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import api from "../../services/api";
-
-// export default function CashierForm() {
-//   const navigate = useNavigate();
-
-//   const [form, setForm] = useState({
-//     name: "",
-//     email: "",
-//     password: ""
-//   });
-
-//   const handleSubmit = async () => {
-//     try {
-//       const user = JSON.parse(localStorage.getItem("user")); // admin login
-
-//       const res = await api.post("/auth/register.php", {
-//         name: form.name,
-//         email: form.email,
-//         password: form.password,
-//         role: "cashier",
-//         company_id: user.company_id   // 🔥 IMPORTANT
-//       });
-
-//       if (res.data.status) {
-//         alert("Cashier Created ✅");
-//         navigate("/cashier");
-//       } else {
-//         alert(res.data.message);
-//       }
-
-//     } catch (err) {
-//       console.error(err);
-//       alert("Server error");
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-md bg-white p-6 shadow rounded">
-//       <h2 className="text-xl font-bold mb-4">Add Cashier</h2>
-
-//       <input placeholder="Name"
-//         className="w-full p-3 border mb-3"
-//         onChange={(e)=>setForm({...form,name:e.target.value})}
-//       />
-
-//       <input placeholder="Email"
-//         className="w-full p-3 border mb-3"
-//         onChange={(e)=>setForm({...form,email:e.target.value})}
-//       />
-
-//       <input type="password" placeholder="Password"
-//         className="w-full p-3 border mb-3"
-//         onChange={(e)=>setForm({...form,password:e.target.value})}
-//       />
-
-//       <button
-//         onClick={handleSubmit}
-//         className="bg-blue-600 text-white p-3 w-full rounded"
-//       >
-//         Create Cashier
-//       </button>
-//     </div>
-//   );
-// }
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -182,16 +115,55 @@ export default function CashierForm() {
         password: form.password,
         role: "cashier",
         company_id: user.company_id,
+        requested_by: user.id,
       });
 
-      if (res.data.status) {
-        setSuccess(true);
-        showToast("Cashier created successfully!");
-        setTimeout(() => navigate("/cashier"), 1800);
-      } else {
-        showToast(res.data.message || "Something went wrong", false);
-        triggerShake();
-      }
+//       if (res.data.status) {
+//        setForm({
+//   name: "",
+//   email: "",
+//   password: ""
+// });
+
+// setShowPass(false);
+
+// // setSuccess(true);
+
+// showToast(
+//   res.data.message ||
+//   "Cashier created successfully!"
+// );
+//       } else {
+//         showToast(res.data.message || "Something went wrong", false);
+//         triggerShake();
+//       }
+const msg =
+  res.data.message || "";
+
+if (
+  res.data.status ||
+  msg.toLowerCase().includes("limit") ||
+  msg.toLowerCase().includes("request")
+) {
+
+  // CLEAR FORM
+  setForm({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  setShowPass(false);
+}
+
+showToast(
+  msg || "Done",
+  res.data.status
+);
+
+if (!res.data.status) {
+  triggerShake();
+}
     } catch {
       showToast("Server error. Try again.", false);
       triggerShake();
@@ -427,3 +399,6 @@ export default function CashierForm() {
     </div>
   );
 }
+
+
+//new update

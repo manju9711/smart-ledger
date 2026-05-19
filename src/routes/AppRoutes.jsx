@@ -34,6 +34,7 @@ import EditCustomer from "../pages/customer/EditCustomer";
 
 import CreditSettings from "../pages/billing/CreditSettings";
 import PaymentPendingHistory from "../pages/reports/PaymentPendingHistory";
+import PendingCashierRequests from "../pages/CashierRequests/PendingCashierRequests";
 
 export default function AppRoutes() {
   return (
@@ -103,6 +104,9 @@ export default function AppRoutes() {
 
 <Route path="/tax" element={<TaxList />} />
 <Route path="/tax/add" element={<TaxForm />} />
+
+<Route path="/cashier-requests" element={<PendingCashierRequests />}
+/>
         </Route>
       </Routes>
     </BrowserRouter>

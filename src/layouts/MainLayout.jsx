@@ -55,7 +55,8 @@ export default function MainLayout() {
     // SUPERADMIN ONLY
     ...(role === "superadmin"
       ? [
-          { name: "Company", path: "/company", icon: <Building2 size={20} /> }
+          { name: "Company", path: "/company", icon: <Building2 size={20} /> },
+          { name: "Cashier Requests", path: "/cashier-requests", icon: <Building2 size={20} /> }
         ]
       : []),
 

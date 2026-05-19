@@ -138,7 +138,7 @@ const fetchCustomers = async () => {
           <span>Mobile</span>
           <span>Address</span>
           <span>Type</span>
-          <span>Credit</span>
+          <span>Credit Limit</span>
           <span style={{ textAlign: "center" }}>Actions</span>
         </div>
 
@@ -207,7 +207,7 @@ const fetchCustomers = async () => {
               </div>
 
               {/* CREDIT */}
-              <div>
+              {/* <div>
                {Number(c.credit_enabled) === 1 ? (
                   <span style={{ color: "#16a34a", fontWeight: 600 }}>
                     Yes ₹{c.credit_limit}
@@ -215,7 +215,77 @@ const fetchCustomers = async () => {
                 ) : (
                   <span style={{ color: "#ef4444" }}>No</span>
                 )}
-              </div>
+              </div> */}
+
+              {/* CREDIT + ADVANCE */}
+<div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 4
+  }}
+>
+  {Number(c.credit_enabled) === 1 ? (
+
+    <>
+      <span
+        style={{
+          color: "#16a34a",
+          fontWeight: 600
+        }}
+      >
+        Yes ₹{Number(c.credit_limit).toLocaleString()}
+      </span>
+
+      {Number(c.advance_amount) > 0 && (
+
+        <span
+          style={{
+            color: "#dc2626",
+            fontWeight: 700,
+            fontSize: 12,
+            background: "#fee2e2",
+            padding: "4px 8px",
+            borderRadius: 8,
+            width: "fit-content"
+          }}
+        >
+          Return ₹
+          {Number(c.advance_amount).toLocaleString()}
+        </span>
+
+      )}
+    </>
+
+  ) : (
+
+    <>
+      <span style={{ color: "#ef4444" }}>
+        No
+      </span>
+
+      {Number(c.advance_amount) > 0 && (
+
+        <span
+          style={{
+            color: "#dc2626",
+            fontWeight: 700,
+            fontSize: 12,
+            background: "#fee2e2",
+            padding: "4px 8px",
+            borderRadius: 8,
+            width: "fit-content"
+          }}
+        >
+          Return ₹
+          {Number(c.advance_amount).toLocaleString()}
+        </span>
+
+      )}
+    </>
+
+  )}
+</div>
 
               {/* ACTIONS */}
               <div style={{
