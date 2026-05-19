@@ -33,6 +33,7 @@ import CustomerList from "../pages/customer/CustomerList";
 import EditCustomer from "../pages/customer/EditCustomer";
 
 import CreditSettings from "../pages/billing/CreditSettings";
+import PaymentPendingHistory from "../pages/reports/PaymentPendingHistory";
 
 export default function AppRoutes() {
   return (
@@ -91,6 +92,7 @@ export default function AppRoutes() {
           <Route path="/cashier" element={<CashierList />} />
          <Route path="/profile" element={<Profile />} />
 <Route path="/payment-pending" element={<PaymentPending />} />
+<Route path="/paymentpending-history" element={<PaymentPendingHistory />} />
 <Route path="/credit-settings" element={<CreditSettings />} />
 
           <Route path="/cashier/edit/:id" element={<EditCashier/>} />

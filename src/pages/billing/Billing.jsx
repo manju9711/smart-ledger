@@ -521,6 +521,7 @@ if (paymentMethod === "credit" && customer.credit_enabled == "1") {
         customer_id,
         customer_name:  customer.name,
         customer_phone: customer.phone,
+        cashier_id: user.id,
         products:       validRows,
         sub_total:      subtotal,
         gst_total:      gstTotal,
